@@ -63,7 +63,6 @@ export default function Services() {
           viewport={viewportRepeat}
           variants={fadeUp}
         >
-          <span className="eyebrow text-accent-deep mb-[0.8rem] block">What We Do</span>
           <h2 className="text-[clamp(1.7rem,3.4vw,2.3rem)] mb-[0.7rem]">Four disciplines. One integrated team.</h2>
           <p className="lede">Every engagement draws on the same in-house survey, design, and environmental expertise — no subcontracted guesswork.</p>
         </motion.div>

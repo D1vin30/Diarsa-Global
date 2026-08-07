@@ -77,7 +77,7 @@ export default function Hero() {
           style={{ objectPosition: '50% 15%' }}
         />
         <div className="absolute inset-0 z-[1] bg-slate/55" />
-        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-slate/80 via-slate/25 to-slate/65" />
+        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-slate/85 via-slate/60 to-slate/78" />
 
         <motion.div
           className="max-w-[760px] mx-auto relative z-[3] flex flex-col items-center text-center"
@@ -91,8 +91,8 @@ export default function Hero() {
 
         <div className="relative z-[3] mt-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8 pt-16 max-w-[1180px] w-full mx-auto">
           <motion.div className="max-w-[420px]" initial="hidden" animate={active === 0 ? 'show' : 'hidden'} variants={subcopyReveal}>
-            <span className="eyebrow text-accent-tint mb-[0.8rem] block">Grounded in Survey Data, Not Guesswork</span>
-            <p className="text-white-soft text-[0.98rem] leading-[1.65]">
+            <span className="font-sans font-semibold text-[0.9rem] text-accent-tint mb-[0.8rem] block">Grounded in Survey Data, Not Guesswork</span>
+            <p className="text-white text-[0.98rem] leading-[1.65] [text-shadow:0_2px_14px_rgba(0,0,0,0.7)]">
               Civil engineering, geomatics, and environmental consultancy for the agencies, developers, and industries
               building Nigeria's infrastructure.
             </p>
@@ -138,7 +138,7 @@ export default function Hero() {
           style={{ objectPosition: '54% 45%' }}
         />
         <div className="absolute inset-0 z-[1] bg-slate/55" />
-        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-slate/80 via-slate/25 to-slate/65" />
+        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-slate/85 via-slate/60 to-slate/78" />
 
         <div className="relative z-[3] mt-auto max-w-[1180px] w-full mx-auto">
           <motion.div initial="hidden" animate={active === 1 ? 'show' : 'hidden'} variants={headlineReveal}>
@@ -154,7 +154,7 @@ export default function Hero() {
             animate={active === 1 ? 'show' : 'hidden'}
             variants={subcopyReveal}
           >
-            <p className="text-white-soft text-[0.98rem] leading-[1.65] max-w-[52ch]">
+            <p className="text-white-soft text-[0.98rem] leading-[1.65] max-w-[52ch] [text-shadow:0_2px_14px_rgba(0,0,0,0.7)]">
               Our teams plan and design road networks using the same advanced, industry-compatible CAD and GIS
               software used by leading engineering firms — precision-modeled for Nigeria's terrain, traffic, and
               climate.
@@ -188,7 +188,7 @@ export default function Hero() {
           style={{ objectPosition: '50% 60%' }}
         />
         <div className="absolute inset-0 z-[1] bg-slate/55" />
-        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-slate/80 via-slate/25 to-slate/65" />
+        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-slate/85 via-slate/60 to-slate/78" />
 
         <div className="relative z-[3] mt-auto max-w-[1180px] w-full mx-auto">
           <motion.div initial="hidden" animate={active === 2 ? 'show' : 'hidden'} variants={headlineReveal}>
@@ -204,7 +204,7 @@ export default function Hero() {
             animate={active === 2 ? 'show' : 'hidden'}
             variants={subcopyReveal}
           >
-            <p className="text-white-soft text-[0.98rem] leading-[1.65] max-w-[52ch]">
+            <p className="text-white-soft text-[0.98rem] leading-[1.65] max-w-[52ch] [text-shadow:0_2px_14px_rgba(0,0,0,0.7)]">
               Environmental impact assessment, flood risk modelling, and gully reclamation — hydrology-led drainage
               design built for Nigeria's terrain and rainfall, not generic templates.
             </p>

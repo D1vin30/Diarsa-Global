@@ -12,7 +12,6 @@ export default function CtaBand() {
       viewport={viewportOnce}
       variants={fadeUp}
     >
-      <span className="eyebrow text-accent mb-[1rem] block">Enough With Guesswork</span>
       <h2 className="text-white text-[clamp(1.7rem,4vw,2.4rem)] mb-[1.8rem]">Have a project in mind?</h2>
       <motion.a
         className="btn btn-accent"

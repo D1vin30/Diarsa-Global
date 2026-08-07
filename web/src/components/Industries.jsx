@@ -24,7 +24,6 @@ export default function Industries() {
           viewport={viewportRepeat}
           variants={fadeUp}
         >
-          <span className="eyebrow text-accent-deep mb-[0.8rem] block">Industries Served</span>
           <h2 className="text-[clamp(1.7rem,3.4vw,2.3rem)] mb-[0.7rem]">Built for the sectors moving Nigeria forward</h2>
         </motion.div>
         <motion.div

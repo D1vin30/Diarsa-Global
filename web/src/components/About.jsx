@@ -54,7 +54,7 @@ export default function About() {
         <div className="grid grid-cols-[1.1fr_0.9fr] max-[900px]:grid-cols-1 gap-x-[3rem] gap-y-8 items-center">
           <div className="relative">
             <motion.div className="relative z-[1]" initial="hidden" whileInView="show" viewport={viewportRepeat} variants={stagger}>
-              <motion.span className="eyebrow text-accent-deep mb-[0.8rem] block" variants={fadeUp}>
+              <motion.span className="font-sans font-semibold text-[0.9rem] text-accent-deep mb-[0.8rem] block" variants={fadeUp}>
                 Est. 2015 · Benin City, Edo State
               </motion.span>
               <motion.h2 className="text-[clamp(1.8rem,3.6vw,2.5rem)] mb-[1rem]" variants={fadeUp}>

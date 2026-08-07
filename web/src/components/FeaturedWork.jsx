@@ -36,7 +36,6 @@ export default function FeaturedWork() {
           viewport={viewportRepeat}
           variants={fadeUp}
         >
-          <span className="eyebrow text-accent-tint mb-[0.8rem] block">Featured Work</span>
           <h2 className="text-white text-[clamp(1.7rem,3.4vw,2.3rem)] mb-[0.7rem]">Real projects, on the ground in Edo State</h2>
           <p className="lede text-white-soft">A sample of recent and ongoing engagements. Project photography in progress.</p>
         </motion.div>

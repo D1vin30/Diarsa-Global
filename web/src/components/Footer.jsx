@@ -12,20 +12,20 @@ export default function Footer() {
                 className="h-[46px] w-auto"
               />
             </div>
-            <h4 className="font-sans text-[0.76rem] tracking-[0.1em] uppercase text-white mb-4">Diarsa Global</h4>
+            <h3 className="font-sans text-[0.76rem] tracking-[0.1em] uppercase text-white mb-4">Diarsa Global</h3>
             <a className={footerLinkClass} href="/#services">Services</a>
             <a className={footerLinkClass} href="/#work">Projects</a>
             <a className={footerLinkClass} href="/about">About Us</a>
             <a className={footerLinkClass} href="/#contact">Contact</a>
           </div>
           <div>
-            <h4 className="font-sans text-[0.76rem] tracking-[0.1em] uppercase text-white mb-4">Contact</h4>
+            <h3 className="font-sans text-[0.76rem] tracking-[0.1em] uppercase text-white mb-4">Contact</h3>
             <a className={footerLinkClass} href="tel:+2348036789325">+234 803 678 9325</a>
             <a className={footerLinkClass} href="tel:+2348073282827">+234 807 328 2827</a>
             <a className={footerLinkClass} href="mailto:diarsaglobal@gmail.com">diarsaglobal@gmail.com</a>
           </div>
           <div>
-            <h4 className="font-sans text-[0.76rem] tracking-[0.1em] uppercase text-white mb-4">Head Office</h4>
+            <h3 className="font-sans text-[0.76rem] tracking-[0.1em] uppercase text-white mb-4">Head Office</h3>
             <span className="block text-[0.9rem] mb-[0.55rem]">7 Akpakpava Road<br />(Ighomo House)</span>
             <span className="block text-[0.9rem] mb-[0.85rem]">Benin City, Edo State</span>
             <a
