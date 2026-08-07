@@ -114,9 +114,9 @@ scrolls through view):
 
 - Reuses `ProjectCard` — same look as the homepage teaser
 - Full grid, no cap, one `<h1>` page heading + short intro line
-- Same watermark treatment as the homepage section, for visual continuity
-  between the teaser and the full index (details TBD to match whatever
-  ships in the homepage section first)
+- Same watermark treatment as the homepage section (top-right "PROJECT"
+  text + middle-left hard-hat icon), for visual continuity between the
+  teaser and the full index
 
 ## `/projects/:slug` detail page
 
@@ -136,4 +136,4 @@ Template, built to degrade gracefully around missing content:
   `NEEDS_FROM_MD.md`)
 - Additional real projects beyond the current 3 (blocked on MD)
 - Careers-style content, filtering/search on the index page, pagination —
-  not needed at 3-4 projects
+  not needed at 3 projects
