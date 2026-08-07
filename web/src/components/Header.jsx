@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -6,7 +6,7 @@ const MotionLink = motion(Link);
 
 const navLinks = [
   { href: '/about', label: 'About', route: true },
-  { href: '/#work', label: 'Projects' },
+  { href: '/projects', label: 'Projects', route: true },
   { href: '/#services', label: 'Services' },
   { href: '/#industries', label: 'Industries' },
   { href: '/#contact', label: 'Contact' },
@@ -28,6 +28,7 @@ const lineVariants = {
 };
 
 const HEADER_HEIGHT = 76;
+const IDLE_HIDE_DELAY = 2500;
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -62,15 +63,36 @@ export default function Header() {
     };
   }, [location.pathname]);
 
+  const idleTimerRef = useRef(null);
+
   useEffect(() => {
     let lastY = window.scrollY;
     let ticking = false;
 
+    const clearIdleTimer = () => {
+      if (idleTimerRef.current) {
+        clearTimeout(idleTimerRef.current);
+        idleTimerRef.current = null;
+      }
+    };
+
+    const armIdleTimer = () => {
+      clearIdleTimer();
+      idleTimerRef.current = setTimeout(() => setHidden(true), IDLE_HIDE_DELAY);
+    };
+
     const update = () => {
       const y = window.scrollY;
-      if (y < HEADER_HEIGHT) setHidden(false);
-      else if (y > lastY + 12) setHidden(true);
-      else if (y < lastY - 12) setHidden(false);
+      if (y < HEADER_HEIGHT) {
+        setHidden(false);
+        clearIdleTimer();
+      } else if (y > lastY + 12) {
+        setHidden(true);
+        clearIdleTimer();
+      } else if (y < lastY - 12) {
+        setHidden(false);
+        armIdleTimer();
+      }
       lastY = y;
       ticking = false;
     };
@@ -83,7 +105,10 @@ export default function Header() {
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      clearIdleTimer();
+    };
   }, []);
 
   const isDark = theme === 'dark';
@@ -112,12 +137,26 @@ export default function Header() {
         </Link>
         <nav className="hidden min-[901px]:flex items-center justify-center gap-[2.1rem]">
           {navLinks.map((l) => {
-            const linkCls = `no-underline text-[0.92rem] font-medium transition-colors duration-150 ease-out aria-[current=page]:text-accent-tint ${
-              isDark ? 'text-white-soft hover:text-white focus-visible:text-white' : 'text-ink-soft hover:text-ink focus-visible:text-ink'
+            const active = l.route && location.pathname === l.href;
+            const linkCls = `relative no-underline text-[0.92rem] font-medium transition-colors duration-150 ease-out ${
+              active
+                ? 'text-accent-tint'
+                : isDark
+                ? 'text-white-soft hover:text-white focus-visible:text-white'
+                : 'text-ink-soft hover:text-ink focus-visible:text-ink'
             }`;
+            const indicator = active && (
+              <motion.span
+                layoutId="nav-active-indicator"
+                className="absolute left-0 right-0 -bottom-[7px] h-[2px] rounded-full bg-accent-tint"
+                style={{ boxShadow: '0 0 8px rgba(221,152,104,0.7)' }}
+                transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+              />
+            );
             return l.route ? (
-              <Link key={l.href} to={l.href} className={linkCls}>
+              <Link key={l.href} to={l.href} aria-current={active ? 'page' : undefined} className={linkCls}>
                 {l.label}
+                {indicator}
               </Link>
             ) : (
               <a key={l.href} href={l.href} className={linkCls}>

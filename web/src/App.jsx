@@ -13,6 +13,8 @@ import FeaturedWork from './components/FeaturedWork';
 import CtaBand from './components/CtaBand';
 import Footer from './components/Footer';
 import AboutPage from './components/AboutPage';
+import ProjectsPage from './components/ProjectsPage';
+import ProjectDetailPage from './components/ProjectDetailPage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,6 +65,8 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/projects" element={<ProjectsPage />} />
+        <Route path="/projects/:slug" element={<ProjectDetailPage />} />
       </Routes>
       <Footer />
     </>
