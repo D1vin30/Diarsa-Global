@@ -8,5 +8,5 @@ export const stagger = {
   show: { transition: { staggerChildren: 0.12 } },
 };
 
-export const viewportRepeat = { once: false, margin: '-80px' };
-export const viewportOnce = { once: true, margin: '-80px' };
+export const viewportRepeat = { once: false, margin: '-80px 0px' };
+export const viewportOnce = { once: true, margin: '-80px 0px' };
