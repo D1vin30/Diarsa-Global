@@ -1,0 +1,116 @@
+@import "tailwindcss";
+
+@font-face { font-family:'Big Shoulders Display'; font-weight:600; src:url('/fonts/BigShouldersDisplay-600.ttf') format('truetype'); font-display:swap; }
+@font-face { font-family:'Big Shoulders Display'; font-weight:800; src:url('/fonts/BigShouldersDisplay-800.ttf') format('truetype'); font-display:swap; }
+@font-face { font-family:'Work Sans'; font-weight:400; src:url('/fonts/WorkSans-400.ttf') format('truetype'); font-display:swap; }
+@font-face { font-family:'Work Sans'; font-weight:500; src:url('/fonts/WorkSans-500.ttf') format('truetype'); font-display:swap; }
+@font-face { font-family:'Work Sans'; font-weight:600; src:url('/fonts/WorkSans-600.ttf') format('truetype'); font-display:swap; }
+@font-face { font-family:'Work Sans'; font-weight:700; src:url('/fonts/WorkSans-700.ttf') format('truetype'); font-display:swap; }
+
+@theme {
+  --font-display: 'Big Shoulders Display', sans-serif;
+  --font-sans: 'Work Sans', ui-sans-serif, sans-serif;
+
+  --color-slate: #121013;
+  --color-slate-2: #1a1719;
+  --color-slate-3: #221f22;
+  --color-paper: #f5f4f2;
+  --color-paper-2: #ece9e4;
+  --color-ink: #16151a;
+  --color-ink-soft: #6b6660;
+  --color-white: #f5f4f2;
+  --color-white-soft: #9c968f;
+  --color-accent: #c1642e;
+  --color-accent-deep: #914a20;
+  --color-accent-tint: #dd9868;
+  --color-line-dark: rgba(245,244,242,0.12);
+  --color-line-light: rgba(22,21,26,0.1);
+}
+
+@layer base {
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  [id] { scroll-margin-top: 84px; }
+  body {
+    margin: 0;
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  img, svg { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 800; margin: 0; text-wrap: balance; }
+}
+
+@layer components {
+  .eyebrow {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.74rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    font-family: var(--font-sans); font-weight: 600; font-size: 0.88rem;
+    padding: 0.75rem 1.6rem; border-radius: 999px; text-decoration: none;
+    border: 1.5px solid transparent; cursor: pointer; transition: all .15s ease;
+  }
+  .btn-accent { background: var(--color-accent); color: var(--color-white); }
+  .btn-accent:hover { background: var(--color-accent-deep); }
+  .btn-ghost-dark { border-color: var(--color-line-dark); color: var(--color-white); }
+  .btn-ghost-dark:hover { border-color: var(--color-white-soft); }
+  .btn-ghost-light { border-color: var(--color-line-light); color: var(--color-ink); }
+  .btn-ghost-accent { border-color: var(--color-accent); color: var(--color-accent-deep); }
+  .btn-ghost-accent:hover { border-color: var(--color-accent-deep); background: var(--color-accent); color: var(--color-white); }
+  .btn-ghost-light:hover { border-color: var(--color-ink-soft); }
+
+  .section-shell { padding: 5rem 1.5rem; }
+  .section-inner { max-width: 1180px; margin: 0 auto; }
+  .section-head { max-width: 62ch; margin-bottom: 2.6rem; }
+  .lede { color: var(--color-ink-soft); font-size: 1.02rem; line-height: 1.6; }
+
+  .tag-pill { border: 1px solid var(--color-line-dark); border-radius: 3px; padding: 0.3rem 0.65rem; font-size: 0.78rem; color: var(--color-white-soft); }
+  .tag-pill-light { border-color: var(--color-line-light); color: var(--color-ink-soft); padding: 0.55rem 1rem; font-size: 0.9rem; }
+
+  .logo-frame {
+    position: relative;
+    display: inline-flex;
+    border-radius: 8px;
+    padding: 8px 12px;
+  }
+  .logo-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(from var(--logo-angle), transparent 0%, transparent 85%, rgba(221,152,104,0.45) 92%, rgba(245,244,242,0.6) 95%, rgba(221,152,104,0.45) 98%, transparent 100%);
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: logo-border-spin 6s linear infinite;
+    pointer-events: none;
+  }
+}
+
+@property --logo-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes logo-border-spin {
+  to { --logo-angle: 360deg; }
+}
+
+@keyframes bookend-scroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .logo-frame::before { animation: none; }
+}
