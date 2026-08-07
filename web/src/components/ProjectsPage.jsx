@@ -2,7 +2,6 @@ import { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
-import { viewportOnce } from '../motion';
 import { projects } from '../data/projects';
 
 const introStagger = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
@@ -11,39 +10,76 @@ const introItem = {
   show: { opacity: 1, y: 0, transition: { duration: 0.45, ease: [0.19, 1, 0.22, 1] } },
 };
 
-const entryReveal = {
-  hidden: { opacity: 0, y: 36 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.19, 1, 0.22, 1] } },
-};
-
 function TimelineEntry({ project, side }) {
   const isRight = side === 'right';
+  const rowRef = useRef(null);
+  const nodeRef = useRef(null);
+  const contentRef = useRef(null);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        contentRef.current,
+        { opacity: 0, y: 90 },
+        {
+          opacity: 1,
+          y: 0,
+          ease: 'none',
+          scrollTrigger: { trigger: rowRef.current, start: 'top 95%', end: 'top 45%', scrub: true },
+        }
+      );
+      gsap.fromTo(
+        nodeRef.current,
+        { scale: 0, opacity: 0 },
+        {
+          scale: 1,
+          opacity: 1,
+          ease: 'none',
+          scrollTrigger: { trigger: rowRef.current, start: 'top 90%', end: 'top 65%', scrub: true },
+        }
+      );
+    }, rowRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="relative grid grid-cols-2 max-[700px]:grid-cols-1 items-center">
+    <div ref={rowRef} className="relative grid grid-cols-2 max-[700px]:grid-cols-1 items-center">
       <div
+        ref={nodeRef}
         className="hidden md:block absolute left-1/2 top-1/2 w-[10px] h-[10px] rounded-full bg-accent-tint -translate-x-1/2 -translate-y-1/2 z-[1]"
         style={{ boxShadow: '0 0 0 5px var(--color-slate), 0 0 10px rgba(221,152,104,0.6)' }}
         aria-hidden="true"
       />
-      <motion.div
-        className={`${isRight ? 'col-start-2 pl-[3rem]' : 'col-start-1 pr-[3rem]'} max-[700px]:col-start-1 max-[700px]:px-0 max-[700px]:pl-[2rem]`}
-        variants={entryReveal}
+      <div
+        ref={contentRef}
+        className={`${
+          isRight ? 'col-start-2 pl-[3rem]' : 'col-start-1 pr-[3rem]'
+        } max-[700px]:col-start-1 max-[700px]:px-0 max-[700px]:pl-[2rem]`}
       >
         <Link to={`/projects/${project.slug}`} className="group no-underline block">
-          <div className="relative aspect-[4/3] rounded-[4px] overflow-hidden border border-line-dark">
-            {project.image ? (
-              <img
-                src={project.image}
-                alt=""
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-              />
-            ) : (
-              <div
-                className="absolute inset-0"
-                style={{ background: 'linear-gradient(160deg, #221f22 0%, #1a1719 60%, #121013 100%)' }}
-              />
-            )}
-            <div className="absolute inset-0 bg-slate/0 transition-colors duration-300 group-hover:bg-slate/20" />
+          <div className="relative">
+            <div
+              className="absolute inset-0 bg-slate-3 rounded-[10px] border border-line-dark translate-x-[12px] translate-y-[12px]"
+              aria-hidden="true"
+            />
+            <div className="relative aspect-[16/9] rounded-[10px] overflow-hidden border border-line-dark transition-colors duration-200 group-hover:border-accent/60">
+              {project.image ? (
+                <img
+                  src={project.image}
+                  alt=""
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                />
+              ) : (
+                <div
+                  className="absolute inset-0"
+                  style={{ background: 'linear-gradient(160deg, #221f22 0%, #1a1719 60%, #121013 100%)' }}
+                />
+              )}
+              <div className="absolute inset-0 bg-slate/0 transition-colors duration-300 group-hover:bg-slate/20" />
+            </div>
           </div>
           <div className="mt-[1.1rem] flex items-center gap-3 mb-[0.4rem]">
             <span className="font-sans font-semibold text-[0.7rem] tracking-[0.1em] uppercase text-accent-tint">{project.cat}</span>
@@ -57,7 +93,7 @@ function TimelineEntry({ project, side }) {
           </h3>
           <p className="text-white-soft text-[0.88rem] leading-[1.5] max-w-[42ch]">{project.scope}</p>
         </Link>
-      </motion.div>
+      </div>
     </div>
   );
 }
@@ -65,9 +101,22 @@ function TimelineEntry({ project, side }) {
 export default function ProjectsPage() {
   const sectionRef = useRef(null);
   const watermarkTextRef = useRef(null);
+  const timelineRef = useRef(null);
+  const lineRef = useRef(null);
 
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const lineTween = gsap.fromTo(
+      lineRef.current,
+      { scaleY: 0 },
+      {
+        scaleY: 1,
+        ease: 'none',
+        transformOrigin: 'top',
+        scrollTrigger: { trigger: timelineRef.current, start: 'top 75%', end: 'bottom 75%', scrub: true },
+      }
+    );
 
     const textTween = gsap.to(watermarkTextRef.current, {
       ease: 'none',
@@ -80,6 +129,8 @@ export default function ProjectsPage() {
     });
 
     return () => {
+      lineTween.scrollTrigger?.kill();
+      lineTween.kill();
       textTween.scrollTrigger?.kill();
       textTween.kill();
     };
@@ -115,18 +166,33 @@ export default function ProjectsPage() {
           </motion.p>
         </motion.div>
 
-        <div className="relative mt-16 max-[700px]:mt-10">
+        <div className="relative">
+          <div ref={timelineRef} className="relative mt-16 max-[700px]:mt-10">
+            <div
+              ref={lineRef}
+              className="hidden md:block absolute left-1/2 top-[10px] bottom-[10px] w-px -translate-x-1/2 border-l border-dashed border-line-dark"
+              aria-hidden="true"
+            />
+            <div className="flex flex-col gap-[5rem] max-[700px]:gap-[3rem]">
+              {projects.map((p, i) => (
+                <TimelineEntry key={p.slug} project={p} side={i % 2 === 0 ? 'left' : 'right'} />
+              ))}
+            </div>
+          </div>
+
           <div
-            className="hidden md:block absolute left-1/2 top-[10px] bottom-[10px] w-px -translate-x-1/2 border-l border-dashed border-line-dark"
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-[420px] bg-gradient-to-b from-transparent via-slate/85 to-slate"
             aria-hidden="true"
           />
-          <div className="flex flex-col gap-[5rem] max-[700px]:gap-[3rem]">
-            {projects.map((p, i) => (
-              <motion.div key={p.slug} initial="hidden" whileInView="show" viewport={viewportOnce}>
-                <TimelineEntry project={p} side={i % 2 === 0 ? 'left' : 'right'} />
-              </motion.div>
-            ))}
-          </div>
+        </div>
+
+        <div className="relative z-[1] flex justify-center mt-[-2.5rem] pb-[0.5rem]">
+          <button type="button" className="group btn btn-ghost-dark inline-flex items-center gap-2">
+            Show More
+            <span className="transition-transform duration-200 ease-out group-hover:translate-y-[3px]" aria-hidden="true">
+              &darr;
+            </span>
+          </button>
         </div>
       </div>
     </section>
