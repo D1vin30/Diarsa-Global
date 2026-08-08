@@ -1,0 +1,262 @@
+import { useParams, Navigate, Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { fadeUp, stagger, cardReveal, viewportOnce } from '../motion';
+import { services, getServiceBySlug } from '../data/services';
+import { projects } from '../data/projects';
+import ProjectCard from './ProjectCard';
+
+function SectionEyebrow({ label }) {
+  return (
+    <div className="flex items-center gap-2 mb-[0.8rem]" aria-hidden="true">
+      <span className="w-[7px] h-[7px] rounded-full bg-accent-tint shrink-0" />
+      <span className="font-sans font-semibold text-[0.8rem] tracking-[0.08em] uppercase text-accent-tint">{label}</span>
+    </div>
+  );
+}
+
+function NarrativeBand({ rail, theme, heading, body, quote }) {
+  const dark = theme === 'dark';
+  return (
+    <section className={`section-shell ${dark ? 'bg-slate text-white' : 'bg-paper'}`} data-nav-theme={dark ? 'dark' : 'light'}>
+      <div className="section-inner">
+        <motion.div className="max-w-[68ch]" initial="hidden" whileInView="show" viewport={viewportOnce} variants={stagger}>
+          <motion.div variants={fadeUp}>
+            <SectionEyebrow label={rail} />
+          </motion.div>
+          <motion.h2 className={`text-[1.6rem] mb-[1.2rem] ${dark ? 'text-white' : ''}`} variants={fadeUp}>
+            {heading}
+          </motion.h2>
+          {body.map((paragraph, i) => (
+            <motion.p key={i} className={`lede mb-[1rem] last:mb-0 ${dark ? 'text-white-soft' : ''}`} variants={fadeUp}>
+              {paragraph}
+            </motion.p>
+          ))}
+          {quote && (
+            <motion.div className="mt-[2.4rem] pl-[1.4rem] border-l-[3px] border-accent max-w-[52ch]" variants={fadeUp}>
+              <p className={`font-display text-[1.15rem] leading-[1.45] mb-[0.7rem] ${dark ? 'text-white' : 'text-ink'}`}>
+                &ldquo;{quote.text}&rdquo;
+              </p>
+              <p className={`text-[0.85rem] font-semibold ${dark ? 'text-white-soft' : 'text-ink-soft'}`}>{quote.role}</p>
+            </motion.div>
+          )}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
+
+function ServiceCard({ service }) {
+  return (
+    <motion.div variants={cardReveal}>
+      <Link to={`/services/${service.slug}`} className="no-underline block group relative">
+        <div
+          className="absolute inset-0 bg-slate-3 rounded-[4px] border border-line-dark z-0 transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:translate-x-[10px] group-hover:translate-y-[14px]"
+          aria-hidden="true"
+        />
+        <motion.div
+          className="bg-slate-2 rounded-[4px] border border-line-dark relative z-[1] flex flex-col overflow-hidden h-full transition-colors duration-200 group-hover:border-accent/60"
+          whileHover={{ y: -6, zIndex: 2, boxShadow: '0 14px 28px -10px rgba(0,0,0,0.45)', transition: { duration: 0.2, ease: 'easeOut' } }}
+        >
+          <div className="relative aspect-[16/10] overflow-hidden">
+            <img
+              src={service.image}
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-110"
+            />
+          </div>
+          <div className="p-[1.6rem] flex flex-col flex-1">
+            <span className="font-display font-bold text-[0.85rem] text-accent-tint mb-[0.6rem]">{service.num}</span>
+            <h3 className="text-white text-[1.1rem] mb-[0.8rem] leading-[1.25]">{service.title}</h3>
+            <p className="text-white-soft text-[0.87rem] leading-[1.55] mt-auto mb-[1rem]">{service.tagline}</p>
+            <span className="inline-flex items-center gap-2 text-accent-tint text-[0.85rem] font-semibold">
+              View Service
+              <span className="transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true">
+                &rarr;
+              </span>
+            </span>
+          </div>
+        </motion.div>
+      </Link>
+    </motion.div>
+  );
+}
+
+export default function ServiceDetailPage() {
+  const { slug } = useParams();
+  const service = getServiceBySlug(slug);
+
+  if (!service) return <Navigate to="/services" replace />;
+
+  const relatedProjects = (service.relatedProjectSlugs || [])
+    .map((s) => projects.find((p) => p.slug === s))
+    .filter(Boolean);
+  const otherServices = services.filter((s) => s.slug !== service.slug);
+
+  return (
+    <>
+      <section className="relative h-[70vh] min-h-[440px] max-h-[640px] flex items-end overflow-hidden bg-slate" data-nav-theme="dark">
+        <div
+          className="absolute inset-0 flex items-center justify-center"
+          style={{ backgroundImage: `url(${service.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate via-slate/35 to-slate/10" />
+
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1], delay: 0.15 }}
+        >
+          <Link
+            to="/services"
+            className="absolute top-[6.5rem] right-6 z-[2] inline-flex items-center gap-2 pl-[1rem] pr-[1.2rem] py-[0.55rem] rounded-full bg-slate/70 backdrop-blur-sm border border-line-dark text-white text-[0.85rem] font-semibold no-underline transition-colors duration-200 hover:border-accent/60 hover:bg-slate/85"
+          >
+            <span aria-hidden="true">&larr;</span> All Services
+          </Link>
+        </motion.div>
+
+        <motion.div
+          className="relative z-[1] section-inner max-w-[900px] pb-[3rem] pt-[8rem] w-full"
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+        >
+          <div className="flex items-center gap-3 mb-[0.8rem]">
+            <span className="font-display font-bold text-[0.9rem] text-accent-tint">{service.num}</span>
+            <span className="text-white/40" aria-hidden="true">
+              &middot;
+            </span>
+            <span className="font-sans font-semibold text-[0.78rem] tracking-[0.1em] uppercase text-white/70">
+              {service.capabilities.length} Core Capabilities
+            </span>
+          </div>
+          <h1 className="text-white text-[clamp(2.2rem,5vw,4rem)] leading-[1.05] max-w-[20ch]">{service.title}</h1>
+        </motion.div>
+      </section>
+
+      <section className="section-shell bg-slate text-white" data-nav-theme="dark">
+        <div className="section-inner">
+          <motion.div initial="hidden" whileInView="show" viewport={viewportOnce} variants={fadeUp}>
+            <SectionEyebrow label="Overview" />
+          </motion.div>
+          <div className="grid grid-cols-[minmax(0,180px)_1fr] max-[640px]:grid-cols-1 gap-x-[3rem] gap-y-[2rem]">
+            <motion.div
+              className="flex flex-row max-[640px]:flex-row gap-6 max-[640px]:gap-8 flex-wrap md:flex-col md:gap-5"
+              initial="hidden"
+              whileInView="show"
+              viewport={viewportOnce}
+              variants={stagger}
+            >
+              {service.stats.map((s, i) => (
+                <motion.div key={i} className={i > 0 ? 'md:pt-5 md:border-t md:border-line-dark' : ''} variants={fadeUp}>
+                  <p className="font-display font-bold text-accent-tint text-[1.3rem] leading-[1.2] mb-[0.2rem]">{s.value}</p>
+                  <p className="text-white-soft text-[0.8rem]">{s.label}</p>
+                </motion.div>
+              ))}
+            </motion.div>
+
+            <motion.div initial="hidden" whileInView="show" viewport={viewportOnce} variants={stagger}>
+              {service.overview.map((paragraph, i) => (
+                <motion.p key={i} className="lede text-white-soft mb-[1rem] last:mb-0" variants={fadeUp}>
+                  {paragraph}
+                </motion.p>
+              ))}
+              {service.capabilities?.length > 0 && (
+                <motion.div className="flex flex-wrap gap-2 mt-[1.6rem]" variants={fadeUp}>
+                  {service.capabilities.map((c) => (
+                    <span key={c} className="tag-pill">
+                      {c}
+                    </span>
+                  ))}
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {service.whyItMatters && (
+        <NarrativeBand rail="Why It Matters" theme="light" heading={service.whyItMatters.heading} body={service.whyItMatters.body} />
+      )}
+
+      {service.approach && (
+        <NarrativeBand rail="Our Approach" theme="dark" heading={service.approach.heading} body={service.approach.body} quote={service.quote} />
+      )}
+
+      {service.outcome && <NarrativeBand rail="Outcome" theme="light" heading="Outcome" body={[service.outcome]} />}
+
+      <motion.section
+        className="section-shell bg-accent text-white"
+        initial="hidden"
+        whileInView="show"
+        viewport={viewportOnce}
+        variants={stagger}
+      >
+        <div className="section-inner flex items-center justify-between flex-wrap gap-6">
+          <motion.h2 className="text-white text-[1.5rem] max-w-[32ch]" variants={fadeUp}>
+            Need this discipline on your project?
+          </motion.h2>
+          <motion.div variants={fadeUp}>
+            <Link to="/#contact" className="btn bg-white text-accent-deep hover:bg-white/90">
+              Talk to Our Team
+            </Link>
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {relatedProjects.length > 0 && (
+        <section className="section-shell bg-paper" data-nav-theme="light">
+          <div className="section-inner">
+            <motion.div initial="hidden" whileInView="show" viewport={viewportOnce} variants={fadeUp}>
+              <SectionEyebrow label="Seen In Practice" />
+            </motion.div>
+            <motion.h2 className="text-[1.5rem] mb-[1.6rem]" initial="hidden" whileInView="show" viewport={viewportOnce} variants={fadeUp}>
+              Related Projects
+            </motion.h2>
+            <motion.div
+              className={`grid gap-[1.4rem] ${relatedProjects.length > 1 ? 'grid-cols-3 max-[860px]:grid-cols-1' : 'grid-cols-1 max-w-[420px]'}`}
+              initial="hidden"
+              whileInView="show"
+              viewport={viewportOnce}
+              variants={stagger}
+            >
+              {relatedProjects.map((p) => (
+                <ProjectCard key={p.slug} project={p} variants={cardReveal} />
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      )}
+
+      <section className="section-shell bg-slate text-white" data-nav-theme="dark">
+        <div className="section-inner">
+          <motion.div
+            className="section-head max-w-[62ch] mx-auto text-center"
+            initial="hidden"
+            whileInView="show"
+            viewport={viewportOnce}
+            variants={stagger}
+          >
+            <motion.span className="font-sans font-semibold text-[0.85rem] text-accent-tint mb-[0.6rem] block" variants={fadeUp}>
+              Continue Exploring
+            </motion.span>
+            <motion.h2 className="text-white text-[1.5rem]" variants={fadeUp}>
+              Other Services
+            </motion.h2>
+          </motion.div>
+
+          <motion.div
+            className="grid grid-cols-3 max-[860px]:grid-cols-1 gap-[1.4rem]"
+            initial="hidden"
+            whileInView="show"
+            viewport={viewportOnce}
+            variants={stagger}
+          >
+            {otherServices.map((s) => (
+              <ServiceCard key={s.slug} service={s} />
+            ))}
+          </motion.div>
+        </div>
+      </section>
+    </>
+  );
+}

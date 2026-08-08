@@ -7,7 +7,7 @@ const MotionLink = motion(Link);
 const navLinks = [
   { href: '/about', label: 'About', route: true },
   { href: '/projects', label: 'Projects', route: true },
-  { href: '/#services', label: 'Services' },
+  { href: '/services', label: 'Services', route: true },
   { href: '/#industries', label: 'Industries' },
   { href: '/#contact', label: 'Contact' },
 ];

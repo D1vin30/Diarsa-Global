@@ -16,6 +16,8 @@ import Footer from './components/Footer';
 import AboutPage from './components/AboutPage';
 import ProjectsPage from './components/ProjectsPage';
 import ProjectDetailPage from './components/ProjectDetailPage';
+import ServicesPage from './components/ServicesPage';
+import ServiceDetailPage from './components/ServiceDetailPage';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -76,6 +78,8 @@ function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/projects/:slug" element={<ProjectDetailPage />} />
+            <Route path="/services" element={<ServicesPage />} />
+            <Route path="/services/:slug" element={<ServiceDetailPage />} />
           </Routes>
         </motion.div>
       </AnimatePresence>
