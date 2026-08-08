@@ -117,7 +117,7 @@ export default function Header() {
     <>
     <motion.header
       className={`fixed top-0 inset-x-0 z-50 backdrop-blur-md transition-[background-color,box-shadow] duration-300 ease-out ${
-        isDark ? 'bg-slate/35' : 'bg-paper/70'
+        isDark ? 'bg-slate/60' : 'bg-paper/70'
       }`}
       style={{
         boxShadow: isDark
@@ -137,7 +137,7 @@ export default function Header() {
         </Link>
         <nav className="hidden min-[901px]:flex items-center justify-center gap-[2.1rem]">
           {navLinks.map((l) => {
-            const active = l.route && location.pathname === l.href;
+            const active = l.route && (location.pathname === l.href || location.pathname.startsWith(`${l.href}/`));
             const linkCls = `relative no-underline text-[0.92rem] font-medium transition-colors duration-150 ease-out ${
               active
                 ? 'text-accent-tint'

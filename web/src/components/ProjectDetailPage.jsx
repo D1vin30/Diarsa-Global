@@ -1,20 +1,65 @@
+import { useState } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { fadeUp, stagger, viewportOnce } from '../motion';
+import { fadeUp, stagger, cardReveal, viewportOnce } from '../motion';
 import { projects, getProjectBySlug } from '../data/projects';
 import { CategoryIcon } from './ProjectIcons';
+import ProjectCard from './ProjectCard';
 
 const specLabels = { location: 'Location', duration: 'Duration', discipline: 'Discipline' };
+
+function SectionEyebrow({ label }) {
+  return (
+    <div className="flex items-center gap-2 mb-[0.8rem]" aria-hidden="true">
+      <span className="w-[7px] h-[7px] rounded-full bg-accent-tint shrink-0" />
+      <span className="font-sans font-semibold text-[0.8rem] tracking-[0.08em] uppercase text-accent-tint">{label}</span>
+    </div>
+  );
+}
+
+function NarrativeBand({ rail, theme, heading, body, quote, children }) {
+  const dark = theme === 'dark';
+  return (
+    <section className={`section-shell ${dark ? 'bg-slate text-white' : 'bg-paper'}`} data-nav-theme={dark ? 'dark' : 'light'}>
+      <div className="section-inner">
+        <motion.div className="max-w-[68ch]" initial="hidden" whileInView="show" viewport={viewportOnce} variants={stagger}>
+          <motion.div variants={fadeUp}>
+            <SectionEyebrow label={rail} />
+          </motion.div>
+          <motion.h2 className={`text-[1.6rem] mb-[1.2rem] ${dark ? 'text-white' : ''}`} variants={fadeUp}>
+            {heading}
+          </motion.h2>
+          {body.map((paragraph, i) => (
+            <motion.p key={i} className={`lede mb-[1rem] last:mb-0 ${dark ? 'text-white-soft' : ''}`} variants={fadeUp}>
+              {paragraph}
+            </motion.p>
+          ))}
+          {quote && (
+            <motion.div
+              className={`mt-[2.4rem] pl-[1.4rem] border-l-[3px] border-accent max-w-[52ch] ${dark ? '' : ''}`}
+              variants={fadeUp}
+            >
+              <p className={`font-display text-[1.15rem] leading-[1.45] mb-[0.7rem] ${dark ? 'text-white' : 'text-ink'}`}>
+                &ldquo;{quote.text}&rdquo;
+              </p>
+              <p className={`text-[0.85rem] font-semibold ${dark ? 'text-white-soft' : 'text-ink-soft'}`}>{quote.role}</p>
+            </motion.div>
+          )}
+          {children}
+        </motion.div>
+      </div>
+    </section>
+  );
+}
 
 export default function ProjectDetailPage() {
   const { slug } = useParams();
   const project = getProjectBySlug(slug);
+  const [factsOpen, setFactsOpen] = useState(true);
 
   if (!project) return <Navigate to="/projects" replace />;
 
   const specEntries = Object.entries(project.specs || {}).filter(([, value]) => value);
-  const index = projects.findIndex((p) => p.slug === slug);
-  const nextProject = projects[(index + 1) % projects.length];
 
   return (
     <>
@@ -36,17 +81,24 @@ export default function ProjectDetailPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-slate via-slate/35 to-slate/10" />
 
         <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1], delay: 0.15 }}
+        >
+          <Link
+            to="/projects"
+            className="absolute top-[6.5rem] right-6 z-[2] inline-flex items-center gap-2 pl-[1rem] pr-[1.2rem] py-[0.55rem] rounded-full bg-slate/70 backdrop-blur-sm border border-line-dark text-white text-[0.85rem] font-semibold no-underline transition-colors duration-200 hover:border-accent/60 hover:bg-slate/85"
+          >
+            <span aria-hidden="true">&larr;</span> All Projects
+          </Link>
+        </motion.div>
+
+        <motion.div
           className="relative z-[1] section-inner max-w-[900px] pb-[3rem] pt-[8rem] w-full"
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
         >
-          <Link
-            to="/projects"
-            className="inline-flex items-center gap-2 text-white/80 hover:text-white text-[0.9rem] font-semibold no-underline mb-[1.6rem] transition-colors duration-150"
-          >
-            <span aria-hidden="true">&larr;</span> All Projects
-          </Link>
           <div className="flex items-center gap-3 mb-[0.8rem]">
             <span className="font-sans font-semibold text-[0.78rem] tracking-[0.1em] uppercase text-accent-tint">{project.cat}</span>
             <span className="text-white/40" aria-hidden="true">
@@ -58,46 +110,114 @@ export default function ProjectDetailPage() {
         </motion.div>
       </section>
 
-      <section className="section-shell bg-paper" data-nav-theme="light">
-        <div className="section-inner max-w-[900px]">
-          <motion.div initial="hidden" animate="show" variants={stagger}>
-            <motion.p className="text-ink-soft text-[1rem] font-medium mb-[2rem]" variants={fadeUp}>
-              {project.client}
-            </motion.p>
-
-            {specEntries.length > 0 && (
-              <motion.div
-                className="grid grid-cols-3 max-[600px]:grid-cols-1 gap-x-[2rem] gap-y-4 py-[1.6rem] border-y border-line-light mb-[2.4rem]"
-                variants={fadeUp}
-              >
-                {specEntries.map(([key, value]) => (
-                  <div key={key}>
-                    <p className="text-[0.75rem] uppercase tracking-[0.08em] text-ink-soft mb-[0.3rem]">{specLabels[key] || key}</p>
-                    <p className="text-ink text-[0.95rem] font-medium">{value}</p>
-                  </div>
-                ))}
-              </motion.div>
-            )}
-
-            {project.overview?.length > 0 && (
-              <motion.div className="mb-[2.4rem] max-w-[68ch]" variants={fadeUp}>
-                {project.overview.map((paragraph, i) => (
-                  <p key={i} className="lede mb-[1rem] last:mb-0">
-                    {paragraph}
-                  </p>
-                ))}
-              </motion.div>
-            )}
-
-            {project.outcome && (
-              <motion.div className="mb-[1rem] max-w-[68ch]" variants={fadeUp}>
-                <h2 className="text-[1.1rem] mb-[0.6rem]">Outcome</h2>
-                <p className="lede">{project.outcome}</p>
-              </motion.div>
-            )}
+      <section className="section-shell bg-slate text-white" data-nav-theme="dark">
+        <div className="section-inner">
+          <motion.div initial="hidden" whileInView="show" viewport={viewportOnce} variants={fadeUp}>
+            <SectionEyebrow label="Overview" />
           </motion.div>
+          <div className="grid grid-cols-[minmax(0,180px)_1fr] max-[640px]:grid-cols-1 gap-x-[3rem] gap-y-[2rem]">
+            {project.stats?.length > 0 && (
+              <motion.div
+                className="flex flex-row max-[640px]:flex-row gap-6 max-[640px]:gap-8 flex-wrap md:flex-col md:gap-5"
+                initial="hidden"
+                whileInView="show"
+                viewport={viewportOnce}
+                variants={stagger}
+              >
+                {project.stats.map((s, i) => (
+                  <motion.div key={i} className={i > 0 ? 'md:pt-5 md:border-t md:border-line-dark' : ''} variants={fadeUp}>
+                    <p className="font-display font-bold text-accent-tint text-[1.3rem] leading-[1.2] mb-[0.2rem]">{s.value}</p>
+                    <p className="text-white-soft text-[0.8rem]">{s.label}</p>
+                  </motion.div>
+                ))}
+              </motion.div>
+            )}
+
+            <motion.div initial="hidden" whileInView="show" viewport={viewportOnce} variants={stagger}>
+              <motion.p className="text-white-soft text-[0.85rem] font-medium mb-[0.4rem]" variants={fadeUp}>
+                {project.client}
+              </motion.p>
+              {project.overview?.map((paragraph, i) => (
+                <motion.p key={i} className="lede text-white-soft mb-[1rem] last:mb-0" variants={fadeUp}>
+                  {paragraph}
+                </motion.p>
+              ))}
+
+              {specEntries.length > 0 && (
+                <motion.div className="mt-[2rem]" variants={fadeUp}>
+                  <button
+                    type="button"
+                    onClick={() => setFactsOpen((v) => !v)}
+                    aria-expanded={factsOpen}
+                    className="group w-full flex items-center justify-between py-[0.9rem] border-y border-line-dark text-white text-[0.85rem] font-semibold tracking-[0.04em] uppercase"
+                  >
+                    Project Details
+                    <span
+                      aria-hidden="true"
+                      className="relative w-[28px] h-[28px] shrink-0 rounded-full border border-line-dark flex items-center justify-center transition-colors duration-200 group-hover:border-accent/60"
+                    >
+                      <span className="absolute w-[10px] h-[1.5px] bg-accent-tint" />
+                      <span
+                        className="absolute w-[1.5px] h-[10px] bg-accent-tint transition-transform duration-300 ease-out"
+                        style={{ transform: factsOpen ? 'scaleY(0)' : 'scaleY(1)' }}
+                      />
+                    </span>
+                  </button>
+                  <div
+                    className="grid transition-[grid-template-rows] duration-300 ease-out"
+                    style={{ gridTemplateRows: factsOpen ? '1fr' : '0fr' }}
+                  >
+                    <div className="overflow-hidden">
+                      {specEntries.map(([key, value]) => (
+                        <div key={key} className="grid grid-cols-[8rem_1fr] max-[480px]:grid-cols-1 gap-x-4 gap-y-1 py-[0.9rem] border-b border-line-dark">
+                          <span className="text-[0.75rem] uppercase tracking-[0.08em] text-white-soft">{specLabels[key] || key}</span>
+                          <span className="text-white text-[0.92rem] font-medium">{value}</span>
+                        </div>
+                      ))}
+                      {project.markets?.length > 0 && (
+                        <div className="grid grid-cols-[8rem_1fr] max-[480px]:grid-cols-1 gap-x-4 gap-y-1 py-[0.9rem] border-b border-line-dark">
+                          <span className="text-[0.75rem] uppercase tracking-[0.08em] text-white-soft">Markets</span>
+                          <span className="flex flex-wrap gap-x-3 gap-y-1">
+                            {project.markets.map((m) => (
+                              <span key={m} className="text-white text-[0.92rem] font-medium">
+                                {m}
+                              </span>
+                            ))}
+                          </span>
+                        </div>
+                      )}
+                      {project.services?.length > 0 && (
+                        <div className="grid grid-cols-[8rem_1fr] max-[480px]:grid-cols-1 gap-x-4 gap-y-1 py-[0.9rem] border-b border-line-dark">
+                          <span className="text-[0.75rem] uppercase tracking-[0.08em] text-white-soft">Services</span>
+                          <span className="flex flex-wrap gap-x-3 gap-y-1">
+                            {project.services.map((s) => (
+                              <span key={s} className="text-white text-[0.92rem] font-medium">
+                                {s}
+                              </span>
+                            ))}
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </motion.div>
+          </div>
         </div>
       </section>
+
+      {project.challenge && (
+        <NarrativeBand rail="Challenge" theme="light" heading={project.challenge.heading} body={project.challenge.body} />
+      )}
+
+      {project.approach && (
+        <NarrativeBand rail="Approach" theme="dark" heading={project.approach.heading} body={project.approach.body} quote={project.quote} />
+      )}
+
+      {project.outcome && (
+        <NarrativeBand rail="Outcome" theme="light" heading="Outcome" body={[project.outcome]} />
+      )}
 
       {project.fineprint && (
         <motion.section
@@ -118,96 +238,78 @@ export default function ProjectDetailPage() {
 
       {project.gallery?.length > 0 && (
         <section className="section-shell bg-paper pt-[3rem]" data-nav-theme="light">
-          <div className="section-inner max-w-[900px]">
+          <div className="section-inner">
             <motion.div
-              className="grid grid-cols-2 max-[600px]:grid-cols-1 gap-[1rem]"
+              className="grid grid-cols-3 max-[700px]:grid-cols-1 gap-[1.4rem]"
               initial="hidden"
               whileInView="show"
               viewport={viewportOnce}
               variants={stagger}
             >
-              {project.gallery.map((src, i) => (
-                <motion.img
-                  key={src}
-                  src={src}
-                  alt={`${project.title} — photo ${i + 1}`}
-                  className="rounded-[4px] w-full h-full object-cover aspect-[4/3]"
-                  variants={fadeUp}
-                />
+              {project.gallery.map((item, i) => (
+                <motion.figure key={item.src} className="m-0" variants={fadeUp}>
+                  <img
+                    src={item.src}
+                    alt={item.caption || `${project.title} — photo ${i + 1}`}
+                    className="rounded-[4px] w-full h-full object-cover aspect-[4/3]"
+                  />
+                  {item.caption && <figcaption className="mt-[0.6rem] text-ink-soft text-[0.82rem]">{item.caption}</figcaption>}
+                </motion.figure>
               ))}
             </motion.div>
           </div>
         </section>
       )}
 
+      <motion.section
+        className="section-shell bg-accent text-white"
+        initial="hidden"
+        whileInView="show"
+        viewport={viewportOnce}
+        variants={stagger}
+      >
+        <div className="section-inner flex items-center justify-between flex-wrap gap-6">
+          <motion.h2 className="text-white text-[1.5rem] max-w-[32ch]" variants={fadeUp}>
+            Have a project like this in mind?
+          </motion.h2>
+          <motion.div variants={fadeUp}>
+            <Link to="/#contact" className="btn bg-white text-accent-deep hover:bg-white/90">
+              Talk to Our Team
+            </Link>
+          </motion.div>
+        </div>
+      </motion.section>
+
       <section className="section-shell bg-slate text-white" data-nav-theme="dark">
-        <div className="section-inner max-w-[900px]">
+        <div className="section-inner">
           <motion.div
-            className="flex justify-center mb-[3.5rem]"
+            className="section-head max-w-[62ch] mx-auto text-center"
             initial="hidden"
             whileInView="show"
             viewport={viewportOnce}
-            variants={fadeUp}
+            variants={stagger}
           >
-            <Link to="/projects" className="btn btn-accent">
-              <span aria-hidden="true">&larr;</span>&nbsp; All Projects
-            </Link>
-          </motion.div>
-
-          <motion.div initial="hidden" whileInView="show" viewport={viewportOnce} variants={stagger}>
             <motion.span
               className="font-sans font-semibold text-[0.85rem] text-accent-tint mb-[0.6rem] block"
               variants={fadeUp}
             >
               Continue Exploring
             </motion.span>
-            <motion.h2 className="text-white text-[1.5rem] mb-[1.6rem]" variants={fadeUp}>
-              You Might Also Be Interested In
+            <motion.h2 className="text-white text-[1.5rem]" variants={fadeUp}>
+              More Projects
             </motion.h2>
+          </motion.div>
 
-            <motion.div variants={fadeUp}>
-              <Link
-                to={`/projects/${nextProject.slug}`}
-                className="group no-underline flex max-[560px]:flex-col gap-[1.6rem] items-stretch bg-slate-2 border border-line-dark rounded-[4px] overflow-hidden transition-colors duration-200 hover:border-accent/60"
-              >
-                <div className="relative w-[42%] max-[560px]:w-full shrink-0 aspect-[4/3] max-[560px]:aspect-[16/9] overflow-hidden">
-                  {nextProject.image ? (
-                    <img
-                      src={nextProject.image}
-                      alt=""
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
-                    />
-                  ) : (
-                    <div
-                      className="absolute inset-0 flex items-center justify-center text-accent-tint/70"
-                      style={{ background: 'linear-gradient(160deg, #221f22 0%, #1a1719 60%, #121013 100%)' }}
-                    >
-                      <CategoryIcon category={nextProject.cat} />
-                    </div>
-                  )}
-                </div>
-                <div className="flex flex-col justify-center py-[1.4rem] pr-[1.8rem] max-[560px]:px-[1.4rem] max-[560px]:pb-[1.6rem] max-[560px]:pt-0">
-                  <div className="flex items-center gap-3 mb-[0.5rem]">
-                    <span className="font-sans font-semibold text-[0.7rem] tracking-[0.1em] uppercase text-accent-tint">
-                      {nextProject.cat}
-                    </span>
-                    <span className="text-white/30" aria-hidden="true">
-                      &middot;
-                    </span>
-                    <span className="font-display font-bold text-[0.8rem] text-white-soft">{nextProject.year}</span>
-                  </div>
-                  <h3 className="text-white text-[1.25rem] leading-[1.25] mb-[0.6rem] transition-colors duration-150 group-hover:text-accent-tint">
-                    {nextProject.title}
-                  </h3>
-                  <span className="inline-flex items-center gap-2 text-accent-tint text-[0.85rem] font-semibold">
-                    View Project
-                    <span className="transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true">
-                      &rarr;
-                    </span>
-                  </span>
-                </div>
-              </Link>
-            </motion.div>
+          <motion.div
+            className="grid grid-cols-3 max-[860px]:grid-cols-1 gap-[1.4rem]"
+            initial="hidden"
+            whileInView="show"
+            viewport={viewportOnce}
+            variants={stagger}
+          >
+            {projects.map((p) => (
+              <ProjectCard key={p.slug} project={p} variants={cardReveal} />
+            ))}
           </motion.div>
         </div>
       </section>
