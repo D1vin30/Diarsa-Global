@@ -42,6 +42,33 @@ per project, in this order:
    linked/displayed per project for public credibility? If yes, need the documents themselves plus a
    decision on where they'd sit on the page.
 
+## Per-Service Content — what each service page now needs (2026-08-08)
+
+The 7 service categories (`/services/<slug>`) were restructured to match the real taxonomy visible on
+the current live site (diarsaglobal.com) and the broader category grouping found there, rather than the
+4 invented buckets used earlier. Categories: Civil Engineering Consultancy, Geomatics Engineering, GIS &
+Digital Mapping, Hydrological & Water Resources Studies, Environmental Consultancy, Project Planning &
+Advisory, Research & Development. The old site's individual service pages (Marine Geophysical Surveys,
+Geotechnical Investigation, Mapping & GIS, Drone Surveys, Cadastral & Legal Surveys, and ~16 more) were
+folded into these 7 as capability tags rather than getting their own pages yet — all real names, sourced
+directly from the live site, not invented.
+
+All copy (overview, capabilities framing, "Why It Matters", "Our Approach" + 3-step lifecycle, quotes,
+outcomes) is Claude-written placeholder, plausible in tone but not verified. Replace per service, same
+priority order as the per-project list above, plus:
+
+1. **Confirm the 7-category split itself** — does this match how the MD actually thinks about the
+   business, or should some categories merge/split differently once the company PDF is available?
+2. **Which of the ~21 individually-named live-site services deserve their own dedicated page** later,
+   versus staying folded into a parent category as a capability tag.
+3. **Quotes** are attributed to generic team names (e.g. "Civil Engineering Team, Diarsa Global"), same
+   caveat as the project quotes — replace with real named quotes or drop.
+4. **Photography** — all 7 hero images are Unsplash stock, need real site/office photography per
+   discipline once available.
+5. Two categories (GIS & Digital Mapping, Research & Development) have no related project yet since none
+   of the 3 live projects are tagged to them — flag if any past work actually fits either, so the
+   "Related Projects" section isn't empty.
+
 ## ~~Infra — MCP service connections~~ (done 2026-08-04)
 
 - [x] ~~Cloudflare connected~~

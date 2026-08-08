@@ -14,7 +14,7 @@ function SectionEyebrow({ label }) {
   );
 }
 
-function NarrativeBand({ rail, theme, heading, body, quote }) {
+function NarrativeBand({ rail, theme, heading, body, quote, lifecycle }) {
   const dark = theme === 'dark';
   return (
     <section className={`section-shell ${dark ? 'bg-slate text-white' : 'bg-paper'}`} data-nav-theme={dark ? 'dark' : 'light'}>
@@ -31,6 +31,17 @@ function NarrativeBand({ rail, theme, heading, body, quote }) {
               {paragraph}
             </motion.p>
           ))}
+          {lifecycle?.length > 0 && (
+            <motion.div className="grid grid-cols-3 max-[700px]:grid-cols-1 gap-x-[1.6rem] gap-y-[1.4rem] mt-[2rem]" variants={fadeUp}>
+              {lifecycle.map((step, i) => (
+                <div key={step.stage} className={`pt-[1rem] border-t-2 ${dark ? 'border-white/15' : 'border-line-light'}`}>
+                  <span className="font-display font-bold text-accent-tint text-[0.9rem]">{String(i + 1).padStart(2, '0')}</span>
+                  <h4 className={`text-[0.95rem] font-semibold mt-[0.3rem] mb-[0.4rem] ${dark ? 'text-white' : 'text-ink'}`}>{step.stage}</h4>
+                  <p className={`text-[0.85rem] leading-[1.5] ${dark ? 'text-white-soft' : 'text-ink-soft'}`}>{step.text}</p>
+                </div>
+              ))}
+            </motion.div>
+          )}
           {quote && (
             <motion.div className="mt-[2.4rem] pl-[1.4rem] border-l-[3px] border-accent max-w-[52ch]" variants={fadeUp}>
               <p className={`font-display text-[1.15rem] leading-[1.45] mb-[0.7rem] ${dark ? 'text-white' : 'text-ink'}`}>
@@ -91,6 +102,8 @@ export default function ServiceDetailPage() {
     .map((s) => projects.find((p) => p.slug === s))
     .filter(Boolean);
   const otherServices = services.filter((s) => s.slug !== service.slug);
+  const index = services.findIndex((s) => s.slug === service.slug);
+  const fineprint = ['/projects/nigeria-scenic-1.jpg', '/projects/nigeria-scenic-2.jpg', '/projects/nigeria-scenic-3.jpg'][index % 3];
 
   return (
     <>
@@ -179,10 +192,34 @@ export default function ServiceDetailPage() {
       )}
 
       {service.approach && (
-        <NarrativeBand rail="Our Approach" theme="dark" heading={service.approach.heading} body={service.approach.body} quote={service.quote} />
+        <NarrativeBand
+          rail="Our Approach"
+          theme="dark"
+          heading={service.approach.heading}
+          body={service.approach.body}
+          lifecycle={service.approach.lifecycle}
+          quote={service.quote}
+        />
       )}
 
       {service.outcome && <NarrativeBand rail="Outcome" theme="light" heading="Outcome" body={[service.outcome]} />}
+
+      {fineprint && (
+        <motion.section
+          className="relative h-[38vh] min-h-[240px] max-h-[360px] overflow-hidden"
+          initial={{ opacity: 0, scale: 1.03 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={viewportOnce}
+          transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
+          aria-hidden="true"
+        >
+          <div
+            className="absolute inset-0"
+            style={{ backgroundImage: `url(${fineprint})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+          />
+          <div className="absolute inset-0 bg-slate/10" />
+        </motion.section>
+      )}
 
       <motion.section
         className="section-shell bg-accent text-white"
@@ -193,7 +230,7 @@ export default function ServiceDetailPage() {
       >
         <div className="section-inner flex items-center justify-between flex-wrap gap-6">
           <motion.h2 className="text-white text-[1.5rem] max-w-[32ch]" variants={fadeUp}>
-            Need this discipline on your project?
+            Have a {service.title} project in mind?
           </motion.h2>
           <motion.div variants={fadeUp}>
             <Link to="/#contact" className="btn bg-white text-accent-deep hover:bg-white/90">
