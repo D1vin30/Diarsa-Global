@@ -18,6 +18,7 @@ import ProjectsPage from './components/ProjectsPage';
 import ProjectDetailPage from './components/ProjectDetailPage';
 import ServicesPage from './components/ServicesPage';
 import ServiceDetailPage from './components/ServiceDetailPage';
+import LandingConceptCivicSignal from './components/LandingConceptCivicSignal';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -61,6 +62,19 @@ function App() {
     lenisRef.current?.scrollTo(0, { immediate: true });
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  const isConcept = location.pathname.startsWith('/concept');
+
+  if (isConcept) {
+    return (
+      <>
+        <Header />
+        <Routes location={location}>
+          <Route path="/concept/civic-signal" element={<LandingConceptCivicSignal />} />
+        </Routes>
+      </>
+    );
+  }
 
   return (
     <>
