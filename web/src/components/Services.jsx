@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { gsap } from 'gsap';
 import { fadeUp, viewportRepeat } from '../motion';
 import { services } from '../data/services';
 import ServiceCard from './ServiceCard';
@@ -25,11 +26,32 @@ function Arrow({ direction, onClick, disabled }) {
 }
 
 export default function Services() {
+  const sectionRef = useRef(null);
+  const watermarkTextRef = useRef(null);
   const trackRef = useRef(null);
   const showMoreRef = useRef(null);
   const [atStart, setAtStart] = useState(true);
   const [atEnd, setAtEnd] = useState(false);
   const [moreVisible, setMoreVisible] = useState(false);
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    const textTween = gsap.to(watermarkTextRef.current, {
+      ease: 'none',
+      scrollTrigger: { trigger: sectionRef.current, start: 'top bottom', end: 'bottom top', scrub: true },
+      keyframes: {
+        '0%': { y: 420, opacity: 0 },
+        '50%': { y: 0, opacity: 1 },
+        '100%': { y: -420, opacity: 0 },
+      },
+    });
+
+    return () => {
+      textTween.scrollTrigger?.kill();
+      textTween.kill();
+    };
+  }, []);
 
   const updateEdges = () => {
     const el = trackRef.current;
@@ -71,8 +93,23 @@ export default function Services() {
   };
 
   return (
-    <section className="section-shell" id="services" data-nav-theme="light">
-      <div className="section-inner">
+    <section ref={sectionRef} className="section-shell relative overflow-hidden" id="services" data-nav-theme="light">
+      <div
+        className="hidden min-[900px]:flex absolute top-1/2 left-4 -translate-y-1/2 items-center justify-center pointer-events-none select-none z-0"
+        aria-hidden="true"
+      >
+        <div style={{ transform: 'rotate(180deg)' }}>
+          <span
+            ref={watermarkTextRef}
+            className="block text-ink/[0.11] text-[clamp(2.5rem,5.8vw,6rem)] tracking-[0.01em] leading-none whitespace-nowrap"
+            style={{ fontFamily: "'Swis721 BlkEx BT', 'Big Shoulders Display', sans-serif", writingMode: 'vertical-rl' }}
+          >
+            SERVICES
+          </span>
+        </div>
+      </div>
+
+      <div className="section-inner relative z-[1]">
         <motion.div
           className="max-w-[68ch] mb-[2.8rem]"
           initial="hidden"
@@ -172,16 +209,6 @@ export default function Services() {
               </Link>
             </div>
           </div>
-
-          <div
-            className={`pointer-events-none absolute inset-y-0 right-0 w-[90px] min-[560px]:w-[150px] z-[3] transition-opacity duration-500 ease-out ${
-              atEnd ? 'opacity-0' : 'opacity-100'
-            }`}
-            style={{
-              background: 'linear-gradient(to left, var(--color-paper) 0%, rgba(245,244,242,0.75) 30%, rgba(245,244,242,0.28) 65%, transparent 100%)',
-            }}
-            aria-hidden="true"
-          />
         </motion.div>
       </div>
     </section>
