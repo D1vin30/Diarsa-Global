@@ -5,6 +5,7 @@ import { fadeUp, stagger, cardReveal, viewportOnce } from '../motion';
 import { projects, getProjectBySlug } from '../data/projects';
 import { CategoryIcon } from './ProjectIcons';
 import ProjectCard from './ProjectCard';
+import CtaAccentBand from './CtaAccentBand';
 
 const specLabels = { location: 'Location', duration: 'Duration', discipline: 'Discipline' };
 
@@ -261,24 +262,7 @@ export default function ProjectDetailPage() {
         </section>
       )}
 
-      <motion.section
-        className="section-shell bg-accent text-white"
-        initial="hidden"
-        whileInView="show"
-        viewport={viewportOnce}
-        variants={stagger}
-      >
-        <div className="section-inner flex items-center justify-between flex-wrap gap-6">
-          <motion.h2 className="text-white text-[1.5rem] max-w-[32ch]" variants={fadeUp}>
-            Have a project like this in mind?
-          </motion.h2>
-          <motion.div variants={fadeUp}>
-            <Link to="/#contact" className="btn bg-white text-accent-deep hover:bg-white/90">
-              Talk to Our Team
-            </Link>
-          </motion.div>
-        </div>
-      </motion.section>
+      <CtaAccentBand heading="Have a project like this in mind?" />
 
       <section className="section-shell bg-slate text-white" data-nav-theme="dark">
         <div className="section-inner">

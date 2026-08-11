@@ -76,15 +76,17 @@ export default function Hero() {
           className="absolute inset-0 z-0 w-full h-full object-cover"
           style={{ objectPosition: '50% 15%' }}
         />
-        <div className="absolute inset-0 z-[1] bg-slate/55" />
-        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-slate/85 via-slate/60 to-slate/78" />
+        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-slate/72 via-slate/28 to-slate/8" />
 
         <motion.div
           className="max-w-[760px] mx-auto relative z-[3] flex flex-col items-center text-center"
           initial="hidden"
           animate={active === 0 ? 'show' : 'hidden'}
         >
-          <motion.h1 className="text-white text-[clamp(2.1rem,5.6vw,3.8rem)] leading-[1.05] tracking-[-0.015em]" variants={headlineReveal}>
+          <motion.h1
+            className="text-white text-[clamp(2.1rem,5.6vw,3.8rem)] leading-[1.05] tracking-[-0.015em] [text-shadow:0_2px_14px_rgba(0,0,0,0.7)]"
+            variants={headlineReveal}
+          >
             We Engineer Nigeria's Ground, Water &amp; Roads.
           </motion.h1>
         </motion.div>
@@ -137,13 +139,12 @@ export default function Hero() {
           className="absolute inset-0 z-0 w-full h-full object-cover"
           style={{ objectPosition: '54% 45%' }}
         />
-        <div className="absolute inset-0 z-[1] bg-slate/55" />
-        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-slate/85 via-slate/60 to-slate/78" />
+        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-slate/72 via-slate/28 to-slate/8" />
 
         <div className="relative z-[3] mt-auto max-w-[1180px] w-full mx-auto">
           <motion.div initial="hidden" animate={active === 1 ? 'show' : 'hidden'} variants={headlineReveal}>
             <div className="w-16 h-[2px] bg-white mb-[1.1rem]" />
-            <h2 className="text-white text-[clamp(1.9rem,4.6vw,3.2rem)] leading-[1.1] tracking-[-0.01em] max-w-[20ch] mb-[1.7rem]">
+            <h2 className="text-white text-[clamp(1.9rem,4.6vw,3.2rem)] leading-[1.1] tracking-[-0.01em] max-w-[20ch] mb-[1.7rem] [text-shadow:0_2px_14px_rgba(0,0,0,0.7)]">
               Roads Engineered by Design, Not Guesswork.
             </h2>
           </motion.div>
@@ -187,13 +188,12 @@ export default function Hero() {
           className="absolute inset-0 z-0 w-full h-full object-cover"
           style={{ objectPosition: '50% 60%' }}
         />
-        <div className="absolute inset-0 z-[1] bg-slate/55" />
-        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-slate/85 via-slate/60 to-slate/78" />
+        <div className="absolute inset-0 z-[2] bg-gradient-to-t from-slate/72 via-slate/28 to-slate/8" />
 
         <div className="relative z-[3] mt-auto max-w-[1180px] w-full mx-auto">
           <motion.div initial="hidden" animate={active === 2 ? 'show' : 'hidden'} variants={headlineReveal}>
             <div className="w-16 h-[2px] bg-white mb-[1.1rem]" />
-            <h2 className="text-white uppercase text-[clamp(1.6rem,4.2vw,2.9rem)] leading-[1.1] tracking-[-0.01em] whitespace-nowrap mb-[1.7rem]">
+            <h2 className="text-white uppercase text-[clamp(1.6rem,4.2vw,2.9rem)] leading-[1.1] tracking-[-0.01em] whitespace-nowrap mb-[1.7rem] [text-shadow:0_2px_14px_rgba(0,0,0,0.7)]">
               Leaders in Drainage Design.
             </h2>
           </motion.div>

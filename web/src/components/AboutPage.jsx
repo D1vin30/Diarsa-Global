@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, animate, useInView } from 'framer-motion';
 import { viewportRepeat } from '../motion';
+import CtaAccentBand from './CtaAccentBand';
 
 function Counter({ to, suffix = '' }) {
   const ref = useRef(null);
@@ -130,6 +131,7 @@ export default function AboutPage() {
   const [activeTab, setActiveTab] = useState('overview');
 
   return (
+    <>
     <section className="section-shell bg-paper pt-[9rem]" data-nav-theme="light">
       <div className="section-inner">
         <div className="grid grid-cols-[1.1fr_0.9fr] max-[900px]:grid-cols-1 gap-x-[3rem] gap-y-10 items-start mb-16">
@@ -333,5 +335,7 @@ export default function AboutPage() {
         </div>
       </div>
     </section>
+    <CtaAccentBand heading="Want our team on your next project?" />
+    </>
   );
 }

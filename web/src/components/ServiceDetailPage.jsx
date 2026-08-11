@@ -4,6 +4,8 @@ import { fadeUp, stagger, cardReveal, viewportOnce } from '../motion';
 import { services, getServiceBySlug } from '../data/services';
 import { projects } from '../data/projects';
 import ProjectCard from './ProjectCard';
+import ServiceCard from './ServiceCard';
+import CtaAccentBand from './CtaAccentBand';
 
 function SectionEyebrow({ label }) {
   return (
@@ -53,42 +55,6 @@ function NarrativeBand({ rail, theme, heading, body, quote, lifecycle }) {
         </motion.div>
       </div>
     </section>
-  );
-}
-
-function ServiceCard({ service }) {
-  return (
-    <motion.div variants={cardReveal}>
-      <Link to={`/services/${service.slug}`} className="no-underline block group relative">
-        <div
-          className="absolute inset-0 bg-slate-3 rounded-[4px] border border-line-dark z-0 transition-transform duration-300 ease-[cubic-bezier(.2,.8,.2,1)] group-hover:translate-x-[10px] group-hover:translate-y-[14px]"
-          aria-hidden="true"
-        />
-        <motion.div
-          className="bg-slate-2 rounded-[4px] border border-line-dark relative z-[1] flex flex-col overflow-hidden h-full transition-colors duration-200 group-hover:border-accent/60"
-          whileHover={{ y: -6, zIndex: 2, boxShadow: '0 14px 28px -10px rgba(0,0,0,0.45)', transition: { duration: 0.2, ease: 'easeOut' } }}
-        >
-          <div className="relative aspect-[16/10] overflow-hidden">
-            <img
-              src={service.image}
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 ease-out group-hover:scale-110"
-            />
-          </div>
-          <div className="p-[1.6rem] flex flex-col flex-1">
-            <span className="font-display font-bold text-[0.85rem] text-accent-tint mb-[0.6rem]">{service.num}</span>
-            <h3 className="text-white text-[1.1rem] mb-[0.8rem] leading-[1.25]">{service.title}</h3>
-            <p className="text-white-soft text-[0.87rem] leading-[1.55] mt-auto mb-[1rem]">{service.tagline}</p>
-            <span className="inline-flex items-center gap-2 text-accent-tint text-[0.85rem] font-semibold">
-              View Service
-              <span className="transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true">
-                &rarr;
-              </span>
-            </span>
-          </div>
-        </motion.div>
-      </Link>
-    </motion.div>
   );
 }
 
@@ -221,24 +187,7 @@ export default function ServiceDetailPage() {
         </motion.section>
       )}
 
-      <motion.section
-        className="section-shell bg-accent text-white"
-        initial="hidden"
-        whileInView="show"
-        viewport={viewportOnce}
-        variants={stagger}
-      >
-        <div className="section-inner flex items-center justify-between flex-wrap gap-6">
-          <motion.h2 className="text-white text-[1.5rem] max-w-[32ch]" variants={fadeUp}>
-            Have a {service.title} project in mind?
-          </motion.h2>
-          <motion.div variants={fadeUp}>
-            <Link to="/#contact" className="btn bg-white text-accent-deep hover:bg-white/90">
-              Talk to Our Team
-            </Link>
-          </motion.div>
-        </div>
-      </motion.section>
+      <CtaAccentBand heading={`Have a ${service.title} project in mind?`} />
 
       {relatedProjects.length > 0 && (
         <section className="section-shell bg-paper" data-nav-theme="light">
@@ -289,7 +238,7 @@ export default function ServiceDetailPage() {
             variants={stagger}
           >
             {otherServices.map((s) => (
-              <ServiceCard key={s.slug} service={s} />
+              <ServiceCard key={s.slug} service={s} variants={cardReveal} />
             ))}
           </motion.div>
         </div>

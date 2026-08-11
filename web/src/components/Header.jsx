@@ -64,22 +64,24 @@ export default function Header() {
   }, [location.pathname]);
 
   const idleTimerRef = useRef(null);
+  const isHoveredRef = useRef(false);
+
+  const clearIdleTimer = () => {
+    if (idleTimerRef.current) {
+      clearTimeout(idleTimerRef.current);
+      idleTimerRef.current = null;
+    }
+  };
+
+  const armIdleTimer = () => {
+    clearIdleTimer();
+    if (isHoveredRef.current) return;
+    idleTimerRef.current = setTimeout(() => setHidden(true), IDLE_HIDE_DELAY);
+  };
 
   useEffect(() => {
     let lastY = window.scrollY;
     let ticking = false;
-
-    const clearIdleTimer = () => {
-      if (idleTimerRef.current) {
-        clearTimeout(idleTimerRef.current);
-        idleTimerRef.current = null;
-      }
-    };
-
-    const armIdleTimer = () => {
-      clearIdleTimer();
-      idleTimerRef.current = setTimeout(() => setHidden(true), IDLE_HIDE_DELAY);
-    };
 
     const update = () => {
       const y = window.scrollY;
@@ -87,7 +89,7 @@ export default function Header() {
         setHidden(false);
         clearIdleTimer();
       } else if (y > lastY + 12) {
-        setHidden(true);
+        if (!isHoveredRef.current) setHidden(true);
         clearIdleTimer();
       } else if (y < lastY - 12) {
         setHidden(false);
@@ -111,6 +113,17 @@ export default function Header() {
     };
   }, []);
 
+  const handleHeaderMouseEnter = () => {
+    isHoveredRef.current = true;
+    clearIdleTimer();
+    setHidden(false);
+  };
+
+  const handleHeaderMouseLeave = () => {
+    isHoveredRef.current = false;
+    armIdleTimer();
+  };
+
   const isDark = theme === 'dark';
 
   return (
@@ -126,6 +139,8 @@ export default function Header() {
       }}
       animate={{ y: menuOpen || !hidden ? '0%' : '-100%' }}
       transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+      onMouseEnter={handleHeaderMouseEnter}
+      onMouseLeave={handleHeaderMouseLeave}
     >
       <div className="max-w-[1180px] mx-auto px-6 grid grid-cols-[auto_1fr_auto] items-center gap-4 h-[76px]">
         <Link className="flex items-center no-underline logo-frame" to="/">
