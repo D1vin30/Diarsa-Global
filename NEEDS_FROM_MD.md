@@ -11,6 +11,7 @@ Running list of content/decisions the site is blocked on. Ask the MD, then updat
 - [ ] COREN & SURCON certificate/registration numbers (for verified badges, not just text mention)
 - [ ] Real project photography — construction sites, survey work, completed projects (currently using stock photos as placeholders on the About page tab cards; FeaturedWork project cards have no images at all yet)
 - [ ] Flagship projects to feature on a Projects page — which ones, plus client/scope/timeline detail per project
+- [ ] Real names + logos for the 3 "Sister Company" placeholder partner tiles (or confirmation there are none worth featuring) — see `/concept/partners` preview
 
 ## Per-Project Content — what each project page now needs (2026-08-08)
 
