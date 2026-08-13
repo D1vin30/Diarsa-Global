@@ -19,6 +19,7 @@ import ProjectDetailPage from './components/ProjectDetailPage';
 import ServicesPage from './components/ServicesPage';
 import ServiceDetailPage from './components/ServiceDetailPage';
 import LandingConceptCivicSignal from './components/LandingConceptCivicSignal';
+import PartnersPreview from './components/PartnersPreview';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -71,6 +72,7 @@ function App() {
         <Header />
         <Routes location={location}>
           <Route path="/concept/civic-signal" element={<LandingConceptCivicSignal />} />
+          <Route path="/concept/partners" element={<PartnersPreview />} />
         </Routes>
       </>
     );
