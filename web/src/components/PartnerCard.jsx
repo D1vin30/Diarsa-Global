@@ -24,7 +24,7 @@ export default function PartnerCard({ partner }) {
       onMouseLeave={(e) => { updateOrigin(e); setHovered(false); }}
     >
       <div
-        className="absolute inset-0 rounded-[10px] border border-line-dark bg-slate-2 flex flex-col items-center justify-center text-center gap-3 p-5 transition-opacity duration-500 ease-out"
+        className="absolute inset-0 rounded-[10px] border border-line-dark bg-slate-2 flex flex-col items-center justify-center text-center gap-3 p-5 transition-opacity duration-500 ease-[ease]"
         style={{ opacity: hovered ? 0 : 1 }}
       >
         <div className="w-14 h-14 rounded-full bg-slate-3 border border-line-dark flex items-center justify-center overflow-hidden">
@@ -45,7 +45,7 @@ export default function PartnerCard({ partner }) {
         style={{ '--mx': `${origin.x}%`, '--my': `${origin.y}%`, '--r': hovered ? '145%' : '0%' }}
       >
         <div
-          className="transition-[filter,opacity] duration-500 ease-out"
+          className="transition-[filter,opacity] duration-600 ease-[ease]"
           style={{ transitionDelay: '0.08s', filter: hovered ? 'blur(0px)' : 'blur(10px)', opacity: hovered ? 1 : 0 }}
         >
           <div className="text-white font-semibold text-[0.85rem] mb-1.5">{partner.name}</div>
