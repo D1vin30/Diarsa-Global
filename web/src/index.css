@@ -119,3 +119,16 @@
 @media (prefers-reduced-motion: reduce) {
   .logo-frame::before { animation: none; }
 }
+
+@property --r {
+  syntax: '<percentage>';
+  inherits: true;
+  initial-value: 0%;
+}
+
+.partner-card-back {
+  --r: 0%;
+  -webkit-mask-image: radial-gradient(circle at var(--mx) var(--my), black calc(var(--r) - 28%), transparent var(--r));
+  mask-image: radial-gradient(circle at var(--mx) var(--my), black calc(var(--r) - 28%), transparent var(--r));
+  transition: --r 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
