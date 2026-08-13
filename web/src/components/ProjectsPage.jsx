@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { projects } from '../data/projects';
+import { partners } from '../data/partners';
 import CtaAccentBand from './CtaAccentBand';
 
 const introStagger = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
@@ -105,6 +106,13 @@ export default function ProjectsPage() {
   const timelineRef = useRef(null);
   const lineRef = useRef(null);
 
+  const [searchParams] = useSearchParams();
+  const clientId = searchParams.get('client');
+  const activePartner = clientId ? partners.find((p) => p.id === clientId) : null;
+  const visibleProjects = activePartner
+    ? projects.filter((p) => activePartner.matchClients.includes(p.client))
+    : projects;
+
   useEffect(() => {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
@@ -168,6 +176,17 @@ export default function ProjectsPage() {
             </motion.p>
           </motion.div>
 
+          {activePartner && (
+            <div className="flex items-center gap-3 mt-6 text-white-soft text-[0.85rem]">
+              <span>
+                Filtered by <strong className="text-white">{activePartner.name}</strong>
+              </span>
+              <Link to="/projects" className="text-accent-tint no-underline hover:text-accent">
+                Clear
+              </Link>
+            </div>
+          )}
+
           <div className="relative">
             <div ref={timelineRef} className="relative mt-16 max-[700px]:mt-10">
               <div
@@ -176,7 +195,7 @@ export default function ProjectsPage() {
                 aria-hidden="true"
               />
               <div className="flex flex-col gap-[5rem] max-[700px]:gap-[3rem]">
-                {projects.map((p, i) => (
+                {visibleProjects.map((p, i) => (
                   <TimelineEntry key={p.slug} project={p} side={i % 2 === 0 ? 'left' : 'right'} />
                 ))}
               </div>
