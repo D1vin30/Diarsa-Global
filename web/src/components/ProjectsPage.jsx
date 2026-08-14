@@ -143,7 +143,7 @@ export default function ProjectsPage() {
       textTween.scrollTrigger?.kill();
       textTween.kill();
     };
-  }, []);
+  }, [visibleProjects.length]);
 
   return (
     <>
@@ -185,6 +185,16 @@ export default function ProjectsPage() {
                 Clear
               </Link>
             </div>
+          )}
+
+          {activePartner && visibleProjects.length === 0 && (
+            <p className="lede text-white-soft mt-10 max-w-[52ch]">
+              We don&rsquo;t have any published projects for {activePartner.name} yet. Check back soon, or{' '}
+              <Link to="/projects" className="text-accent-tint no-underline hover:text-accent">
+                view all projects
+              </Link>
+              .
+            </p>
           )}
 
           <div className="relative">
