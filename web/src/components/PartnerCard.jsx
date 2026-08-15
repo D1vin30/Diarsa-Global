@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function PartnerCard({ partner }) {
   const cardRef = useRef(null);
-  const [hovered, setHovered] = useState(false);
+  const [revealed, setRevealed] = useState(false);
   const [origin, setOrigin] = useState({ x: 50, y: 50 });
 
   const updateOrigin = (e) => {
@@ -20,12 +20,14 @@ export default function PartnerCard({ partner }) {
     <div
       ref={cardRef}
       className="relative h-[230px] rounded-[10px] overflow-hidden"
-      onMouseEnter={(e) => { updateOrigin(e); setHovered(true); }}
-      onMouseLeave={(e) => { updateOrigin(e); setHovered(false); }}
+      onMouseEnter={(e) => { updateOrigin(e); setRevealed(true); }}
+      onMouseLeave={(e) => { updateOrigin(e); setRevealed(false); }}
+      onFocus={() => setRevealed(true)}
+      onBlur={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setRevealed(false); }}
     >
       <div
         className="absolute inset-0 rounded-[10px] border border-line-dark bg-slate-2 flex flex-col items-center justify-center text-center gap-3 p-5 transition-opacity duration-500 ease-[ease]"
-        style={{ opacity: hovered ? 0 : 1 }}
+        style={{ opacity: revealed ? 0 : 1 }}
       >
         <div className="w-14 h-14 rounded-full bg-slate-3 border border-line-dark flex items-center justify-center overflow-hidden">
           {partner.logo ? (
@@ -42,11 +44,16 @@ export default function PartnerCard({ partner }) {
 
       <div
         className="partner-card-back absolute inset-0 rounded-[10px] bg-accent p-5 flex flex-col justify-between"
-        style={{ '--mx': `${origin.x}%`, '--my': `${origin.y}%`, '--r': hovered ? '145%' : '0%' }}
+        style={{
+          '--mx': `${origin.x}%`,
+          '--my': `${origin.y}%`,
+          '--r': revealed ? '145%' : '0%',
+          pointerEvents: revealed ? 'auto' : 'none',
+        }}
       >
         <div
           className="transition-[filter,opacity] duration-600 ease-[ease]"
-          style={{ transitionDelay: '0.08s', filter: hovered ? 'blur(0px)' : 'blur(10px)', opacity: hovered ? 1 : 0 }}
+          style={{ transitionDelay: '0.08s', filter: revealed ? 'blur(0px)' : 'blur(10px)', opacity: revealed ? 1 : 0 }}
         >
           <div className="text-white font-semibold text-[0.85rem] mb-1.5">{partner.name}</div>
           <div className="text-white/90 text-[0.78rem] leading-relaxed">{partner.summary}</div>

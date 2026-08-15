@@ -32,7 +32,7 @@ export default function FeaturedWork() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="section-shell relative overflow-hidden bg-slate text-white" id="work" data-nav-theme="dark">
+    <section ref={sectionRef} className="section-shell relative overflow-hidden bg-slate text-white" id="work" data-nav-theme="dark" data-nav-label="Projects">
       <div
         className="hidden min-[1024px]:flex absolute top-0 right-6 h-[230px] items-center justify-end pointer-events-none select-none z-0"
         aria-hidden="true"

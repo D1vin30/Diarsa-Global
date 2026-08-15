@@ -70,6 +70,13 @@ priority order as the per-project list above, plus:
    of the 3 live projects are tagged to them — flag if any past work actually fits either, so the
    "Related Projects" section isn't empty.
 
+## FAQ content (added 2026-08-15)
+
+- [ ] `web/src/data/faqs.js` — 6 Q&As are Claude-written placeholder (services, coverage area, quote process,
+  timelines, COREN/SURCON registration). Same caveat as everything else: plausible, not verified. Replace
+  once real answers/policy confirmed, especially the registration claim (no cert numbers exist per the
+  earlier COREN/SURCON line item above).
+
 ## ~~Infra — MCP service connections~~ (done 2026-08-04)
 
 - [x] ~~Cloudflare connected~~

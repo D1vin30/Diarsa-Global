@@ -18,10 +18,10 @@ function SectionEyebrow({ label }) {
   );
 }
 
-function NarrativeBand({ rail, theme, heading, body, quote, children }) {
+function NarrativeBand({ id, rail, theme, heading, body, quote, children }) {
   const dark = theme === 'dark';
   return (
-    <section className={`section-shell ${dark ? 'bg-slate text-white' : 'bg-paper'}`} data-nav-theme={dark ? 'dark' : 'light'}>
+    <section id={id} className={`section-shell ${dark ? 'bg-slate text-white' : 'bg-paper'}`} data-nav-theme={dark ? 'dark' : 'light'} data-nav-label={rail}>
       <div className="section-inner">
         <motion.div className="max-w-[68ch]" initial="hidden" whileInView="show" viewport={viewportOnce} variants={stagger}>
           <motion.div variants={fadeUp}>
@@ -111,7 +111,7 @@ export default function ProjectDetailPage() {
         </motion.div>
       </section>
 
-      <section className="section-shell bg-slate text-white" data-nav-theme="dark">
+      <section id="overview" className="section-shell bg-slate text-white" data-nav-theme="dark" data-nav-label="Overview">
         <div className="section-inner">
           <motion.div initial="hidden" whileInView="show" viewport={viewportOnce} variants={fadeUp}>
             <SectionEyebrow label="Overview" />
@@ -209,15 +209,15 @@ export default function ProjectDetailPage() {
       </section>
 
       {project.challenge && (
-        <NarrativeBand rail="Challenge" theme="light" heading={project.challenge.heading} body={project.challenge.body} />
+        <NarrativeBand id="challenge" rail="Challenge" theme="light" heading={project.challenge.heading} body={project.challenge.body} />
       )}
 
       {project.approach && (
-        <NarrativeBand rail="Approach" theme="dark" heading={project.approach.heading} body={project.approach.body} quote={project.quote} />
+        <NarrativeBand id="approach" rail="Approach" theme="dark" heading={project.approach.heading} body={project.approach.body} quote={project.quote} />
       )}
 
       {project.outcome && (
-        <NarrativeBand rail="Outcome" theme="light" heading="Outcome" body={[project.outcome]} />
+        <NarrativeBand id="outcome" rail="Outcome" theme="light" heading="Outcome" body={[project.outcome]} />
       )}
 
       {project.fineprint && (
@@ -238,7 +238,7 @@ export default function ProjectDetailPage() {
       )}
 
       {project.gallery?.length > 0 && (
-        <section className="section-shell bg-paper pt-[3rem]" data-nav-theme="light">
+        <section id="gallery" className="section-shell bg-paper pt-[3rem]" data-nav-theme="light" data-nav-label="Gallery">
           <div className="section-inner">
             <motion.div
               className="grid grid-cols-3 max-[700px]:grid-cols-1 gap-[1.4rem]"

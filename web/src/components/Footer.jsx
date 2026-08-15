@@ -16,7 +16,7 @@ export default function Footer() {
             <a className={footerLinkClass} href="/#services">Services</a>
             <a className={footerLinkClass} href="/#work">Projects</a>
             <a className={footerLinkClass} href="/about">About Us</a>
-            <a className={footerLinkClass} href="/#contact">Contact</a>
+            <a className={footerLinkClass} href="/contact">Contact</a>
           </div>
           <div>
             <h3 className="font-sans text-[0.76rem] tracking-[0.1em] uppercase text-white mb-4">Contact</h3>
@@ -50,7 +50,21 @@ export default function Footer() {
           />
         </div>
         <div className="flex justify-between items-center pt-6 flex-wrap gap-[0.8rem] text-[0.8rem]">
-          <span className="inline-flex items-center gap-2">© 2026 Diarsa Global Integrated Services Ltd. · Est. 2015 <span aria-hidden="true">🇳🇬</span></span>
+          <span className="inline-flex items-center gap-2">
+            © 2026 Diarsa Global Integrated Services Ltd. · Est. 2015
+            <svg
+              aria-label="Nigeria"
+              role="img"
+              width="18"
+              height="12"
+              viewBox="0 0 6 4"
+              className="rounded-[2px] shrink-0 ring-1 ring-white/15"
+            >
+              <rect width="2" height="4" fill="#008751" />
+              <rect x="2" width="2" height="4" fill="#ffffff" />
+              <rect x="4" width="2" height="4" fill="#008751" />
+            </svg>
+          </span>
           <span>Harnessing Engineering Intelligence to Deliver Innovative Solutions</span>
         </div>
       </div>

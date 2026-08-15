@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
+
+const MotionLink = motion(Link);
 
 const SLIDE_DURATION = 7000;
 
@@ -110,15 +113,15 @@ export default function Hero() {
             >
               Our Services
             </motion.a>
-            <motion.a
+            <MotionLink
               className="btn btn-accent"
-              href="#contact"
+              to="/contact"
               variants={buttonItem}
               whileHover={{ scale: 1.04, transition: { duration: 0.18, ease: 'easeOut' } }}
               whileTap={{ scale: 0.97 }}
             >
               Request Consultation
-            </motion.a>
+            </MotionLink>
           </motion.div>
         </div>
 
@@ -160,14 +163,14 @@ export default function Hero() {
               software used by leading engineering firms — precision-modeled for Nigeria's terrain, traffic, and
               climate.
             </p>
-            <motion.a
-              href="#contact"
+            <MotionLink
+              to="/contact"
               className="inline-flex items-center gap-2 text-white font-semibold text-[0.95rem] no-underline whitespace-nowrap hover:text-accent-tint transition-colors duration-150 shrink-0"
               whileHover={{ scale: 1.04, transition: { duration: 0.18, ease: 'easeOut' } }}
               whileTap={{ scale: 0.97 }}
             >
               Request a Consultation <span aria-hidden="true">&rarr;</span>
-            </motion.a>
+            </MotionLink>
           </motion.div>
         </div>
 
@@ -208,14 +211,14 @@ export default function Hero() {
               Environmental impact assessment, flood risk modelling, and gully reclamation — hydrology-led drainage
               design built for Nigeria's terrain and rainfall, not generic templates.
             </p>
-            <motion.a
-              href="#contact"
+            <MotionLink
+              to="/contact"
               className="inline-flex items-center gap-2 text-white font-semibold text-[0.95rem] no-underline whitespace-nowrap hover:text-accent-tint transition-colors duration-150 shrink-0"
               whileHover={{ scale: 1.04, transition: { duration: 0.18, ease: 'easeOut' } }}
               whileTap={{ scale: 0.97 }}
             >
               Request a Consultation <span aria-hidden="true">&rarr;</span>
-            </motion.a>
+            </MotionLink>
           </motion.div>
         </div>
 

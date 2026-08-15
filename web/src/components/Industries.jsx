@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import { fadeUp, stagger, viewportRepeat } from '../motion';
 
 const industries = [
-  'Edo State Government',
   'Local Government Authorities',
   'Ministries',
   'Oil & Gas',
@@ -15,7 +14,7 @@ const industries = [
 
 export default function Industries() {
   return (
-    <section className="section-shell" id="industries" data-nav-theme="light">
+    <section className="section-shell" id="industries" data-nav-theme="light" data-nav-label="Industries">
       <div className="section-inner">
         <motion.div
           className="section-head"

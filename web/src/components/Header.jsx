@@ -8,8 +8,7 @@ const navLinks = [
   { href: '/about', label: 'About', route: true },
   { href: '/projects', label: 'Projects', route: true },
   { href: '/services', label: 'Services', route: true },
-  { href: '/#industries', label: 'Industries' },
-  { href: '/#contact', label: 'Contact' },
+  { href: '/contact', label: 'Contact', route: true },
 ];
 
 const barTransition = { duration: 0.32, ease: [0.65, 0, 0.35, 1] };
@@ -65,6 +64,11 @@ export default function Header() {
 
   const idleTimerRef = useRef(null);
   const isHoveredRef = useRef(false);
+  const topThresholdRef = useRef(HEADER_HEIGHT);
+
+  useEffect(() => {
+    topThresholdRef.current = location.pathname === '/' ? window.innerHeight * 0.92 : HEADER_HEIGHT;
+  }, [location.pathname]);
 
   const clearIdleTimer = () => {
     if (idleTimerRef.current) {
@@ -76,7 +80,10 @@ export default function Header() {
   const armIdleTimer = () => {
     clearIdleTimer();
     if (isHoveredRef.current) return;
-    idleTimerRef.current = setTimeout(() => setHidden(true), IDLE_HIDE_DELAY);
+    idleTimerRef.current = setTimeout(() => {
+      if (window.scrollY < topThresholdRef.current) return;
+      setHidden(true);
+    }, IDLE_HIDE_DELAY);
   };
 
   useEffect(() => {
@@ -85,7 +92,7 @@ export default function Header() {
 
     const update = () => {
       const y = window.scrollY;
-      if (y < HEADER_HEIGHT) {
+      if (y < topThresholdRef.current) {
         setHidden(false);
         clearIdleTimer();
       } else if (y > lastY + 12) {
@@ -128,6 +135,10 @@ export default function Header() {
 
   return (
     <>
+    <div
+      className="fixed top-0 inset-x-0 h-3 z-50"
+      onMouseEnter={handleHeaderMouseEnter}
+    />
     <motion.header
       className={`fixed top-0 inset-x-0 z-50 backdrop-blur-md transition-[background-color,box-shadow] duration-300 ease-out ${
         isDark ? 'bg-slate/60' : 'bg-paper/70'
@@ -187,14 +198,14 @@ export default function Header() {
           >
             +234 803 678 9325
           </a>
-          <motion.a
+          <MotionLink
             className="btn btn-accent max-[560px]:hidden"
-            href="/#contact"
+            to="/contact"
             whileHover={{ scale: 1.04, transition: { duration: 0.18, ease: 'easeOut' } }}
             whileTap={{ scale: 0.97 }}
           >
             Request Consultation
-          </motion.a>
+          </MotionLink>
           <button
             className={`flex min-[901px]:hidden w-[38px] h-[38px] shrink-0 items-center justify-center bg-transparent border-[1.5px] rounded-[3px] cursor-pointer transition-[border-radius,border-color] duration-300 ease-in-out aria-expanded:rounded-full aria-expanded:border-accent ${
               isDark ? 'border-line-dark' : 'border-line-light'
@@ -259,16 +270,16 @@ export default function Header() {
           +234 803 678 9325
           <motion.span className="absolute left-0 bottom-0 h-px w-full bg-line-dark origin-left" variants={lineVariants} />
         </motion.a>
-        <motion.a
+        <MotionLink
           className="btn btn-accent self-start mt-[1.2rem]"
-          href="/#contact"
+          to="/contact"
           variants={itemVariants}
           onClick={() => setMenuOpen(false)}
           whileHover={{ scale: 1.04, transition: { duration: 0.18, ease: 'easeOut' } }}
           whileTap={{ scale: 0.97 }}
         >
           Request Consultation
-        </motion.a>
+        </MotionLink>
       </motion.div>
     </>
   );

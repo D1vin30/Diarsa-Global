@@ -8,18 +8,22 @@ import Header from './components/Header';
 import Hero from './components/Hero';
 import TrustStrip from './components/TrustStrip';
 import Services from './components/Services';
-import About from './components/About';
 import Industries from './components/Industries';
+import About from './components/About';
 import FeaturedWork from './components/FeaturedWork';
 import CtaBand from './components/CtaBand';
 import Footer from './components/Footer';
+import BackToTop from './components/BackToTop';
 import AboutPage from './components/AboutPage';
 import ProjectsPage from './components/ProjectsPage';
 import ProjectDetailPage from './components/ProjectDetailPage';
 import ServicesPage from './components/ServicesPage';
 import ServiceDetailPage from './components/ServiceDetailPage';
+import ContactPage from './components/ContactPage';
 import LandingConceptCivicSignal from './components/LandingConceptCivicSignal';
 import PartnersPreview from './components/PartnersPreview';
+import Partners from './components/Partners';
+import FAQ from './components/FAQ';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -32,6 +36,8 @@ function HomePage() {
       <FeaturedWork />
       <Services />
       <Industries />
+      <Partners />
+      <FAQ />
       <CtaBand />
     </>
   );
@@ -63,6 +69,14 @@ function App() {
     lenisRef.current?.scrollTo(0, { immediate: true });
     window.scrollTo(0, 0);
   }, [location.pathname]);
+
+  const scrollToTop = () => {
+    if (lenisRef.current) {
+      lenisRef.current.scrollTo(0);
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
 
   const isConcept = location.pathname.startsWith('/concept');
 
@@ -96,10 +110,12 @@ function App() {
             <Route path="/projects/:slug" element={<ProjectDetailPage />} />
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/services/:slug" element={<ServiceDetailPage />} />
+            <Route path="/contact" element={<ContactPage />} />
           </Routes>
         </motion.div>
       </AnimatePresence>
       <Footer />
+      <BackToTop onClick={scrollToTop} />
     </>
   );
 }

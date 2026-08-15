@@ -16,10 +16,10 @@ function SectionEyebrow({ label }) {
   );
 }
 
-function NarrativeBand({ rail, theme, heading, body, quote, lifecycle }) {
+function NarrativeBand({ id, rail, theme, heading, body, quote, lifecycle }) {
   const dark = theme === 'dark';
   return (
-    <section className={`section-shell ${dark ? 'bg-slate text-white' : 'bg-paper'}`} data-nav-theme={dark ? 'dark' : 'light'}>
+    <section id={id} className={`section-shell ${dark ? 'bg-slate text-white' : 'bg-paper'}`} data-nav-theme={dark ? 'dark' : 'light'} data-nav-label={rail}>
       <div className="section-inner">
         <motion.div className="max-w-[68ch]" initial="hidden" whileInView="show" viewport={viewportOnce} variants={stagger}>
           <motion.div variants={fadeUp}>
@@ -112,7 +112,7 @@ export default function ServiceDetailPage() {
         </motion.div>
       </section>
 
-      <section className="section-shell bg-slate text-white" data-nav-theme="dark">
+      <section id="overview" className="section-shell bg-slate text-white" data-nav-theme="dark" data-nav-label="Overview">
         <div className="section-inner">
           <motion.div initial="hidden" whileInView="show" viewport={viewportOnce} variants={fadeUp}>
             <SectionEyebrow label="Overview" />
@@ -154,11 +154,12 @@ export default function ServiceDetailPage() {
       </section>
 
       {service.whyItMatters && (
-        <NarrativeBand rail="Why It Matters" theme="light" heading={service.whyItMatters.heading} body={service.whyItMatters.body} />
+        <NarrativeBand id="why-it-matters" rail="Why It Matters" theme="light" heading={service.whyItMatters.heading} body={service.whyItMatters.body} />
       )}
 
       {service.approach && (
         <NarrativeBand
+          id="approach"
           rail="Our Approach"
           theme="dark"
           heading={service.approach.heading}
@@ -168,7 +169,7 @@ export default function ServiceDetailPage() {
         />
       )}
 
-      {service.outcome && <NarrativeBand rail="Outcome" theme="light" heading="Outcome" body={[service.outcome]} />}
+      {service.outcome && <NarrativeBand id="outcome" rail="Outcome" theme="light" heading="Outcome" body={[service.outcome]} />}
 
       {fineprint && (
         <motion.section

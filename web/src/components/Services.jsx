@@ -93,7 +93,7 @@ export default function Services() {
   };
 
   return (
-    <section ref={sectionRef} className="section-shell relative overflow-hidden" id="services" data-nav-theme="light">
+    <section ref={sectionRef} className="section-shell relative overflow-hidden" id="services" data-nav-theme="light" data-nav-label="Services">
       <div
         className="hidden min-[900px]:flex absolute top-1/2 left-4 -translate-y-1/2 items-center justify-center pointer-events-none select-none z-0"
         aria-hidden="true"

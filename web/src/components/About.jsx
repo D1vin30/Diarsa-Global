@@ -31,7 +31,7 @@ export default function About() {
   }, []);
 
   return (
-    <section ref={sectionRef} className="section-shell relative overflow-hidden bg-paper" id="about" data-nav-theme="light">
+    <section ref={sectionRef} className="section-shell relative overflow-hidden bg-paper" id="about" data-nav-theme="light" data-nav-label="About">
       <div
         className="absolute inset-y-0 left-[-2.5rem] max-[900px]:left-[-3.5rem] w-[300px] flex items-start justify-start overflow-visible pointer-events-none select-none z-0"
         style={{

@@ -72,7 +72,7 @@ function TimelineEntry({ project, side }) {
                 <img
                   src={project.image}
                   alt=""
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                  className="absolute inset-0 w-full h-full object-cover animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]"
                 />
               ) : (
                 <div
@@ -102,7 +102,6 @@ function TimelineEntry({ project, side }) {
 
 export default function ProjectsPage() {
   const sectionRef = useRef(null);
-  const watermarkTextRef = useRef(null);
   const timelineRef = useRef(null);
   const lineRef = useRef(null);
 
@@ -127,21 +126,9 @@ export default function ProjectsPage() {
       }
     );
 
-    const textTween = gsap.to(watermarkTextRef.current, {
-      ease: 'none',
-      scrollTrigger: { trigger: sectionRef.current, start: 'top bottom', end: 'bottom top', scrub: true },
-      keyframes: {
-        '0%': { x: -420, opacity: 0 },
-        '50%': { x: 0, opacity: 1 },
-        '100%': { x: -420, opacity: 0 },
-      },
-    });
-
     return () => {
       lineTween.scrollTrigger?.kill();
       lineTween.kill();
-      textTween.scrollTrigger?.kill();
-      textTween.kill();
     };
   }, [visibleProjects.length]);
 
@@ -152,9 +139,9 @@ export default function ProjectsPage() {
           className="hidden min-[1024px]:flex absolute top-[7rem] right-6 h-[110px] items-center justify-end pointer-events-none select-none z-0"
           aria-hidden="true"
         >
-          <div ref={watermarkTextRef}>
+          <div>
             <span
-              className="block text-white/[0.09] text-[clamp(2.5rem,5.8vw,6rem)] tracking-[0.01em] leading-none whitespace-nowrap"
+              className="block text-white/[0.15] text-[clamp(2.5rem,5.8vw,6rem)] tracking-[0.01em] leading-none whitespace-nowrap"
               style={{ fontFamily: "'Swis721 BlkEx BT', 'Big Shoulders Display', sans-serif" }}
             >
               PROJECTS

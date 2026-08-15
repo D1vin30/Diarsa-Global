@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { fadeUp, stagger, viewportOnce } from '../motion';
 
-export default function CtaAccentBand({ heading, linkTo = '/#contact', linkLabel = 'Talk to Our Team' }) {
+export default function CtaAccentBand({ heading, linkTo = '/contact', linkLabel = 'Talk to Our Team' }) {
   return (
     <motion.section
       className="section-shell bg-accent text-white"
