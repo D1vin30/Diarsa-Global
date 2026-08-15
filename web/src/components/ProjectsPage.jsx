@@ -77,7 +77,7 @@ function TimelineEntry({ project, side }) {
               ) : (
                 <div
                   className="absolute inset-0"
-                  style={{ background: 'linear-gradient(160deg, #221f22 0%, #1a1719 60%, #121013 100%)' }}
+                  style={{ background: 'linear-gradient(160deg, #202d40 0%, #16202f 60%, #0e1420 100%)' }}
                 />
               )}
               <div className="absolute inset-0 bg-slate/0 transition-colors duration-300 group-hover:bg-slate/20" />

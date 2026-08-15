@@ -70,7 +70,7 @@ export default function ProjectDetailPage() {
           style={
             project.image
               ? { backgroundImage: `url(${project.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }
-              : { background: 'linear-gradient(160deg, #221f22 0%, #1a1719 60%, #121013 100%)' }
+              : { background: 'linear-gradient(160deg, #202d40 0%, #16202f 60%, #0e1420 100%)' }
           }
         >
           {!project.image && (

@@ -23,7 +23,7 @@ export default function ProjectCard({ project, variants }) {
               className="absolute inset-0 w-full h-full object-cover animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]"
             />
           ) : (
-            <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'linear-gradient(160deg, #221f22 0%, #1a1719 60%, #121013 100%)' }}>
+            <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'linear-gradient(160deg, #202d40 0%, #16202f 60%, #0e1420 100%)' }}>
               <div className="text-accent-tint/70">
                 <CategoryIcon category={project.cat} />
               </div>
