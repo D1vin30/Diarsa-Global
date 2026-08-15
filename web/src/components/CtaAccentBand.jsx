@@ -5,7 +5,7 @@ import { fadeUp, stagger, viewportOnce } from '../motion';
 export default function CtaAccentBand({ heading, linkTo = '/contact', linkLabel = 'Talk to Our Team' }) {
   return (
     <motion.section
-      className="section-shell bg-accent text-white"
+      className="section-shell bg-slate text-white border-t border-line-dark"
       initial="hidden"
       whileInView="show"
       viewport={viewportOnce}
@@ -16,7 +16,7 @@ export default function CtaAccentBand({ heading, linkTo = '/contact', linkLabel 
           {heading}
         </motion.h2>
         <motion.div variants={fadeUp}>
-          <Link to={linkTo} className="btn bg-white text-accent-deep hover:bg-white/90">
+          <Link to={linkTo} className="btn btn-accent">
             {linkLabel}
           </Link>
         </motion.div>
