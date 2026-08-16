@@ -20,6 +20,7 @@ import ProjectDetailPage from './components/ProjectDetailPage';
 import ServicesPage from './components/ServicesPage';
 import ServiceDetailPage from './components/ServiceDetailPage';
 import ContactPage from './components/ContactPage';
+import ReviewPage from './components/ReviewPage';
 import LandingConceptCivicSignal from './components/LandingConceptCivicSignal';
 import PartnersPreview from './components/PartnersPreview';
 import Partners from './components/Partners';
@@ -111,6 +112,7 @@ function App() {
             <Route path="/services" element={<ServicesPage />} />
             <Route path="/services/:slug" element={<ServiceDetailPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/review" element={<ReviewPage />} />
           </Routes>
         </motion.div>
       </AnimatePresence>
