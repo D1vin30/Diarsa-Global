@@ -39,6 +39,8 @@ export default function Header() {
     const sections = document.querySelectorAll('[data-nav-theme]');
     if (!sections.length) return;
 
+    setTheme(sections[0].dataset.navTheme);
+
     let observer;
     const build = () => {
       observer?.disconnect();

@@ -136,7 +136,7 @@ export default function ProjectsPage() {
     <>
       <section ref={sectionRef} className="section-shell relative overflow-hidden bg-slate text-white pt-[9rem]" data-nav-theme="dark">
         <div
-          className="hidden min-[1024px]:flex absolute top-[7rem] right-6 h-[110px] items-center justify-end pointer-events-none select-none z-0"
+          className="flex absolute top-[7rem] right-6 h-[110px] items-center justify-end pointer-events-none select-none z-0"
           aria-hidden="true"
         >
           <div>
