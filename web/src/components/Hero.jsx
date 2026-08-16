@@ -196,7 +196,7 @@ export default function Hero() {
         <div className="relative z-[3] mt-auto max-w-[1180px] w-full mx-auto">
           <motion.div initial="hidden" animate={active === 2 ? 'show' : 'hidden'} variants={headlineReveal}>
             <div className="w-16 h-[2px] bg-white mb-[1.1rem]" />
-            <h2 className="text-white uppercase text-[clamp(1.6rem,4.2vw,2.9rem)] leading-[1.1] tracking-[-0.01em] whitespace-nowrap mb-[1.7rem] [text-shadow:0_2px_14px_rgba(0,0,0,0.7)]">
+            <h2 className="text-white uppercase text-[clamp(1.6rem,4.2vw,2.9rem)] leading-[1.1] tracking-[-0.01em] max-w-[18ch] mb-[1.7rem] [text-shadow:0_2px_14px_rgba(0,0,0,0.7)]">
               Leaders in Drainage Design.
             </h2>
           </motion.div>
