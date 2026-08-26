@@ -9,6 +9,45 @@ import CtaAccentBand from './CtaAccentBand';
 
 const specLabels = { location: 'Location', duration: 'Duration', discipline: 'Discipline' };
 
+const isVideoSrc = (src) => /\.(mp4|webm|mov)$/i.test(src);
+
+function GalleryItem({ item, alt }) {
+  const [playing, setPlaying] = useState(false);
+
+  if (!isVideoSrc(item.src)) {
+    return <img src={item.src} alt={alt} className="rounded-[4px] w-full h-full object-cover aspect-[4/3]" />;
+  }
+
+  if (playing) {
+    return (
+      <video
+        src={item.src}
+        controls
+        autoPlay
+        className="rounded-[4px] w-full h-full object-cover aspect-[4/3] bg-slate"
+      />
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => setPlaying(true)}
+      className="group relative block w-full h-full rounded-[4px] overflow-hidden aspect-[4/3]"
+      aria-label={`Play video — ${alt}`}
+    >
+      <img src={item.poster} alt={alt} className="w-full h-full object-cover" />
+      <span className="absolute inset-0 bg-slate/25 group-hover:bg-slate/35 transition-colors duration-200 flex items-center justify-center">
+        <span className="w-[52px] h-[52px] rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M4 2.5v13l11-6.5-11-6.5z" fill="#16202f" />
+          </svg>
+        </span>
+      </span>
+    </button>
+  );
+}
+
 function SectionEyebrow({ label }) {
   return (
     <div className="flex items-center gap-2 mb-[0.8rem]" aria-hidden="true">
@@ -249,11 +288,7 @@ export default function ProjectDetailPage() {
             >
               {project.gallery.map((item, i) => (
                 <motion.figure key={item.src} className="m-0" variants={fadeUp}>
-                  <img
-                    src={item.src}
-                    alt={item.caption || `${project.title} — photo ${i + 1}`}
-                    className="rounded-[4px] w-full h-full object-cover aspect-[4/3]"
-                  />
+                  <GalleryItem item={item} alt={item.caption || `${project.title} — photo ${i + 1}`} />
                   {item.caption && <figcaption className="mt-[0.6rem] text-ink-soft text-[0.82rem]">{item.caption}</figcaption>}
                 </motion.figure>
               ))}

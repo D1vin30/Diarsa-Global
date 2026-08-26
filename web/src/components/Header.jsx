@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
@@ -34,6 +34,10 @@ export default function Header() {
   const [theme, setTheme] = useState('dark');
   const [hidden, setHidden] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    setMenuOpen(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     const sections = document.querySelectorAll('[data-nav-theme]');
@@ -72,21 +76,21 @@ export default function Header() {
     topThresholdRef.current = location.pathname === '/' ? window.innerHeight * 0.92 : HEADER_HEIGHT;
   }, [location.pathname]);
 
-  const clearIdleTimer = () => {
+  const clearIdleTimer = useCallback(() => {
     if (idleTimerRef.current) {
       clearTimeout(idleTimerRef.current);
       idleTimerRef.current = null;
     }
-  };
+  }, []);
 
-  const armIdleTimer = () => {
+  const armIdleTimer = useCallback(() => {
     clearIdleTimer();
     if (isHoveredRef.current) return;
     idleTimerRef.current = setTimeout(() => {
       if (window.scrollY < topThresholdRef.current) return;
       setHidden(true);
     }, IDLE_HIDE_DELAY);
-  };
+  }, [clearIdleTimer]);
 
   useEffect(() => {
     let lastY = window.scrollY;
@@ -120,7 +124,7 @@ export default function Header() {
       window.removeEventListener('scroll', onScroll);
       clearIdleTimer();
     };
-  }, []);
+  }, [armIdleTimer, clearIdleTimer]);
 
   const handleHeaderMouseEnter = () => {
     isHoveredRef.current = true;
