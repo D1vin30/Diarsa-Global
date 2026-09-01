@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { fadeUp, stagger, viewportRepeat } from '../motion';
-import MediaSlot from '../media/MediaSlot';
 
 const MotionLink = motion(Link);
 
@@ -89,17 +88,16 @@ export default function About() {
           </div>
 
           <motion.div
-            className="relative"
+            className="relative aspect-[4/3] rounded-[4px] overflow-hidden"
             initial={{ opacity: 0, scale: 0.96 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={viewportRepeat}
             transition={{ duration: 0.9, ease: [0.19, 1, 0.22, 1] }}
           >
-            <MediaSlot
-              id="about.photo"
-              fallbackSrc="/about/team-survey.jpg"
-              alt="Diarsa Global survey team on site in branded hi-vis vests and hard hats"
-              loading="lazy"
+            {/* placeholder — swap for a real equipment/team photo */}
+            <div
+              className="absolute inset-0"
+              style={{ background: 'linear-gradient(160deg, #e9e6df 0%, #d8d3c8 50%, #c7c0b0 100%)' }}
             />
           </motion.div>
         </div>

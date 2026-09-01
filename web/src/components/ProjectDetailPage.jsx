@@ -6,13 +6,46 @@ import { projects, getProjectBySlug } from '../data/projects';
 import { CategoryIcon } from './ProjectIcons';
 import ProjectCard from './ProjectCard';
 import CtaAccentBand from './CtaAccentBand';
-import MediaSlot from '../media/MediaSlot';
 
 const specLabels = { location: 'Location', duration: 'Duration', discipline: 'Discipline' };
 
-function GalleryItem({ id, item, alt }) {
-  // MediaSlot auto-detects video vs image from the src extension.
-  return <MediaSlot id={id} fallbackSrc={item.src} alt={alt} />;
+const isVideoSrc = (src) => /\.(mp4|webm|mov)$/i.test(src);
+
+function GalleryItem({ item, alt }) {
+  const [playing, setPlaying] = useState(false);
+
+  if (!isVideoSrc(item.src)) {
+    return <img src={item.src} alt={alt} className="rounded-[4px] w-full h-full object-cover aspect-[4/3]" />;
+  }
+
+  if (playing) {
+    return (
+      <video
+        src={item.src}
+        controls
+        autoPlay
+        className="rounded-[4px] w-full h-full object-cover aspect-[4/3] bg-slate"
+      />
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => setPlaying(true)}
+      className="group relative block w-full h-full rounded-[4px] overflow-hidden aspect-[4/3]"
+      aria-label={`Play video — ${alt}`}
+    >
+      <img src={item.poster} alt={alt} className="w-full h-full object-cover" />
+      <span className="absolute inset-0 bg-slate/25 group-hover:bg-slate/35 transition-colors duration-200 flex items-center justify-center">
+        <span className="w-[52px] h-[52px] rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M4 2.5v13l11-6.5-11-6.5z" fill="#16202f" />
+          </svg>
+        </span>
+      </span>
+    </button>
+  );
 }
 
 function SectionEyebrow({ label }) {
@@ -73,16 +106,13 @@ export default function ProjectDetailPage() {
       <section className="relative h-[70vh] min-h-[440px] max-h-[640px] flex items-end overflow-hidden bg-slate" data-nav-theme="dark">
         <div
           className="absolute inset-0 flex items-center justify-center"
-          style={project.image ? undefined : { background: 'linear-gradient(160deg, #202d40 0%, #16202f 60%, #0e1420 100%)' }}
+          style={
+            project.image
+              ? { backgroundImage: `url(${project.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }
+              : { background: 'linear-gradient(160deg, #202d40 0%, #16202f 60%, #0e1420 100%)' }
+          }
         >
-          {project.image ? (
-            <MediaSlot
-              id={`project.${project.slug}.detailHero`}
-              fallbackSrc={project.image}
-              alt=""
-              style={{ position: 'absolute', inset: 0 }}
-            />
-          ) : (
+          {!project.image && (
             <div className="text-accent-tint/70 scale-[3]">
               <CategoryIcon category={project.cat} />
             </div>
@@ -238,11 +268,9 @@ export default function ProjectDetailPage() {
           transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
           aria-hidden="true"
         >
-          <MediaSlot
-            id={`project.${project.slug}.fineprint`}
-            fallbackSrc={project.fineprint}
-            alt=""
-            style={{ position: 'absolute', inset: 0 }}
+          <div
+            className="absolute inset-0"
+            style={{ backgroundImage: `url(${project.fineprint})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
           />
           <div className="absolute inset-0 bg-slate/10" />
         </motion.section>
@@ -260,11 +288,7 @@ export default function ProjectDetailPage() {
             >
               {project.gallery.map((item, i) => (
                 <motion.figure key={item.src} className="m-0" variants={fadeUp}>
-                  <GalleryItem
-                    id={`project.${project.slug}.gallery.${i}`}
-                    item={item}
-                    alt={item.caption || `${project.title} — photo ${i + 1}`}
-                  />
+                  <GalleryItem item={item} alt={item.caption || `${project.title} — photo ${i + 1}`} />
                   {item.caption && <figcaption className="mt-[0.6rem] text-ink-soft text-[0.82rem]">{item.caption}</figcaption>}
                 </motion.figure>
               ))}

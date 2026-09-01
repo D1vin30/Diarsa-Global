@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { services } from '../data/services';
 import CtaAccentBand from './CtaAccentBand';
-import MediaSlot from '../media/MediaSlot';
 
 const introStagger = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
 const introItem = {
@@ -68,12 +67,10 @@ function TimelineEntry({ service, side }) {
               aria-hidden="true"
             />
             <div className="relative aspect-[16/9] rounded-[10px] overflow-hidden border border-line-dark transition-colors duration-200 group-hover:border-accent/60">
-              <MediaSlot
-                id={`service.${service.slug}.cover`}
-                fallbackSrc={service.image}
+              <img
+                src={service.image}
                 alt=""
-                style={{ position: 'absolute', inset: 0 }}
-                mediaClassName="animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]"
+                className="absolute inset-0 w-full h-full object-cover animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]"
               />
               <div className="absolute inset-0 bg-slate/0 transition-colors duration-300 group-hover:bg-slate/20" />
             </div>

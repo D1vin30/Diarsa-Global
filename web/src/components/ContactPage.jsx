@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { fadeUp, stagger, viewportOnce } from '../motion';
 import { services } from '../data/services';
-import MediaSlot from '../media/MediaSlot';
 
 const inputClass =
   'w-full bg-slate-2 border border-line-dark rounded-[6px] px-4 py-3 text-white text-[0.92rem] placeholder:text-white-soft focus:outline-none focus:border-accent-tint transition-colors duration-150';
@@ -142,16 +141,16 @@ export default function ContactPage() {
           </motion.div>
 
           <motion.div
-            className="relative rounded-[10px] border border-line-dark mt-14 overflow-hidden"
+            className="relative rounded-[10px] border border-line-dark h-[280px] max-[700px]:h-[200px] mt-14 overflow-hidden"
             initial="hidden"
             whileInView="show"
             viewport={viewportOnce}
             variants={fadeUp}
           >
-            <MediaSlot
-              id="contact.banner"
-              fallbackSrc="/contact/banner.jpg"
-              alt="Diarsa Global surveyor with GPS rover on a road culvert in rural Edo State"
+            <img
+              src="/services/civil-structural.jpg"
+              alt=""
+              className="absolute inset-0 w-full h-full object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate via-slate/50 to-slate/10" />
             <div className="absolute inset-0 flex items-end p-8">

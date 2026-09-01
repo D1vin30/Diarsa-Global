@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, animate, useInView } from 'framer-motion';
 import { viewportRepeat } from '../motion';
 import CtaAccentBand from './CtaAccentBand';
-import MediaSlot from '../media/MediaSlot';
 
 function Counter({ to, suffix = '' }) {
   const ref = useRef(null);
@@ -178,11 +177,10 @@ export default function AboutPage() {
             transition={{ duration: 0.9, ease: [0.19, 1, 0.22, 1] }}
             style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 15% 100%, 0 78%)' }}
           >
-            <MediaSlot
-              id="aboutpage.hero"
-              fallbackSrc="/about/overview.jpg"
-              alt="Diarsa Global team"
-              style={{ position: 'absolute', inset: 0 }}
+            {/* placeholder — swap for a real team/office photo */}
+            <div
+              className="absolute inset-0"
+              style={{ background: 'linear-gradient(160deg, #e9e6df 0%, #d8d3c8 50%, #c7c0b0 100%)' }}
             />
           </motion.div>
         </div>
@@ -220,12 +218,13 @@ export default function AboutPage() {
                   active ? 'border-accent' : 'border-line-light hover:border-ink-soft'
                 }`}
               >
-                <MediaSlot
-                  id={`about.tab.${t.id}`}
-                  fallbackSrc={t.image}
-                  alt=""
-                  className="transition-transform duration-500 ease-out group-hover:scale-110"
-                  style={{ position: 'absolute', inset: 0 }}
+                <div
+                  className="absolute inset-0 transition-transform duration-500 ease-out group-hover:scale-110"
+                  style={{
+                    backgroundImage: `url(${t.image})`,
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                  }}
                 />
                 <div
                   className="absolute inset-0"
