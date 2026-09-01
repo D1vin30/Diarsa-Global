@@ -2,6 +2,10 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { projects } from '../data/projects';
 import { getClientLogo } from '../data/clientLogos';
+import MediaSlot from '../media/MediaSlot';
+
+const KEN_BURNS =
+  'animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]';
 
 const cornerBase = 'absolute w-[16px] h-[16px] border-accent-tint opacity-0 z-[2] transition-[opacity,transform] duration-200 ease-out';
 
@@ -19,10 +23,12 @@ export default function ServiceCard({ service, variants }) {
           aria-hidden="true"
         />
         <div className="relative z-[1] aspect-[4/5] rounded-[10px] border border-line-dark overflow-hidden transition-[border-color,transform,box-shadow] duration-300 ease-out group-hover:border-accent/60 group-hover:-translate-y-[3px] group-hover:shadow-[0_16px_30px_-14px_rgba(0,0,0,0.5)]">
-          <img
-            src={service.image}
+          <MediaSlot
+            id={`service.${service.slug}.cover`}
+            fallbackSrc={service.image}
             alt=""
-            className="absolute inset-0 w-full h-full object-cover animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]"
+            style={{ position: 'absolute', inset: 0 }}
+            mediaClassName={KEN_BURNS}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate from-15% via-slate/55 via-55% to-transparent" aria-hidden="true" />
 

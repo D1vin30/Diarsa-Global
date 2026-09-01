@@ -2,6 +2,10 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CategoryIcon } from './ProjectIcons';
 import { getClientLogo } from '../data/clientLogos';
+import MediaSlot from '../media/MediaSlot';
+
+const KEN_BURNS =
+  'animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]';
 
 const cornerBase = 'absolute w-[16px] h-[16px] border-accent-tint opacity-0 z-[2] transition-[opacity,transform] duration-200 ease-out';
 
@@ -17,10 +21,12 @@ export default function ProjectCard({ project, variants }) {
         />
         <div className="relative z-[1] aspect-[4/5] rounded-[10px] border border-line-dark overflow-hidden transition-[border-color,transform,box-shadow] duration-300 ease-out group-hover:border-accent/60 group-hover:-translate-y-[3px] group-hover:shadow-[0_16px_30px_-14px_rgba(0,0,0,0.5)]">
           {project.image ? (
-            <img
-              src={project.image}
+            <MediaSlot
+              id={`project.${project.slug}.cover`}
+              fallbackSrc={project.image}
               alt=""
-              className="absolute inset-0 w-full h-full object-cover animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]"
+              style={{ position: 'absolute', inset: 0 }}
+              mediaClassName={KEN_BURNS}
             />
           ) : (
             <div className="absolute inset-0 flex items-center justify-center" style={{ background: 'linear-gradient(160deg, #202d40 0%, #16202f 60%, #0e1420 100%)' }}>

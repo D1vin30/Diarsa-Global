@@ -25,6 +25,8 @@ import LandingConceptCivicSignal from './components/LandingConceptCivicSignal';
 import PartnersPreview from './components/PartnersPreview';
 import Partners from './components/Partners';
 import FAQ from './components/FAQ';
+import { subscribe as subscribePageLock } from './media/pageLock';
+import MediaRegion from './media/MediaRegion';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -71,6 +73,22 @@ function App() {
     window.scrollTo(0, 0);
   }, [location.pathname]);
 
+  // Dev media editor: freeze the page (Lenis + ScrollTrigger) while a slot is
+  // being worked on so scrolling and scroll-driven effects don't move the site.
+  useEffect(() => {
+    if (!import.meta.env.DEV) return undefined;
+    return subscribePageLock((locked) => {
+      if (locked) {
+        lenisRef.current?.stop();
+        ScrollTrigger.getAll().forEach((t) => t.disable(false));
+      } else {
+        lenisRef.current?.start();
+        ScrollTrigger.getAll().forEach((t) => t.enable());
+        ScrollTrigger.refresh();
+      }
+    });
+  }, []);
+
   const scrollToTop = () => {
     if (lenisRef.current) {
       lenisRef.current.scrollTo(0);
@@ -104,16 +122,18 @@ function App() {
           exit={{ opacity: 0 }}
           transition={{ duration: 0.35, ease: [0.19, 1, 0.22, 1] }}
         >
-          <Routes location={location}>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/projects" element={<ProjectsPage />} />
-            <Route path="/projects/:slug" element={<ProjectDetailPage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/services/:slug" element={<ServiceDetailPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/review" element={<ReviewPage />} />
-          </Routes>
+          <MediaRegion id={`page:${location.pathname}`}>
+            <Routes location={location}>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/projects" element={<ProjectsPage />} />
+              <Route path="/projects/:slug" element={<ProjectDetailPage />} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/services/:slug" element={<ServiceDetailPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/review" element={<ReviewPage />} />
+            </Routes>
+          </MediaRegion>
         </motion.div>
       </AnimatePresence>
       <Footer />

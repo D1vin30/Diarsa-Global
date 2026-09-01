@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { projects } from '../data/projects';
 import { partners } from '../data/partners';
 import CtaAccentBand from './CtaAccentBand';
+import MediaSlot from '../media/MediaSlot';
 
 const introStagger = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
 const introItem = {
@@ -69,10 +70,12 @@ function TimelineEntry({ project, side }) {
             />
             <div className="relative aspect-[16/9] rounded-[10px] overflow-hidden border border-line-dark transition-colors duration-200 group-hover:border-accent/60">
               {project.image ? (
-                <img
-                  src={project.image}
+                <MediaSlot
+                  id={`project.${project.slug}.cover`}
+                  fallbackSrc={project.image}
                   alt=""
-                  className="absolute inset-0 w-full h-full object-cover animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]"
+                  style={{ position: 'absolute', inset: 0 }}
+                  mediaClassName="animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]"
                 />
               ) : (
                 <div

@@ -6,6 +6,7 @@ import { projects } from '../data/projects';
 import ProjectCard from './ProjectCard';
 import ServiceCard from './ServiceCard';
 import CtaAccentBand from './CtaAccentBand';
+import MediaSlot from '../media/MediaSlot';
 
 function SectionEyebrow({ label }) {
   return (
@@ -74,9 +75,11 @@ export default function ServiceDetailPage() {
   return (
     <>
       <section className="relative h-[70vh] min-h-[440px] max-h-[640px] flex items-end overflow-hidden bg-slate" data-nav-theme="dark">
-        <div
-          className="absolute inset-0 flex items-center justify-center"
-          style={{ backgroundImage: `url(${service.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+        <MediaSlot
+          id={`service.${service.slug}.detailHero`}
+          fallbackSrc={service.image}
+          alt=""
+          style={{ position: 'absolute', inset: 0 }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate via-slate/35 to-slate/10" />
 
@@ -180,9 +183,11 @@ export default function ServiceDetailPage() {
           transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
           aria-hidden="true"
         >
-          <div
-            className="absolute inset-0"
-            style={{ backgroundImage: `url(${fineprint})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+          <MediaSlot
+            id={`service.${service.slug}.fineprint`}
+            fallbackSrc={fineprint}
+            alt=""
+            style={{ position: 'absolute', inset: 0 }}
           />
           <div className="absolute inset-0 bg-slate/10" />
         </motion.section>

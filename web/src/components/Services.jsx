@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { fadeUp, viewportRepeat } from '../motion';
 import { services } from '../data/services';
 import ServiceCard from './ServiceCard';
+import MediaSlot from '../media/MediaSlot';
 
 const MotionLink = motion(Link);
 const VISIBLE = services.slice(0, 5);
@@ -177,10 +178,12 @@ export default function Services() {
                   aria-hidden="true"
                 />
                 <div className="relative z-[1] aspect-[4/5] rounded-[10px] border border-line-dark overflow-hidden transition-[border-color,transform,box-shadow] duration-300 ease-out group-hover:border-accent/60 group-hover:-translate-y-[3px] group-hover:shadow-[0_16px_30px_-14px_rgba(0,0,0,0.5)]">
-                  <img
-                    src={HIDDEN[0]?.image}
+                  <MediaSlot
+                    id={`service.${HIDDEN[0]?.slug}.cover`}
+                    fallbackSrc={HIDDEN[0]?.image}
                     alt=""
-                    className="absolute inset-0 w-full h-full object-cover animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]"
+                    style={{ position: 'absolute', inset: 0 }}
+                    mediaClassName="animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate from-10% via-accent-deep/55 via-55% to-slate/50" aria-hidden="true" />
 
