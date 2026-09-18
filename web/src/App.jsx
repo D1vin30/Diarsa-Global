@@ -17,14 +17,14 @@ import BackToTop from './components/BackToTop';
 import AboutPage from './components/AboutPage';
 import ProjectsPage from './components/ProjectsPage';
 import ProjectDetailPage from './components/ProjectDetailPage';
-import ServicesPage from './components/ServicesPage';
-import ServiceDetailPage from './components/ServiceDetailPage';
+import MaintenancePage from './components/MaintenancePage';
 import ContactPage from './components/ContactPage';
 import ReviewPage from './components/ReviewPage';
 import LandingConceptCivicSignal from './components/LandingConceptCivicSignal';
 import PartnersPreview from './components/PartnersPreview';
 import Partners from './components/Partners';
 import FAQ from './components/FAQ';
+import FontLoader from '@media/FontLoader';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -84,6 +84,7 @@ function App() {
   if (isConcept) {
     return (
       <>
+        <FontLoader />
         <Header />
         <Routes location={location}>
           <Route path="/concept/civic-signal" element={<LandingConceptCivicSignal />} />
@@ -95,6 +96,7 @@ function App() {
 
   return (
     <>
+      <FontLoader />
       <Header />
       <AnimatePresence mode="wait" initial={false}>
         <motion.div
@@ -109,8 +111,8 @@ function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/projects" element={<ProjectsPage />} />
             <Route path="/projects/:slug" element={<ProjectDetailPage />} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/services/:slug" element={<ServiceDetailPage />} />
+            <Route path="/services" element={<MaintenancePage />} />
+            <Route path="/services/:slug" element={<MaintenancePage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/review" element={<ReviewPage />} />
           </Routes>

@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence, animate, useInView } from 'framer-motion';
 import { viewportRepeat } from '../motion';
 import CtaAccentBand from './CtaAccentBand';
+import Slot from '@media/Slot';
+import EditableText from '@media/EditableText';
 
 function Counter({ to, suffix = '' }) {
   const ref = useRef(null);
@@ -149,22 +151,26 @@ export default function AboutPage() {
               variants={introStagger}
             >
               <motion.span className="eyebrow text-accent-deep mb-[0.8rem] block" variants={introItem}>
-                Est. 2015 · Benin City, Edo State
+                <EditableText id="about.intro.eyebrow" as="span">Est. 2015 · Benin City, Edo State</EditableText>
               </motion.span>
               <motion.h1 className="text-[clamp(2rem,4.2vw,3rem)] mb-[1.2rem]" variants={introItem}>
-                About Us
+                <EditableText id="about.intro.headline" as="span">About Us</EditableText>
               </motion.h1>
               <motion.p className="lede mb-[1rem]" variants={introItem}>
-                Diarsa Global Integrated Services Limited (RC 1249854) was incorporated on 18 March 2015, anchored on
-                civil/structural engineering, geomatics, town planning, and project management. Headquartered in Benin
-                City, we've delivered engineering services to the Edo State Ministry of Roads and Bridges, the Ministry
-                of Environment and Sustainability, EDSOGPADEC, and private developers across the country.
+                <EditableText id="about.intro.body1" as="span">
+                  Diarsa Global Integrated Services Limited (RC 1249854) was incorporated on 18 March 2015, anchored on
+                  civil/structural engineering, geomatics, town planning, and project management. Headquartered in Benin
+                  City, we've delivered engineering services to the Edo State Ministry of Roads and Bridges, the Ministry
+                  of Environment and Sustainability, EDSOGPADEC, and private developers across the country.
+                </EditableText>
               </motion.p>
               <motion.p className="lede" variants={introItem}>
-                Since 2018, our team has been engaged as design or supervising consultant on more than twenty road,
-                drainage, and gully-reclamation projects across Edo State — including supervising SETRACO Nigeria
-                Limited, one of the country's largest construction firms, on the reconstruction of the Ekpoma–Iruekpen
-                Road.
+                <EditableText id="about.intro.body2" as="span">
+                  Since 2018, our team has been engaged as design or supervising consultant on more than twenty road,
+                  drainage, and gully-reclamation projects across Edo State — including supervising SETRACO Nigeria
+                  Limited, one of the country's largest construction firms, on the reconstruction of the Ekpoma–Iruekpen
+                  Road.
+                </EditableText>
               </motion.p>
             </motion.div>
           </div>
@@ -177,10 +183,11 @@ export default function AboutPage() {
             transition={{ duration: 0.9, ease: [0.19, 1, 0.22, 1] }}
             style={{ clipPath: 'polygon(0 0, 100% 0, 100% 100%, 15% 100%, 0 78%)' }}
           >
-            {/* placeholder — swap for a real team/office photo */}
-            <div
-              className="absolute inset-0"
-              style={{ background: 'linear-gradient(160deg, #e9e6df 0%, #d8d3c8 50%, #c7c0b0 100%)' }}
+            <Slot
+              id="about.photo.page"
+              src="/about-team.jpg"
+              alt="Diarsa Global field team with GNSS survey equipment"
+              className="absolute inset-0 w-full h-full object-cover"
             />
           </motion.div>
         </div>
@@ -199,7 +206,9 @@ export default function AboutPage() {
                 }`}
               >
                 <t.Icon />
-                <span className="text-[0.85rem] font-semibold whitespace-nowrap">{t.label}</span>
+                <span className="text-[0.85rem] font-semibold whitespace-nowrap">
+                  <EditableText id={`about.tab.${t.id}`} as="span">{t.label}</EditableText>
+                </span>
               </button>
             );
           })}
@@ -239,7 +248,7 @@ export default function AboutPage() {
                   <t.Icon />
                 </span>
                 <span className={`relative z-[1] text-[0.8rem] font-semibold text-center px-2 transition-colors duration-300 ${active ? 'text-white' : 'text-white/90 group-hover:text-white'}`}>
-                  {t.label}
+                  <EditableText id={`about.tab.${t.id}`} as="span">{t.label}</EditableText>
                 </span>
               </button>
             );
@@ -251,27 +260,34 @@ export default function AboutPage() {
             {activeTab === 'overview' && (
               <motion.div key="overview" initial="hidden" animate="show" exit="exit" variants={panelVariants}>
                 <div className="grid grid-cols-4 max-[600px]:grid-cols-2 gap-x-[1.6rem] gap-y-6 mb-10 pb-10 border-b border-line-light">
-                  {stats.map((s) => (
+                  {stats.map((s, i) => (
                     <div key={s.label}>
                       <div className="font-display font-extrabold text-accent text-[clamp(1.8rem,3.4vw,2.4rem)] leading-none mb-[0.5rem]">
                         <Counter to={s.value} suffix={s.suffix} />
                       </div>
-                      <p className="text-ink-soft text-[0.85rem] leading-[1.4] m-0">{s.label}</p>
+                      <p className="text-ink-soft text-[0.85rem] leading-[1.4] m-0">
+                        <EditableText id={`about.stat${i + 1}.label`} as="span">{s.label}</EditableText>
+                      </p>
                     </div>
                   ))}
                 </div>
                 <div className="grid grid-cols-2 max-[600px]:grid-cols-1 gap-x-[2.4rem] gap-y-3 mb-10">
-                  {overviewFacts.map((f) => (
+                  {overviewFacts.map((f, i) => (
                     <p key={f} className="text-ink text-[0.95rem] leading-[1.5] m-0 flex items-start gap-2">
-                      <span className="text-accent">—</span>{f}
+                      <span className="text-accent">—</span>
+                      <EditableText id={`about.fact${i + 1}`} as="span">{f}</EditableText>
                     </p>
                   ))}
                 </div>
                 <div className="grid grid-cols-3 max-[700px]:grid-cols-1 gap-x-[2rem] gap-y-6">
                   {pillars.map((p) => (
                     <div key={p.label}>
-                      <h3 className="text-[0.8rem] uppercase tracking-[0.1em] text-accent-deep mb-[0.5rem]">{p.label}</h3>
-                      <p className="text-ink-soft text-[0.9rem] leading-[1.5] m-0">{p.body}</p>
+                      <h3 className="text-[0.8rem] uppercase tracking-[0.1em] text-accent-deep mb-[0.5rem]">
+                        <EditableText id={`about.pillar.${p.label.toLowerCase()}.label`} as="span">{p.label}</EditableText>
+                      </h3>
+                      <p className="text-ink-soft text-[0.9rem] leading-[1.5] m-0">
+                        <EditableText id={`about.pillar.${p.label.toLowerCase()}.body`} as="span">{p.body}</EditableText>
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -281,28 +297,36 @@ export default function AboutPage() {
             {activeTab === 'leadership' && (
               <motion.div key="leadership" initial="hidden" animate="show" exit="exit" variants={panelVariants}>
                 <div className="grid grid-cols-2 max-[700px]:grid-cols-1 gap-x-[2rem] gap-y-7 mb-8">
-                  {leadership.map((l) => (
+                  {leadership.map((l, i) => (
                     <div key={l.name} className="flex gap-[1rem] items-start">
                       <div className="shrink-0 w-[46px] h-[46px] rounded-full bg-accent/[0.12] text-accent-deep font-display font-bold text-[0.9rem] flex items-center justify-center">
                         {l.initials}
                       </div>
                       <div>
-                        <h3 className="text-[0.98rem] mb-[0.1rem]">{l.name}</h3>
-                        <p className="text-accent-deep text-[0.76rem] font-semibold uppercase tracking-[0.04em] mb-[0.3rem]">{l.role}</p>
-                        <p className="text-ink-soft text-[0.82rem] leading-[1.4] m-0">{l.creds}</p>
+                        <h3 className="text-[0.98rem] mb-[0.1rem]">
+                          <EditableText id={`about.leader${i + 1}.name`} as="span">{l.name}</EditableText>
+                        </h3>
+                        <p className="text-accent-deep text-[0.76rem] font-semibold uppercase tracking-[0.04em] mb-[0.3rem]">
+                          <EditableText id={`about.leader${i + 1}.role`} as="span">{l.role}</EditableText>
+                        </p>
+                        <p className="text-ink-soft text-[0.82rem] leading-[1.4] m-0">
+                          <EditableText id={`about.leader${i + 1}.creds`} as="span">{l.creds}</EditableText>
+                        </p>
                       </div>
                     </div>
                   ))}
                 </div>
-                <p className="text-ink-soft text-[0.82rem] leading-[1.5] m-0 max-w-[72ch]">{advisorsLine}</p>
+                <p className="text-ink-soft text-[0.82rem] leading-[1.5] m-0 max-w-[72ch]">
+                  <EditableText id="about.advisors" as="span">{advisorsLine}</EditableText>
+                </p>
               </motion.div>
             )}
 
             {activeTab === 'values' && (
               <motion.div key="values" initial="hidden" animate="show" exit="exit" variants={panelVariants}>
                 <div className="flex flex-wrap gap-2">
-                  {values.map((v) => (
-                    <span key={v} className="tag-pill-light">{v}</span>
+                  {values.map((v, i) => (
+                    <span key={v} className="tag-pill-light"><EditableText id={`about.value${i + 1}`} as="span">{v}</EditableText></span>
                   ))}
                 </div>
               </motion.div>
@@ -311,8 +335,8 @@ export default function AboutPage() {
             {activeTab === 'capabilities' && (
               <motion.div key="capabilities" initial="hidden" animate="show" exit="exit" variants={panelVariants}>
                 <div className="flex flex-wrap gap-2">
-                  {capabilities.map((c) => (
-                    <span key={c} className="tag-pill-light">{c}</span>
+                  {capabilities.map((c, i) => (
+                    <span key={c} className="tag-pill-light"><EditableText id={`about.capability${i + 1}`} as="span">{c}</EditableText></span>
                   ))}
                 </div>
               </motion.div>
@@ -321,11 +345,15 @@ export default function AboutPage() {
             {activeTab === 'safety' && (
               <motion.div key="safety" initial="hidden" animate="show" exit="exit" variants={panelVariants}>
                 <div className="grid grid-cols-3 max-[700px]:grid-cols-1 gap-x-[2rem] gap-y-6">
-                  {safetyPhases.map((p) => (
+                  {safetyPhases.map((p, i) => (
                     <div key={p.step}>
                       <div className="font-display font-bold text-accent text-[1rem] mb-[0.4rem]">{p.step}</div>
-                      <h3 className="text-[0.98rem] mb-[0.2rem]">{p.title}</h3>
-                      <p className="text-ink-soft text-[0.85rem] m-0">{p.body}</p>
+                      <h3 className="text-[0.98rem] mb-[0.2rem]">
+                        <EditableText id={`about.safety${i + 1}.title`} as="span">{p.title}</EditableText>
+                      </h3>
+                      <p className="text-ink-soft text-[0.85rem] m-0">
+                        <EditableText id={`about.safety${i + 1}.body`} as="span">{p.body}</EditableText>
+                      </p>
                     </div>
                   ))}
                 </div>
@@ -335,7 +363,7 @@ export default function AboutPage() {
         </div>
       </div>
     </section>
-    <CtaAccentBand heading="Want our team on your next project?" />
+    <CtaAccentBand id="about.ctaband" heading="Want our team on your next project?" />
     </>
   );
 }

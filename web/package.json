@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:editor": "vite --mode editor",
     "build": "vite build",
     "lint": "oxlint",
     "lint:eslint": "eslint .",

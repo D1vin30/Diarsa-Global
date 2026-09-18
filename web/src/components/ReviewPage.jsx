@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { fadeUp, stagger, viewportOnce } from '../motion';
+import EditableText from '@media/EditableText';
 
 const inputClass =
   'w-full bg-slate-2 border border-line-dark rounded-[6px] px-4 py-3 text-white text-[0.92rem] placeholder:text-white-soft focus:outline-none focus:border-accent-tint transition-colors duration-150';
@@ -23,14 +24,16 @@ export default function ReviewPage() {
           variants={stagger}
         >
           <motion.span className="font-sans font-semibold text-[0.9rem] text-accent-tint mb-[0.8rem] block" variants={fadeUp}>
-            Site Review
+            <EditableText id="review.eyebrow" as="span">Site Review</EditableText>
           </motion.span>
           <motion.h1 className="text-white text-[clamp(2rem,4.2vw,2.8rem)] mb-[1rem]" variants={fadeUp}>
-            Everything left before we ship
+            <EditableText id="review.headline" as="span">Everything left before we ship</EditableText>
           </motion.h1>
           <motion.p className="lede text-white-soft mb-2" variants={fadeUp}>
-            Two files below cover everything: the PDF explains what's needed and why, the Word
-            document has the same questions with blank space to type your answers under each one.
+            <EditableText id="review.body" as="span">
+              Two files below cover everything: the PDF explains what's needed and why, the Word
+              document has the same questions with blank space to type your answers under each one.
+            </EditableText>
           </motion.p>
         </motion.div>
 
@@ -41,10 +44,14 @@ export default function ReviewPage() {
             animate="show"
             variants={fadeUp}
           >
-            <p className="text-white text-[1.15rem] font-semibold mb-2">Received.</p>
+            <p className="text-white text-[1.15rem] font-semibold mb-2">
+              <EditableText id="review.successTitle" as="span">Received.</EditableText>
+            </p>
             <p className="text-white-soft text-[0.92rem]">
-              Thanks &mdash; that's been sent through. Come back to this page any time to send more
-              (extra photos, a revised answer, anything else).
+              <EditableText id="review.successBody" as="span">
+                Thanks &mdash; that's been sent through. Come back to this page any time to send more
+                (extra photos, a revised answer, anything else).
+              </EditableText>
             </p>
           </motion.div>
         ) : (
@@ -70,8 +77,12 @@ export default function ReviewPage() {
                   </svg>
                 </span>
                 <span>
-                  <span className="block text-white text-[0.92rem] font-semibold">Read the questions</span>
-                  <span className="block text-white-soft text-[0.78rem]">PDF &middot; reference</span>
+                  <span className="block text-white text-[0.92rem] font-semibold">
+                    <EditableText id="review.card1.title" as="span">Read the questions</EditableText>
+                  </span>
+                  <span className="block text-white-soft text-[0.78rem]">
+                    <EditableText id="review.card1.sub" as="span">PDF &middot; reference</EditableText>
+                  </span>
                 </span>
               </motion.a>
               <motion.a
@@ -88,8 +99,12 @@ export default function ReviewPage() {
                   </svg>
                 </span>
                 <span>
-                  <span className="block text-white text-[0.92rem] font-semibold">Fill in your answers</span>
-                  <span className="block text-white-soft text-[0.78rem]">Word template &middot; download</span>
+                  <span className="block text-white text-[0.92rem] font-semibold">
+                    <EditableText id="review.card2.title" as="span">Fill in your answers</EditableText>
+                  </span>
+                  <span className="block text-white-soft text-[0.78rem]">
+                    <EditableText id="review.card2.sub" as="span">Word template &middot; download</EditableText>
+                  </span>
                 </span>
               </motion.a>
             </motion.div>
@@ -101,10 +116,14 @@ export default function ReviewPage() {
               viewport={viewportOnce}
               variants={fadeUp}
             >
-              <h3 className="text-white text-[1.05rem] font-semibold mb-1">Send it back</h3>
+              <h3 className="text-white text-[1.05rem] font-semibold mb-1">
+                <EditableText id="review.form.heading" as="span">Send it back</EditableText>
+              </h3>
               <p className="text-white-soft text-[0.85rem] mb-5">
-                Upload the completed Word document, plus any photos or other files. Add a note below if
-                you want &mdash; things you don't like, want changed, or want added.
+                <EditableText id="review.form.body" as="span">
+                  Upload the completed Word document, plus any photos or other files. Add a note below if
+                  you want &mdash; things you don't like, want changed, or want added.
+                </EditableText>
               </p>
               <form
                 action="https://formsubmit.co/osadebedivine@gmail.com"
@@ -116,6 +135,14 @@ export default function ReviewPage() {
                 <input type="hidden" name="_next" value={`${window.location.origin}/review?sent=true`} />
                 <input type="hidden" name="_captcha" value="false" />
                 <input type="hidden" name="_template" value="table" />
+                <input
+                  type="text"
+                  name="_honey"
+                  tabIndex="-1"
+                  autoComplete="off"
+                  aria-hidden="true"
+                  style={{ position: 'absolute', left: '-9999px', top: 'auto', width: '1px', height: '1px', overflow: 'hidden' }}
+                />
 
                 <div className="grid grid-cols-2 max-[520px]:grid-cols-1 gap-4">
                   <input className={inputClass} type="text" name="name" placeholder="Your name" required />
@@ -123,7 +150,9 @@ export default function ReviewPage() {
                 </div>
 
                 <label className="flex flex-col gap-2">
-                  <span className="text-white-soft text-[0.82rem]">Files (completed Word doc, photos, anything else)</span>
+                  <span className="text-white-soft text-[0.82rem]">
+                  <EditableText id="review.form.filesLabel" as="span">Files (completed Word doc, photos, anything else)</EditableText>
+                </span>
                   <input
                     className={`${inputClass} file:mr-3 file:py-1.5 file:px-3 file:rounded-full file:border-0 file:bg-accent file:text-white file:text-[0.8rem] file:font-semibold file:cursor-pointer cursor-pointer`}
                     type="file"

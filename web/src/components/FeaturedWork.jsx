@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { fadeUp, stagger, cardReveal, viewportRepeat } from '../motion';
 import { projects } from '../data/projects';
 import ProjectCard from './ProjectCard';
+import EditableText from '@media/EditableText';
 
 const MotionLink = motion(Link);
 
@@ -42,7 +43,7 @@ export default function FeaturedWork() {
             className="block text-white/[0.09] text-[clamp(2.5rem,5.8vw,6rem)] tracking-[0.01em] leading-none whitespace-nowrap"
             style={{ fontFamily: "'Swis721 BlkEx BT', 'Big Shoulders Display', sans-serif" }}
           >
-            PROJECTS
+            <EditableText id="home.featuredwork.watermark" as="span">PROJECTS</EditableText>
           </span>
         </div>
       </div>
@@ -56,8 +57,12 @@ export default function FeaturedWork() {
           variants={fadeUp}
         >
           <div>
-            <h2 className="text-white text-[clamp(1.7rem,3.4vw,2.3rem)] mb-[0.7rem]">Real projects, on the ground in Edo State</h2>
-            <p className="lede text-white-soft">A sample of recent and ongoing engagements. Project photography in progress.</p>
+            <h2 className="text-white text-[clamp(1.7rem,3.4vw,2.3rem)] mb-[0.7rem]">
+              <EditableText id="home.featuredwork.headline" as="span">Real projects, on the ground in Edo State</EditableText>
+            </h2>
+            <p className="lede text-white-soft">
+              <EditableText id="home.featuredwork.body" as="span">A sample of recent and ongoing engagements. Project photography in progress.</EditableText>
+            </p>
           </div>
           <MotionLink
             to="/projects"
@@ -65,7 +70,7 @@ export default function FeaturedWork() {
             whileHover={{ scale: 1.04, transition: { duration: 0.18, ease: 'easeOut' } }}
             whileTap={{ scale: 0.97 }}
           >
-            View All Projects
+            <EditableText id="home.featuredwork.cta" as="span">View All Projects</EditableText>
           </MotionLink>
         </motion.div>
 

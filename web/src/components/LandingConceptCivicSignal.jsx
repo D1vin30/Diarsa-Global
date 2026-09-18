@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import EditableText from '@media/EditableText';
 
 const disciplines = [
   { num: '01', label: 'Civil & Structural', color: 'red' },
@@ -45,7 +46,7 @@ function Badge({ num, label, color }) {
         {num}
       </span>
       <span className="font-sans font-semibold text-[0.92rem]" style={{ color: 'var(--cs-ink)' }}>
-        {label}
+        <EditableText id={`conceptCivicSignal.badge${num}`} as="span">{label}</EditableText>
       </span>
     </motion.div>
   );
@@ -73,7 +74,7 @@ export default function LandingConceptCivicSignal() {
           className="inline-flex items-center gap-2 pl-[1rem] pr-[1.2rem] py-[0.55rem] rounded-full bg-white/90 backdrop-blur-sm border shadow-sm text-[0.85rem] font-semibold no-underline hover:bg-white transition-colors duration-200"
           style={{ borderColor: 'var(--cs-line)', color: 'var(--cs-ink)' }}
         >
-          <span aria-hidden="true">&larr;</span> Back to current site
+          <span aria-hidden="true">&larr;</span> <EditableText id="conceptCivicSignal.backlink" as="span">Back to current site</EditableText>
         </Link>
       </div>
 
@@ -99,22 +100,24 @@ export default function LandingConceptCivicSignal() {
           <motion.div className="flex items-center gap-2 mb-[1.2rem]" variants={subcopyReveal}>
             <span className="w-[9px] h-[9px] rounded-full" style={{ background: 'var(--cs-red)' }} aria-hidden="true" />
             <span className="font-sans font-bold text-[0.8rem] tracking-[0.14em] uppercase text-white/85">
-              Civil &middot; Geomatics &middot; Environmental
+              <EditableText id="conceptCivicSignal.eyebrow" as="span">Civil &middot; Geomatics &middot; Environmental</EditableText>
             </span>
           </motion.div>
           <motion.h1
             className="font-display font-bold uppercase text-white text-[clamp(2.1rem,5.6vw,3.8rem)] leading-[1.05] tracking-[-0.015em]"
             variants={headlineReveal}
           >
-            We Engineer Nigeria&rsquo;s Ground, Water &amp; Roads.
+            <EditableText id="conceptCivicSignal.headline" as="span">We Engineer Nigeria&rsquo;s Ground, Water &amp; Roads.</EditableText>
           </motion.h1>
         </motion.div>
 
         <div className="relative z-[3] mt-auto flex flex-col md:flex-row md:items-end md:justify-between gap-8 pt-16 max-w-[1180px] w-full mx-auto">
           <motion.div className="max-w-[460px]" initial="hidden" animate="show" variants={subcopyReveal}>
             <p className="text-white text-[0.98rem] leading-[1.65] [text-shadow:0_2px_14px_rgba(0,0,0,0.6)]">
-              Civil engineering, geomatics, and environmental consultancy for the agencies, developers, and
-              industries building Nigeria&rsquo;s infrastructure — grounded in survey data, not guesswork.
+              <EditableText id="conceptCivicSignal.body" as="span">
+                Civil engineering, geomatics, and environmental consultancy for the agencies, developers, and
+                industries building Nigeria&rsquo;s infrastructure — grounded in survey data, not guesswork.
+              </EditableText>
             </p>
           </motion.div>
 
@@ -127,7 +130,7 @@ export default function LandingConceptCivicSignal() {
               whileHover={{ scale: 1.04, backgroundColor: 'var(--cs-blue)', transition: { duration: 0.18 } }}
               whileTap={{ scale: 0.97 }}
             >
-              Our Services
+              <EditableText id="conceptCivicSignal.cta1" as="span">Our Services</EditableText>
             </motion.a>
             <motion.a
               href="#contact"
@@ -137,7 +140,7 @@ export default function LandingConceptCivicSignal() {
               whileHover={{ scale: 1.04, backgroundColor: 'var(--cs-red-deep)', transition: { duration: 0.18 } }}
               whileTap={{ scale: 0.97 }}
             >
-              Request Consultation
+              <EditableText id="conceptCivicSignal.cta2" as="span">Request Consultation</EditableText>
             </motion.a>
           </motion.div>
         </div>

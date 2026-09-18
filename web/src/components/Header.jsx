@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import EditableText from '@media/EditableText';
 
 const MotionLink = motion(Link);
 
@@ -187,12 +188,12 @@ export default function Header() {
             );
             return l.route ? (
               <Link key={l.href} to={l.href} aria-current={active ? 'page' : undefined} className={linkCls}>
-                {l.label}
+                <EditableText id={`nav.${l.href.slice(1)}`} as="span">{l.label}</EditableText>
                 {indicator}
               </Link>
             ) : (
               <a key={l.href} href={l.href} className={linkCls}>
-                {l.label}
+                <EditableText id={`nav.${l.href.slice(1)}`} as="span">{l.label}</EditableText>
               </a>
             );
           })}
@@ -202,7 +203,7 @@ export default function Header() {
             className={`hidden min-[760px]:inline text-[0.86rem] font-medium no-underline transition-colors duration-300 ${isDark ? 'text-white-soft' : 'text-ink-soft'}`}
             href="tel:+2348036789325"
           >
-            +234 803 678 9325
+            <EditableText id="nav.phone" as="span">+234 803 678 9325</EditableText>
           </a>
           <MotionLink
             className="btn btn-accent max-[560px]:hidden"
@@ -210,7 +211,7 @@ export default function Header() {
             whileHover={{ scale: 1.04, transition: { duration: 0.18, ease: 'easeOut' } }}
             whileTap={{ scale: 0.97 }}
           >
-            Request Consultation
+            <EditableText id="nav.cta" as="span">Request Consultation</EditableText>
           </MotionLink>
           <button
             className={`flex min-[901px]:hidden w-[38px] h-[38px] shrink-0 items-center justify-center bg-transparent border-[1.5px] rounded-[3px] cursor-pointer transition-[border-radius,border-color] duration-300 ease-in-out aria-expanded:rounded-full aria-expanded:border-accent ${
@@ -261,7 +262,7 @@ export default function Header() {
               whileTap={{ scale: 0.97 }}
               onClick={() => setMenuOpen(false)}
             >
-              {l.label}
+              <EditableText id={`nav.${l.href.slice(1)}`} as="span">{l.label}</EditableText>
               <span className="text-accent-tint opacity-0 -translate-x-1.5 transition-all duration-200 ease-out group-hover:opacity-100 group-hover:translate-x-0 group-focus-visible:opacity-100 group-focus-visible:translate-x-0">→</span>
               <motion.span className="absolute left-0 bottom-0 h-px w-full bg-line-dark origin-left" variants={lineVariants} />
             </ItemTag>
@@ -273,7 +274,7 @@ export default function Header() {
           variants={itemVariants}
           whileTap={{ scale: 0.97 }}
         >
-          +234 803 678 9325
+          <EditableText id="nav.phone" as="span">+234 803 678 9325</EditableText>
           <motion.span className="absolute left-0 bottom-0 h-px w-full bg-line-dark origin-left" variants={lineVariants} />
         </motion.a>
         <MotionLink
@@ -284,7 +285,7 @@ export default function Header() {
           whileHover={{ scale: 1.04, transition: { duration: 0.18, ease: 'easeOut' } }}
           whileTap={{ scale: 0.97 }}
         >
-          Request Consultation
+          <EditableText id="nav.cta" as="span">Request Consultation</EditableText>
         </MotionLink>
       </motion.div>
     </>

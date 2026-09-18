@@ -1,5 +1,7 @@
 import { motion } from 'framer-motion';
 import { fadeUp, stagger, viewportRepeat } from '../motion';
+import MediaRegion from '@media/MediaRegion';
+import EditableText from '@media/EditableText';
 
 const industries = [
   'Local Government Authorities',
@@ -23,7 +25,9 @@ export default function Industries() {
           viewport={viewportRepeat}
           variants={fadeUp}
         >
-          <h2 className="text-[clamp(1.7rem,3.4vw,2.3rem)] mb-[0.7rem]">Built for the sectors moving Nigeria forward</h2>
+          <h2 className="text-[clamp(1.7rem,3.4vw,2.3rem)] mb-[0.7rem]">
+            <EditableText id="home.industries.headline" as="span">Built for the sectors moving Nigeria forward</EditableText>
+          </h2>
         </motion.div>
         <motion.div
           className="flex gap-2 flex-wrap"
@@ -32,10 +36,14 @@ export default function Industries() {
           viewport={viewportRepeat}
           variants={stagger}
         >
-          {industries.map((tag) => (
-            <motion.span key={tag} className="tag-pill tag-pill-light" variants={fadeUp}>{tag}</motion.span>
+          {industries.map((tag, i) => (
+            <motion.span key={tag} className="tag-pill tag-pill-light" variants={fadeUp}>
+              <EditableText id={`home.industries.tag${i + 1}`} as="span">{tag}</EditableText>
+            </motion.span>
           ))}
         </motion.div>
+
+        <MediaRegion name="industries.extra" className="mt-8" />
       </div>
     </section>
   );

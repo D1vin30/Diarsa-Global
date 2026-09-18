@@ -4,6 +4,9 @@ import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { services } from '../data/services';
 import CtaAccentBand from './CtaAccentBand';
+import Slot from '@media/Slot';
+import MediaRegion from '@media/MediaRegion';
+import EditableText from '@media/EditableText';
 
 const introStagger = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
 const introItem = {
@@ -67,7 +70,8 @@ function TimelineEntry({ service, side }) {
               aria-hidden="true"
             />
             <div className="relative aspect-[16/9] rounded-[10px] overflow-hidden border border-line-dark transition-colors duration-200 group-hover:border-accent/60">
-              <img
+              <Slot
+                id={`services.${service.slug}.timeline`}
                 src={service.image}
                 alt=""
                 className="absolute inset-0 w-full h-full object-cover animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]"
@@ -76,7 +80,9 @@ function TimelineEntry({ service, side }) {
             </div>
           </div>
           <div className="mt-[1.1rem] flex items-center gap-3 mb-[0.4rem]">
-            <span className="font-display font-bold text-[0.8rem] text-accent-tint">{service.num}</span>
+            <span className="font-display font-bold text-[0.8rem] text-accent-tint">
+              <EditableText id={`services.${service.slug}.num`} as="span">{service.num}</EditableText>
+            </span>
             <span className="text-white/30" aria-hidden="true">
               &middot;
             </span>
@@ -85,9 +91,11 @@ function TimelineEntry({ service, side }) {
             </span>
           </div>
           <h3 className="text-white text-[1.15rem] leading-[1.3] mb-[0.4rem] transition-colors duration-150 group-hover:text-accent-tint">
-            {service.title}
+            <EditableText id={`services.${service.slug}.title`} as="span">{service.title}</EditableText>
           </h3>
-          <p className="text-white-soft text-[0.88rem] leading-[1.5] max-w-[42ch]">{service.tagline}</p>
+          <p className="text-white-soft text-[0.88rem] leading-[1.5] max-w-[42ch]">
+            <EditableText id={`services.${service.slug}.tagline`} as="span">{service.tagline}</EditableText>
+          </p>
         </Link>
       </div>
     </div>
@@ -131,7 +139,7 @@ export default function ServicesPage() {
               className="block text-white/[0.15] text-[clamp(2.5rem,5.8vw,6rem)] tracking-[0.01em] leading-none whitespace-nowrap"
               style={{ fontFamily: "'Swis721 BlkEx BT', 'Big Shoulders Display', sans-serif" }}
             >
-              SERVICES
+              <EditableText id="services.index.watermark" as="span">SERVICES</EditableText>
             </span>
           </div>
         </div>
@@ -139,14 +147,16 @@ export default function ServicesPage() {
         <div className="section-inner relative z-[1]">
           <motion.div className="section-head max-w-[62ch] mt-12" initial="hidden" animate="show" variants={introStagger}>
             <motion.span className="font-sans font-semibold text-[0.9rem] text-accent-tint mb-[0.8rem] block" variants={introItem}>
-              What We Do
+              <EditableText id="services.index.eyebrow" as="span">What We Do</EditableText>
             </motion.span>
             <motion.h1 className="text-white text-[clamp(2rem,4.2vw,3rem)] mb-[1rem]" variants={introItem}>
-              Services
+              <EditableText id="services.index.headline" as="span">Services</EditableText>
             </motion.h1>
             <motion.p className="lede text-white-soft" variants={introItem}>
-              Seven integrated disciplines, delivered by one in-house team — from first survey peg to
-              construction supervision.
+              <EditableText id="services.index.body" as="span">
+                Seven integrated disciplines, delivered by one in-house team — from first survey peg to
+                construction supervision.
+              </EditableText>
             </motion.p>
           </motion.div>
 
@@ -162,9 +172,11 @@ export default function ServicesPage() {
               ))}
             </div>
           </div>
+
+          <MediaRegion name="services.index.extra" className="mt-8" />
         </div>
       </section>
-      <CtaAccentBand heading="Need one of these services on your project?" />
+      <CtaAccentBand id="services.index.ctaband" heading="Need one of these services on your project?" />
     </>
   );
 }

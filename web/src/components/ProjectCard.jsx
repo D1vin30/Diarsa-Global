@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CategoryIcon } from './ProjectIcons';
 import { getClientLogo } from '../data/clientLogos';
+import Slot from '@media/Slot';
+import EditableText from '@media/EditableText';
 
 const cornerBase = 'absolute w-[16px] h-[16px] border-accent-tint opacity-0 z-[2] transition-[opacity,transform] duration-200 ease-out';
 
@@ -17,7 +19,8 @@ export default function ProjectCard({ project, variants }) {
         />
         <div className="relative z-[1] aspect-[4/5] rounded-[10px] border border-line-dark overflow-hidden transition-[border-color,transform,box-shadow] duration-300 ease-out group-hover:border-accent/60 group-hover:-translate-y-[3px] group-hover:shadow-[0_16px_30px_-14px_rgba(0,0,0,0.5)]">
           {project.image ? (
-            <img
+            <Slot
+              id={`projects.${project.slug}.thumb`}
               src={project.image}
               alt=""
               className="absolute inset-0 w-full h-full object-cover animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]"
@@ -38,21 +41,29 @@ export default function ProjectCard({ project, variants }) {
 
           <div className="absolute inset-x-0 bottom-0 z-[1] p-[1.5rem] flex flex-col">
             <div className="flex items-center justify-between mb-[0.6rem]">
-              <span className="font-sans font-semibold text-[0.7rem] tracking-[0.1em] uppercase text-accent-tint">{project.cat}</span>
-              <span className="font-display font-bold text-[0.85rem] text-white-soft">{project.year}</span>
+              <span className="font-sans font-semibold text-[0.7rem] tracking-[0.1em] uppercase text-accent-tint">
+                <EditableText id={`projects.${project.slug}.cat`} as="span">{project.cat}</EditableText>
+              </span>
+              <span className="font-display font-bold text-[0.85rem] text-white-soft">
+                <EditableText id={`projects.${project.slug}.year`} as="span">{project.year}</EditableText>
+              </span>
             </div>
             <h3 className="text-white text-[1.1rem] mb-[0.5rem] leading-[1.25] transition-colors duration-150 group-hover:text-accent-tint">
-              {project.title}
+              <EditableText id={`projects.${project.slug}.title`} as="span">{project.title}</EditableText>
             </h3>
             <div className="flex items-center gap-[0.4rem] mb-[0.8rem]">
               {clientLogo && (
                 <img src={clientLogo} alt="" className="shrink-0 w-[16px] h-[16px] rounded-full object-cover bg-paper" />
               )}
-              <p className="text-white-soft text-[0.8rem] font-medium m-0">{project.client}</p>
+              <p className="text-white-soft text-[0.8rem] font-medium m-0">
+                <EditableText id={`projects.${project.slug}.client`} as="span">{project.client}</EditableText>
+              </p>
             </div>
-            <p className="text-white-soft text-[0.87rem] leading-[1.55] mb-[1rem]">{project.scope}</p>
+            <p className="text-white-soft text-[0.87rem] leading-[1.55] mb-[1rem]">
+              <EditableText id={`projects.${project.slug}.scope`} as="span">{project.scope}</EditableText>
+            </p>
             <span className="inline-flex items-center gap-2 text-accent-tint text-[0.85rem] font-semibold">
-              View Project
+              <EditableText id="home.projectcard.cta" as="span">View Project</EditableText>
               <span className="transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true">
                 &rarr;
               </span>

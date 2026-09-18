@@ -1,3 +1,5 @@
+import EditableText from '@media/EditableText';
+
 export default function Footer() {
   const footerLinkClass = "block text-white-soft no-underline text-[0.9rem] mb-[0.55rem] hover:text-white";
   return (
@@ -12,29 +14,38 @@ export default function Footer() {
                 className="h-[46px] w-auto"
               />
             </div>
-            <h3 className="font-sans text-[0.76rem] tracking-[0.1em] uppercase text-white mb-4">Diarsa Global</h3>
-            <a className={footerLinkClass} href="/#services">Services</a>
-            <a className={footerLinkClass} href="/#work">Projects</a>
-            <a className={footerLinkClass} href="/about">About Us</a>
-            <a className={footerLinkClass} href="/contact">Contact</a>
+            <h3 className="font-sans text-[0.76rem] tracking-[0.1em] uppercase text-white mb-4">
+              <EditableText id="footer.col1.heading" as="span">Diarsa Global</EditableText>
+            </h3>
+            <a className={footerLinkClass} href="/#services"><EditableText id="footer.col1.link1" as="span">Services</EditableText></a>
+            <a className={footerLinkClass} href="/#work"><EditableText id="footer.col1.link2" as="span">Projects</EditableText></a>
+            <a className={footerLinkClass} href="/about"><EditableText id="footer.col1.link3" as="span">About Us</EditableText></a>
+            <a className={footerLinkClass} href="/contact"><EditableText id="footer.col1.link4" as="span">Contact</EditableText></a>
           </div>
           <div>
-            <h3 className="font-sans text-[0.76rem] tracking-[0.1em] uppercase text-white mb-4">Contact</h3>
-            <a className={footerLinkClass} href="tel:+2348036789325">+234 803 678 9325</a>
-            <a className={footerLinkClass} href="tel:+2348073282827">+234 807 328 2827</a>
-            <a className={footerLinkClass} href="mailto:diarsaglobal@gmail.com">diarsaglobal@gmail.com</a>
+            <h3 className="font-sans text-[0.76rem] tracking-[0.1em] uppercase text-white mb-4">
+              <EditableText id="footer.col2.heading" as="span">Contact</EditableText>
+            </h3>
+            <a className={footerLinkClass} href="tel:+2348036789325"><EditableText id="footer.col2.phone1" as="span">+234 803 678 9325</EditableText></a>
+            <a className={footerLinkClass} href="tel:+2348073282827"><EditableText id="footer.col2.phone2" as="span">+234 807 328 2827</EditableText></a>
+            <a className={footerLinkClass} href="mailto:diarsaglobal@gmail.com"><EditableText id="footer.col2.email" as="span">diarsaglobal@gmail.com</EditableText></a>
           </div>
           <div>
-            <h3 className="font-sans text-[0.76rem] tracking-[0.1em] uppercase text-white mb-4">Head Office</h3>
-            <span className="block text-[0.9rem] mb-[0.55rem]">7 Akpakpava Road<br />(Ighomo House)</span>
-            <span className="block text-[0.9rem] mb-[0.85rem]">Benin City, Edo State</span>
+            <h3 className="font-sans text-[0.76rem] tracking-[0.1em] uppercase text-white mb-4">
+              <EditableText id="footer.col3.heading" as="span">Head Office</EditableText>
+            </h3>
+            <span className="block text-[0.9rem] mb-[0.55rem]">
+              <EditableText id="footer.col3.address1a" as="span">7 Akpakpava Road</EditableText><br />
+              <EditableText id="footer.col3.address1b" as="span">(Ighomo House)</EditableText>
+            </span>
+            <span className="block text-[0.9rem] mb-[0.85rem]"><EditableText id="footer.col3.address2" as="span">Benin City, Edo State</EditableText></span>
             <a
               className="inline-block text-[0.82rem] text-accent-tint hover:text-white no-underline"
               href="https://maps.google.com/?q=7+Akpakpava+Rd,+Avbiama,+Benin+City+300001,+Edo"
               target="_blank"
               rel="noreferrer"
             >
-              Get directions →
+              <EditableText id="footer.col3.directions" as="span">Get directions</EditableText> →
             </a>
           </div>
         </div>
@@ -51,7 +62,7 @@ export default function Footer() {
         </div>
         <div className="flex justify-between items-center pt-6 flex-wrap gap-[0.8rem] text-[0.8rem]">
           <span className="inline-flex items-center gap-2">
-            © 2026 Diarsa Global Integrated Services Ltd. · Est. 2015
+            <EditableText id="footer.copyright" as="span">© 2026 Diarsa Global Integrated Services Ltd. · Est. 2015</EditableText>
             <svg
               aria-label="Nigeria"
               role="img"
@@ -65,15 +76,15 @@ export default function Footer() {
               <rect x="4" width="2" height="4" fill="#008751" />
             </svg>
           </span>
-          <span>Harnessing Engineering Intelligence to Deliver Innovative Solutions</span>
+          <span><EditableText id="footer.tagline" as="span">Harnessing Engineering Intelligence to Deliver Innovative Solutions</EditableText></span>
         </div>
       </div>
       <div className="relative overflow-hidden pointer-events-none mt-8 pt-[1.4rem] border-t border-line-dark">
         <div
           className="flex w-max font-display font-extrabold text-[15vw] leading-[0.9] text-white-soft tracking-[-0.02em] select-none animate-[bookend-scroll_64s_linear_infinite] motion-reduce:animate-none"
         >
-          <span className="block whitespace-nowrap pr-[2.5em]">ENGINEERING INTELLIGENCE</span>
-          <span className="block whitespace-nowrap pr-[2.5em]">ENGINEERING INTELLIGENCE</span>
+          <span className="block whitespace-nowrap pr-[2.5em]"><EditableText id="footer.marquee" as="span">ENGINEERING INTELLIGENCE</EditableText></span>
+          <span className="block whitespace-nowrap pr-[2.5em]" aria-hidden="true">ENGINEERING INTELLIGENCE</span>
         </div>
       </div>
     </footer>

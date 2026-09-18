@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { gsap } from 'gsap';
 import { fadeUp, stagger, viewportRepeat } from '../motion';
+import Slot from '@media/Slot';
+import EditableText from '@media/EditableText';
 
 const MotionLink = motion(Link);
 
@@ -45,7 +47,7 @@ export default function About() {
             className="block font-display font-extrabold text-ink/[0.12] text-[clamp(9rem,19vw,15rem)] leading-none whitespace-nowrap"
             style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)' }}
           >
-            ABOUT
+            <EditableText id="home.about.watermark" as="span">ABOUT</EditableText>
           </span>
         </div>
       </div>
@@ -55,23 +57,27 @@ export default function About() {
           <div className="relative">
             <motion.div className="relative z-[1]" initial="hidden" whileInView="show" viewport={viewportRepeat} variants={stagger}>
               <motion.span className="font-sans font-semibold text-[0.9rem] text-accent-deep mb-[0.8rem] block" variants={fadeUp}>
-                Est. 2015 · Benin City, Edo State
+                <EditableText id="home.about.eyebrow" as="span">Est. 2015 · Benin City, Edo State</EditableText>
               </motion.span>
               <motion.h2 className="text-[clamp(1.8rem,3.6vw,2.5rem)] mb-[1rem]" variants={fadeUp}>
-                Built in Benin City. Trusted Across Edo State.
+                <EditableText id="home.about.headline" as="span">Built in Benin City. Trusted Across Edo State.</EditableText>
               </motion.h2>
               <motion.div className="relative max-h-[150px] overflow-hidden mb-[1.2rem]" variants={fadeUp}>
                 <p className="lede mb-[1rem]">
-                  Diarsa Global Integrated Services Limited (RC 1249854) was incorporated on 18 March 2015, anchored
-                  on civil/structural engineering, geomatics, town planning, and project management. Headquartered in
-                  Benin City, we've delivered engineering services to the Edo State Ministry of Roads and Bridges, the
-                  Ministry of Environment and Sustainability, EDSOGPADEC, and private developers across the country.
+                  <EditableText id="home.about.body1" as="span">
+                    Diarsa Global Integrated Services Limited (RC 1249854) was incorporated on 18 March 2015, anchored
+                    on civil/structural engineering, geomatics, town planning, and project management. Headquartered in
+                    Benin City, we've delivered engineering services to the Edo State Ministry of Roads and Bridges, the
+                    Ministry of Environment and Sustainability, EDSOGPADEC, and private developers across the country.
+                  </EditableText>
                 </p>
                 <p className="lede">
-                  Since 2018, our team has been engaged as design or supervising consultant on more than twenty road,
-                  drainage, and gully-reclamation projects across Edo State — including supervising SETRACO Nigeria
-                  Limited, one of the country's largest construction firms, on the reconstruction of the
-                  Ekpoma–Iruekpen Road.
+                  <EditableText id="home.about.body2" as="span">
+                    Since 2018, our team has been engaged as design or supervising consultant on more than twenty road,
+                    drainage, and gully-reclamation projects across Edo State — including supervising SETRACO Nigeria
+                    Limited, one of the country's largest construction firms, on the reconstruction of the
+                    Ekpoma–Iruekpen Road.
+                  </EditableText>
                 </p>
                 <div className="absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-paper to-transparent pointer-events-none" />
               </motion.div>
@@ -82,7 +88,7 @@ export default function About() {
                 whileHover={{ scale: 1.04, transition: { duration: 0.18, ease: 'easeOut' } }}
                 whileTap={{ scale: 0.97 }}
               >
-                Read More
+                <EditableText id="home.about.cta" as="span">Read More</EditableText>
               </MotionLink>
             </motion.div>
           </div>
@@ -94,10 +100,11 @@ export default function About() {
             viewport={viewportRepeat}
             transition={{ duration: 0.9, ease: [0.19, 1, 0.22, 1] }}
           >
-            {/* placeholder — swap for a real equipment/team photo */}
-            <div
-              className="absolute inset-0"
-              style={{ background: 'linear-gradient(160deg, #e9e6df 0%, #d8d3c8 50%, #c7c0b0 100%)' }}
+            <Slot
+              id="about.photo"
+              src="/about-team.jpg"
+              alt="Diarsa Global field team with GNSS survey equipment"
+              className="absolute inset-0 w-full h-full object-cover"
             />
           </motion.div>
         </div>
