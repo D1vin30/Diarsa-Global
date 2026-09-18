@@ -46,8 +46,8 @@ export const services = [
       role: 'Civil Engineering Team, Diarsa Global',
     },
     outcome:
-      'Our civil engineering work has carried projects like the Ekpoma–Iruekpen Road reconstruction from design review through to a rebuilt, trafficked corridor.',
-    relatedProjectSlugs: ['ekpoma-iruekpen-road'],
+      'Our civil engineering work has carried projects like the construction of Oke-Ohia-Eme Road from design through active site delivery.',
+    relatedProjectSlugs: ['oke-ohia-eme-road'],
   },
   {
     slug: 'geomatics-engineering',
@@ -97,7 +97,7 @@ export const services = [
     },
     outcome:
       'Our geomatics work gave EDSOGPADEC a complete, design-ready data package for its short-roads programme.',
-    relatedProjectSlugs: ['edsogpadec-short-roads'],
+    relatedProjectSlugs: ['edsogpadec-short-roads', 'aruna-ohen-guobadia-road-survey'],
   },
   {
     slug: 'gis-digital-mapping',
@@ -287,8 +287,8 @@ export const services = [
       role: 'Project Advisory Team, Diarsa Global',
     },
     outcome:
-      'Our supervision role on the Ekpoma–Iruekpen Road reconstruction is a direct example of this discipline in practice.',
-    relatedProjectSlugs: ['ekpoma-iruekpen-road'],
+      'The quality checks run on every completed drainage section of the Oke-Ohia-Eme Road works are a direct example of this discipline in practice.',
+    relatedProjectSlugs: ['oke-ohia-eme-road', 'edo-road-supervision-consultancy', 'uromi-road-supervision-consultancy'],
   },
   {
     slug: 'research-development',

@@ -89,7 +89,7 @@ priority order as the per-project list above, plus:
 ## Infra — decisions needed now that services are wired
 
 - [ ] Vercel — confirm this repo is the one to link + deploy; production domain (diarsaglobal.com?) pointed at it
-- [ ] Cloudflare — is the domain's DNS on Cloudflare already, or does it need migrating? Who holds registrar access?
+- [ ] Cloudflare — correction (2026-08-26): confirmed NOT set up. The connected account (osadebedivine@gmail.com) has zero domains added — diarsaglobal.com was never put on Cloudflare, only the Claude integration was linked. Decide whether Cloudflare is even needed given the domain's transferring to Vercel (which has its own DNS) — may be moot.
 - [ ] Resend — sending domain to verify (e.g. mail.diarsaglobal.com) + which inbox receives contact-form leads
 - [ ] Supabase — do we need a DB at all? (contact form leads, careers applications if that page ships) or is email-only enough
 - [ ] Sentry — project created, DSN wired into web/, who gets alerted on errors

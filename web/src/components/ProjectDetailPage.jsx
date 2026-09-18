@@ -1,13 +1,183 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { fadeUp, stagger, cardReveal, viewportOnce } from '../motion';
 import { projects, getProjectBySlug } from '../data/projects';
 import { CategoryIcon } from './ProjectIcons';
 import ProjectCard from './ProjectCard';
 import CtaAccentBand from './CtaAccentBand';
+import Slot from '@media/Slot';
+import MediaRegion from '@media/MediaRegion';
+import EditableText from '@media/EditableText';
 
 const specLabels = { location: 'Location', duration: 'Duration', discipline: 'Discipline' };
+
+// Project spec "services" are display strings, not services.js slugs, and the
+// same string (e.g. "Engineering Design") means a different service on
+// different projects — so this maps per-project, not string -> slug globally.
+const SERVICE_SLUG_BY_PROJECT = {
+  'oke-ohia-eme-road': {
+    'Road Construction': 'civil-engineering-consultancy',
+  },
+  'edsogpadec-short-roads': {
+    'Topographic Survey': 'geomatics-engineering',
+    'Geotechnical Investigation': 'civil-engineering-consultancy',
+    'Engineering Design': 'civil-engineering-consultancy',
+  },
+  'okhoro-gully-reclamation': {
+    'Environmental Study': 'environmental-consultancy',
+    'Engineering Design': 'project-planning-advisory',
+  },
+  'aruna-ohen-guobadia-road-survey': {
+    'Road Survey': 'geomatics-engineering',
+  },
+  'edo-road-supervision-consultancy': {
+    'Road Supervision & Consultancy': 'project-planning-advisory',
+  },
+  'uromi-road-supervision-consultancy': {
+    'Road Supervision & Consultancy': 'project-planning-advisory',
+  },
+};
+
+const isVideoSrc = (src) => /\.(mp4|webm|mov)$/i.test(src);
+
+// Rightmost-visible gallery item's 1-based position, given the scroller's
+// current scroll state and the total item count.
+function computeGalleryEnd(el, total) {
+  if (!el || !total) return 1;
+  const frac = el.scrollWidth > el.clientWidth ? (el.scrollLeft + el.clientWidth) / el.scrollWidth : 1;
+  return Math.max(1, Math.min(total, Math.ceil(frac * total)));
+}
+
+function GalleryItem({ id, item, alt, onOpen }) {
+  if (!isVideoSrc(item.src)) {
+    return (
+      <button type="button" onClick={onOpen} className="relative block w-full h-full cursor-pointer" aria-label={`View larger — ${alt}`}>
+        <Slot id={id} src={item.src} alt={alt} className="rounded-[4px] w-full h-full object-cover aspect-[4/3]" />
+        <span className="md:hidden absolute bottom-2 right-2 w-[30px] h-[30px] rounded-full bg-slate/70 backdrop-blur-sm flex items-center justify-center">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" aria-hidden="true">
+            <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </span>
+      </button>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={onOpen}
+      className="group relative block w-full h-full rounded-[4px] overflow-hidden aspect-[4/3]"
+      aria-label={`Play video — ${alt}`}
+    >
+      <img src={item.poster} alt={alt} className="w-full h-full object-cover" />
+      <span className="absolute inset-0 bg-slate/25 group-hover:bg-slate/35 transition-colors duration-200 flex items-center justify-center">
+        <span className="w-[52px] h-[52px] rounded-full bg-white/90 flex items-center justify-center shadow-lg">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+            <path d="M4 2.5v13l11-6.5-11-6.5z" fill="#16202f" />
+          </svg>
+        </span>
+      </span>
+    </button>
+  );
+}
+
+// Full-screen viewer for gallery images and videos — click to open, Esc/backdrop/X
+// to close, arrows or Left/Right keys to step through.
+function Lightbox({ images, index, onClose, onStep }) {
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onClose();
+      if (e.key === 'ArrowRight') onStep(1);
+      if (e.key === 'ArrowLeft') onStep(-1);
+    };
+    window.addEventListener('keydown', onKey);
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      window.removeEventListener('keydown', onKey);
+      document.body.style.overflow = prevOverflow;
+    };
+  }, [onClose, onStep]);
+
+  const item = images[index];
+  if (!item) return null;
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-[1000] bg-slate/95 backdrop-blur-sm flex flex-col items-center justify-center p-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      onClick={onClose}
+    >
+      <button
+        type="button"
+        onClick={onClose}
+        aria-label="Close"
+        className="absolute top-5 right-5 w-[42px] h-[42px] rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-150 flex items-center justify-center text-white text-[1.3rem]"
+      >
+        &times;
+      </button>
+
+      {images.length > 1 && (
+        <>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); onStep(-1); }}
+            aria-label="Previous image"
+            className="absolute left-3 md:left-6 top-1/2 -translate-y-1/2 w-[44px] h-[44px] rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-150 flex items-center justify-center text-white text-[1.4rem]"
+          >
+            &larr;
+          </button>
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); onStep(1); }}
+            aria-label="Next image"
+            className="absolute right-3 md:right-6 top-1/2 -translate-y-1/2 w-[44px] h-[44px] rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-150 flex items-center justify-center text-white text-[1.4rem]"
+          >
+            &rarr;
+          </button>
+        </>
+      )}
+
+      {isVideoSrc(item.src) ? (
+        <motion.video
+          key={item.src}
+          src={item.src}
+          poster={item.poster}
+          controls
+          autoPlay
+          className="max-w-full max-h-[78vh] object-contain rounded-[4px]"
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.2 }}
+          onClick={(e) => e.stopPropagation()}
+        />
+      ) : (
+        <motion.img
+          key={item.src}
+          src={item.src}
+          alt={item.caption || ''}
+          className="max-w-full max-h-[78vh] object-contain rounded-[4px]"
+          initial={{ opacity: 0, scale: 0.97 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.2 }}
+          onClick={(e) => e.stopPropagation()}
+        />
+      )}
+      {item.caption && (
+        <p className="text-white text-[0.95rem] font-medium mt-[1.1rem] max-w-[64ch] text-center px-4">
+          {item.caption}
+        </p>
+      )}
+      {images.length > 1 && (
+        <p className="text-white-soft text-[0.8rem] mt-[0.4rem]">{index + 1} / {images.length}</p>
+      )}
+    </motion.div>
+  );
+}
 
 function SectionEyebrow({ label }) {
   return (
@@ -18,7 +188,7 @@ function SectionEyebrow({ label }) {
   );
 }
 
-function NarrativeBand({ id, rail, theme, heading, body, quote, children }) {
+function NarrativeBand({ id, textId, rail, theme, heading, body, quote, children }) {
   const dark = theme === 'dark';
   return (
     <section id={id} className={`section-shell ${dark ? 'bg-slate text-white' : 'bg-paper'}`} data-nav-theme={dark ? 'dark' : 'light'} data-nav-label={rail}>
@@ -28,11 +198,11 @@ function NarrativeBand({ id, rail, theme, heading, body, quote, children }) {
             <SectionEyebrow label={rail} />
           </motion.div>
           <motion.h2 className={`text-[1.6rem] mb-[1.2rem] ${dark ? 'text-white' : ''}`} variants={fadeUp}>
-            {heading}
+            <EditableText id={`${textId}.heading`} as="span">{heading}</EditableText>
           </motion.h2>
           {body.map((paragraph, i) => (
             <motion.p key={i} className={`lede mb-[1rem] last:mb-0 ${dark ? 'text-white-soft' : ''}`} variants={fadeUp}>
-              {paragraph}
+              <EditableText id={`${textId}.body${i + 1}`} as="span">{paragraph}</EditableText>
             </motion.p>
           ))}
           {quote && (
@@ -41,9 +211,11 @@ function NarrativeBand({ id, rail, theme, heading, body, quote, children }) {
               variants={fadeUp}
             >
               <p className={`font-display text-[1.15rem] leading-[1.45] mb-[0.7rem] ${dark ? 'text-white' : 'text-ink'}`}>
-                &ldquo;{quote.text}&rdquo;
+                &ldquo;<EditableText id={`${textId}.quote.text`} as="span">{quote.text}</EditableText>&rdquo;
               </p>
-              <p className={`text-[0.85rem] font-semibold ${dark ? 'text-white-soft' : 'text-ink-soft'}`}>{quote.role}</p>
+              <p className={`text-[0.85rem] font-semibold ${dark ? 'text-white-soft' : 'text-ink-soft'}`}>
+                <EditableText id={`${textId}.quote.role`} as="span">{quote.role}</EditableText>
+              </p>
             </motion.div>
           )}
           {children}
@@ -57,23 +229,34 @@ export default function ProjectDetailPage() {
   const { slug } = useParams();
   const project = getProjectBySlug(slug);
   const [factsOpen, setFactsOpen] = useState(true);
+  const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [galleryEnd, setGalleryEnd] = useState(1);
+  const scrollerRef = useRef(null);
+  const galleryTotal = project?.gallery?.length || 0;
+
+  useEffect(() => {
+    const update = () => setGalleryEnd(computeGalleryEnd(scrollerRef.current, galleryTotal));
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, [galleryTotal]);
 
   if (!project) return <Navigate to="/projects" replace />;
 
   const specEntries = Object.entries(project.specs || {}).filter(([, value]) => value);
+  const galleryImages = project.gallery || [];
+  const scrollGallery = (dir) => {
+    const el = scrollerRef.current;
+    if (el) el.scrollBy({ left: dir * (el.clientWidth * 0.8), behavior: 'smooth' });
+  };
 
   return (
     <>
       <section className="relative h-[70vh] min-h-[440px] max-h-[640px] flex items-end overflow-hidden bg-slate" data-nav-theme="dark">
-        <div
-          className="absolute inset-0 flex items-center justify-center"
-          style={
-            project.image
-              ? { backgroundImage: `url(${project.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }
-              : { background: 'linear-gradient(160deg, #221f22 0%, #1a1719 60%, #121013 100%)' }
-          }
-        >
-          {!project.image && (
+        <div className="absolute inset-0 flex items-center justify-center" style={!project.image ? { background: 'linear-gradient(160deg, #202d40 0%, #16202f 60%, #0e1420 100%)' } : undefined}>
+          {project.image ? (
+            <Slot id={`projects.${project.slug}.hero`} src={project.image} alt="" className="absolute inset-0 w-full h-full object-cover" hasOverlayText />
+          ) : (
             <div className="text-accent-tint/70 scale-[3]">
               <CategoryIcon category={project.cat} />
             </div>
@@ -82,32 +265,46 @@ export default function ProjectDetailPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-slate via-slate/35 to-slate/10" />
 
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1], delay: 0.15 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, ease: 'linear' }}
         >
           <Link
             to="/projects"
-            className="absolute top-[6.5rem] right-6 z-[2] inline-flex items-center gap-2 pl-[1rem] pr-[1.2rem] py-[0.55rem] rounded-full bg-slate/70 backdrop-blur-sm border border-line-dark text-white text-[0.85rem] font-semibold no-underline transition-colors duration-200 hover:border-accent/60 hover:bg-slate/85"
+            className="absolute top-[6.5rem] right-6 z-[2] inline-flex items-center gap-2 pl-[1rem] pr-[1.2rem] py-[0.55rem] rounded-full bg-slate/70 backdrop-blur-sm border border-line-dark text-white text-[0.85rem] font-semibold no-underline transition-colors duration-200 hover:border-accent/60 hover:bg-slate/85 overflow-hidden"
           >
-            <span aria-hidden="true">&larr;</span> All Projects
+            <span aria-hidden="true">&larr;</span> <EditableText id="projects.detail.backlink" as="span">All Projects</EditableText>
+            <motion.span
+              aria-hidden="true"
+              className="absolute inset-y-0 left-0 w-1/2 pointer-events-none"
+              style={{ background: 'linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.55) 50%, transparent 80%)' }}
+              initial={{ x: '-120%' }}
+              animate={{ x: '220%' }}
+              transition={{ duration: 1.1, ease: 'easeInOut', delay: 1 }}
+            />
           </Link>
         </motion.div>
 
         <motion.div
           className="relative z-[1] section-inner max-w-[900px] pb-[3rem] pt-[8rem] w-full"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, ease: 'linear' }}
         >
           <div className="flex items-center gap-3 mb-[0.8rem]">
-            <span className="font-sans font-semibold text-[0.78rem] tracking-[0.1em] uppercase text-accent-tint">{project.cat}</span>
+            <span className="font-sans font-semibold text-[0.78rem] tracking-[0.1em] uppercase text-accent-tint">
+              <EditableText id={`projects.${project.slug}.cat`} as="span">{project.cat}</EditableText>
+            </span>
             <span className="text-white/40" aria-hidden="true">
               &middot;
             </span>
-            <span className="font-display font-bold text-[0.9rem] text-white/70">{project.year}</span>
+            <span className="font-display font-bold text-[0.9rem] text-white/70">
+              <EditableText id={`projects.${project.slug}.year`} as="span">{project.year}</EditableText>
+            </span>
           </div>
-          <h1 className="text-white text-[clamp(2.2rem,5vw,4rem)] leading-[1.05] max-w-[16ch]">{project.title}</h1>
+          <h1 className="text-white text-[clamp(2.2rem,5vw,4rem)] leading-[1.05] max-w-[16ch]">
+            <EditableText id={`projects.${project.slug}.title`} as="span">{project.title}</EditableText>
+          </h1>
         </motion.div>
       </section>
 
@@ -127,8 +324,12 @@ export default function ProjectDetailPage() {
               >
                 {project.stats.map((s, i) => (
                   <motion.div key={i} className={i > 0 ? 'md:pt-5 md:border-t md:border-line-dark' : ''} variants={fadeUp}>
-                    <p className="font-display font-bold text-accent-tint text-[1.3rem] leading-[1.2] mb-[0.2rem]">{s.value}</p>
-                    <p className="text-white-soft text-[0.8rem]">{s.label}</p>
+                    <p className="font-display font-bold text-accent-tint text-[1.3rem] leading-[1.2] mb-[0.2rem]">
+                      <EditableText id={`projects.${project.slug}.stat${i + 1}.value`} as="span">{s.value}</EditableText>
+                    </p>
+                    <p className="text-white-soft text-[0.8rem]">
+                      <EditableText id={`projects.${project.slug}.stat${i + 1}.label`} as="span">{s.label}</EditableText>
+                    </p>
                   </motion.div>
                 ))}
               </motion.div>
@@ -136,11 +337,11 @@ export default function ProjectDetailPage() {
 
             <motion.div initial="hidden" whileInView="show" viewport={viewportOnce} variants={stagger}>
               <motion.p className="text-white-soft text-[0.85rem] font-medium mb-[0.4rem]" variants={fadeUp}>
-                {project.client}
+                <EditableText id={`projects.${project.slug}.client`} as="span">{project.client}</EditableText>
               </motion.p>
               {project.overview?.map((paragraph, i) => (
                 <motion.p key={i} className="lede text-white-soft mb-[1rem] last:mb-0" variants={fadeUp}>
-                  {paragraph}
+                  <EditableText id={`projects.${project.slug}.overview${i + 1}`} as="span">{paragraph}</EditableText>
                 </motion.p>
               ))}
 
@@ -152,7 +353,7 @@ export default function ProjectDetailPage() {
                     aria-expanded={factsOpen}
                     className="group w-full flex items-center justify-between py-[0.9rem] border-y border-line-dark text-white text-[0.85rem] font-semibold tracking-[0.04em] uppercase"
                   >
-                    Project Details
+                    <EditableText id="projects.detail.toggle" as="span">Project Details</EditableText>
                     <span
                       aria-hidden="true"
                       className="relative w-[28px] h-[28px] shrink-0 rounded-full border border-line-dark flex items-center justify-center transition-colors duration-200 group-hover:border-accent/60"
@@ -171,17 +372,23 @@ export default function ProjectDetailPage() {
                     <div className="overflow-hidden">
                       {specEntries.map(([key, value]) => (
                         <div key={key} className="grid grid-cols-[8rem_1fr] max-[480px]:grid-cols-1 gap-x-4 gap-y-1 py-[0.9rem] border-b border-line-dark">
-                          <span className="text-[0.75rem] uppercase tracking-[0.08em] text-white-soft">{specLabels[key] || key}</span>
-                          <span className="text-white text-[0.92rem] font-medium">{value}</span>
+                          <span className="text-[0.75rem] uppercase tracking-[0.08em] text-white-soft">
+                            <EditableText id={`projects.detail.spec.${key}`} as="span">{specLabels[key] || key}</EditableText>
+                          </span>
+                          <span className="text-white text-[0.92rem] font-medium">
+                            <EditableText id={`projects.${project.slug}.spec.${key}`} as="span">{value}</EditableText>
+                          </span>
                         </div>
                       ))}
                       {project.markets?.length > 0 && (
                         <div className="grid grid-cols-[8rem_1fr] max-[480px]:grid-cols-1 gap-x-4 gap-y-1 py-[0.9rem] border-b border-line-dark">
-                          <span className="text-[0.75rem] uppercase tracking-[0.08em] text-white-soft">Markets</span>
+                          <span className="text-[0.75rem] uppercase tracking-[0.08em] text-white-soft">
+                            <EditableText id="projects.detail.spec.markets" as="span">Markets</EditableText>
+                          </span>
                           <span className="flex flex-wrap gap-x-3 gap-y-1">
-                            {project.markets.map((m) => (
+                            {project.markets.map((m, i) => (
                               <span key={m} className="text-white text-[0.92rem] font-medium">
-                                {m}
+                                <EditableText id={`projects.${project.slug}.market${i + 1}`} as="span">{m}</EditableText>
                               </span>
                             ))}
                           </span>
@@ -189,13 +396,26 @@ export default function ProjectDetailPage() {
                       )}
                       {project.services?.length > 0 && (
                         <div className="grid grid-cols-[8rem_1fr] max-[480px]:grid-cols-1 gap-x-4 gap-y-1 py-[0.9rem] border-b border-line-dark">
-                          <span className="text-[0.75rem] uppercase tracking-[0.08em] text-white-soft">Services</span>
+                          <span className="text-[0.75rem] uppercase tracking-[0.08em] text-white-soft">
+                            <EditableText id="projects.detail.spec.services" as="span">Services</EditableText>
+                          </span>
                           <span className="flex flex-wrap gap-x-3 gap-y-1">
-                            {project.services.map((s) => (
-                              <span key={s} className="text-white text-[0.92rem] font-medium">
-                                {s}
-                              </span>
-                            ))}
+                            {project.services.map((s, i) => {
+                              const slug = SERVICE_SLUG_BY_PROJECT[project.slug]?.[s];
+                              return slug ? (
+                                <Link
+                                  key={s}
+                                  to={`/services/${slug}`}
+                                  className="text-white text-[0.92rem] font-medium no-underline hover:text-accent-tint transition-colors duration-150"
+                                >
+                                  <EditableText id={`projects.${project.slug}.service${i + 1}`} as="span">{s}</EditableText>
+                                </Link>
+                              ) : (
+                                <span key={s} className="text-white text-[0.92rem] font-medium">
+                                  <EditableText id={`projects.${project.slug}.service${i + 1}`} as="span">{s}</EditableText>
+                                </span>
+                              );
+                            })}
                           </span>
                         </div>
                       )}
@@ -209,30 +429,27 @@ export default function ProjectDetailPage() {
       </section>
 
       {project.challenge && (
-        <NarrativeBand id="challenge" rail="Challenge" theme="light" heading={project.challenge.heading} body={project.challenge.body} />
+        <NarrativeBand id="challenge" textId={`projects.${project.slug}.challenge`} rail="Challenge" theme="light" heading={project.challenge.heading} body={project.challenge.body} />
       )}
 
       {project.approach && (
-        <NarrativeBand id="approach" rail="Approach" theme="dark" heading={project.approach.heading} body={project.approach.body} quote={project.quote} />
+        <NarrativeBand id="approach" textId={`projects.${project.slug}.approach`} rail="Approach" theme="dark" heading={project.approach.heading} body={project.approach.body} quote={project.quote} />
       )}
 
       {project.outcome && (
-        <NarrativeBand id="outcome" rail="Outcome" theme="light" heading="Outcome" body={[project.outcome]} />
+        <NarrativeBand id="outcome" textId={`projects.${project.slug}.outcome`} rail="Outcome" theme="light" heading="Outcome" body={[project.outcome]} />
       )}
 
       {project.fineprint && (
         <motion.section
-          className="relative h-[46vh] min-h-[280px] max-h-[420px] overflow-hidden"
+          className="relative h-[60vh] min-h-[380px] max-h-[560px] overflow-hidden"
           initial={{ opacity: 0, scale: 1.03 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={viewportOnce}
           transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
           aria-hidden="true"
         >
-          <div
-            className="absolute inset-0"
-            style={{ backgroundImage: `url(${project.fineprint})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-          />
+          <Slot id={`projects.${project.slug}.fineprint`} src={project.fineprint} alt="" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-slate/10" />
         </motion.section>
       )}
@@ -240,29 +457,58 @@ export default function ProjectDetailPage() {
       {project.gallery?.length > 0 && (
         <section id="gallery" className="section-shell bg-paper pt-[3rem]" data-nav-theme="light" data-nav-label="Gallery">
           <div className="section-inner">
-            <motion.div
-              className="grid grid-cols-3 max-[700px]:grid-cols-1 gap-[1.4rem]"
-              initial="hidden"
-              whileInView="show"
-              viewport={viewportOnce}
-              variants={stagger}
-            >
-              {project.gallery.map((item, i) => (
-                <motion.figure key={item.src} className="m-0" variants={fadeUp}>
-                  <img
-                    src={item.src}
-                    alt={item.caption || `${project.title} — photo ${i + 1}`}
-                    className="rounded-[4px] w-full h-full object-cover aspect-[4/3]"
-                  />
-                  {item.caption && <figcaption className="mt-[0.6rem] text-ink-soft text-[0.82rem]">{item.caption}</figcaption>}
-                </motion.figure>
-              ))}
-            </motion.div>
+            <div className="relative">
+              <motion.div
+                ref={scrollerRef}
+                onScroll={() => setGalleryEnd(computeGalleryEnd(scrollerRef.current, galleryTotal))}
+                className="flex gap-[1.4rem] overflow-x-auto snap-x snap-mandatory pb-2 scroll-smooth [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+                initial="hidden"
+                whileInView="show"
+                viewport={viewportOnce}
+                variants={stagger}
+              >
+                {project.gallery.map((item, i) => (
+                  <motion.figure key={item.src} className="m-0 shrink-0 w-[85vw] max-w-[320px] sm:w-[calc((100%-1.4rem)/2)] md:w-[calc((100%-2.8rem)/3)] md:max-w-none snap-start" variants={fadeUp}>
+                    <GalleryItem
+                      id={`projects.${project.slug}.gallery.${i}`}
+                      item={item}
+                      alt={item.caption || `${project.title} — photo ${i + 1}`}
+                      onOpen={() => setLightboxIndex(galleryImages.indexOf(item))}
+                    />
+                    {item.caption && (
+                      <figcaption className="mt-[0.6rem] text-ink font-semibold text-[0.9rem] leading-[1.4]">
+                        <EditableText id={`projects.${project.slug}.gallery${i + 1}.caption`} as="span">{item.caption}</EditableText>
+                      </figcaption>
+                    )}
+                  </motion.figure>
+                ))}
+              </motion.div>
+
+              {project.gallery.length > 1 && (
+                <div className="hidden md:flex items-center justify-between mt-4">
+                  <span className="text-slate-3 text-[0.85rem] font-semibold tabular-nums">
+                    {galleryEnd}/{galleryTotal}
+                  </span>
+                  <div className="flex gap-2">
+                  <button type="button" onClick={() => scrollGallery(-1)} aria-label="Scroll gallery left"
+                    className="w-[38px] h-[38px] rounded-full border-2 border-accent text-accent-deep hover:bg-accent/10 flex items-center justify-center transition-colors duration-150">
+                    &larr;
+                  </button>
+                  <button type="button" onClick={() => scrollGallery(1)} aria-label="Scroll gallery right"
+                    className="w-[38px] h-[38px] rounded-full border-2 border-accent text-accent-deep hover:bg-accent/10 flex items-center justify-center transition-colors duration-150">
+                    &rarr;
+                  </button>
+                  </div>
+                </div>
+              )}
+            </div>
+
+            <MediaRegion name={`projects.${project.slug}.gallery-extra`} className="mt-8" />
           </div>
         </section>
       )}
 
-      <CtaAccentBand heading="Have a project like this in mind?" />
+      <CtaAccentBand id={`projects.${project.slug}.ctaband`} heading="Have a project like this in mind?" />
 
       <section className="section-shell bg-slate text-white" data-nav-theme="dark">
         <div className="section-inner">
@@ -277,10 +523,10 @@ export default function ProjectDetailPage() {
               className="font-sans font-semibold text-[0.85rem] text-accent-tint mb-[0.6rem] block"
               variants={fadeUp}
             >
-              Continue Exploring
+              <EditableText id="projects.detail.moreEyebrow" as="span">Continue Exploring</EditableText>
             </motion.span>
             <motion.h2 className="text-white text-[1.5rem]" variants={fadeUp}>
-              More Projects
+              <EditableText id="projects.detail.moreHeadline" as="span">More Projects</EditableText>
             </motion.h2>
           </motion.div>
 
@@ -297,6 +543,17 @@ export default function ProjectDetailPage() {
           </motion.div>
         </div>
       </section>
+
+      <AnimatePresence>
+        {lightboxIndex !== null && (
+          <Lightbox
+            images={galleryImages}
+            index={lightboxIndex}
+            onClose={() => setLightboxIndex(null)}
+            onStep={(dir) => setLightboxIndex((i) => (i + dir + galleryImages.length) % galleryImages.length)}
+          />
+        )}
+      </AnimatePresence>
     </>
   );
 }

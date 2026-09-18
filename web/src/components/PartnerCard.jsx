@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
+import EditableText from '@media/EditableText';
 
 export default function PartnerCard({ partner }) {
   const cardRef = useRef(null);
@@ -38,8 +39,12 @@ export default function PartnerCard({ partner }) {
             </svg>
           )}
         </div>
-        <div className="text-white font-semibold text-[0.92rem] leading-tight">{partner.name}</div>
-        <div className="text-white-soft text-[0.7rem] uppercase tracking-wide">{partner.tagline}</div>
+        <div className="text-white font-semibold text-[0.92rem] leading-tight">
+          <EditableText id={`partners.${partner.id}.name`} as="span">{partner.name}</EditableText>
+        </div>
+        <div className="text-white-soft text-[0.7rem] uppercase tracking-wide">
+          <EditableText id={`partners.${partner.id}.tagline`} as="span">{partner.tagline}</EditableText>
+        </div>
       </div>
 
       <div
@@ -55,19 +60,23 @@ export default function PartnerCard({ partner }) {
           className="transition-[filter,opacity] duration-600 ease-[ease]"
           style={{ transitionDelay: '0.08s', filter: revealed ? 'blur(0px)' : 'blur(10px)', opacity: revealed ? 1 : 0 }}
         >
-          <div className="text-white font-semibold text-[0.85rem] mb-1.5">{partner.name}</div>
-          <div className="text-white/90 text-[0.78rem] leading-relaxed">{partner.summary}</div>
+          <div className="text-white font-semibold text-[0.85rem] mb-1.5">
+            <EditableText id={`partners.${partner.id}.name`} as="span">{partner.name}</EditableText>
+          </div>
+          <div className="text-white/90 text-[0.78rem] leading-relaxed">
+            <EditableText id={`partners.${partner.id}.summary`} as="span">{partner.summary}</EditableText>
+          </div>
         </div>
         {hasProjects ? (
           <Link
             to={`/projects?client=${partner.id}`}
             className="block text-white text-[0.76rem] font-semibold no-underline border-t border-white/25 pt-2.5 mt-2.5"
           >
-            View Related Projects →
+            <EditableText id="home.partnercard.cta" as="span">View Related Projects</EditableText> →
           </Link>
         ) : (
           <span className="block text-white/55 text-[0.76rem] font-semibold border-t border-white/25 pt-2.5 mt-2.5">
-            No linked projects yet
+            <EditableText id="home.partnercard.empty" as="span">No linked projects yet</EditableText>
           </span>
         )}
       </div>

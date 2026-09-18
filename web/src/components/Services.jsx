@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { fadeUp, viewportRepeat } from '../motion';
 import { services } from '../data/services';
 import ServiceCard from './ServiceCard';
+import EditableText from '@media/EditableText';
 
 const MotionLink = motion(Link);
 const VISIBLE = services.slice(0, 5);
@@ -104,7 +105,7 @@ export default function Services() {
             className="block text-ink/[0.11] text-[clamp(2.5rem,5.8vw,6rem)] tracking-[0.01em] leading-none whitespace-nowrap"
             style={{ fontFamily: "'Swis721 BlkEx BT', 'Big Shoulders Display', sans-serif", writingMode: 'vertical-rl' }}
           >
-            SERVICES
+            <EditableText id="home.services.watermark" as="span">SERVICES</EditableText>
           </span>
         </div>
       </div>
@@ -117,12 +118,16 @@ export default function Services() {
           viewport={viewportRepeat}
           variants={fadeUp}
         >
-          <span className="font-sans font-semibold text-[0.85rem] text-accent-deep mb-[0.7rem] block">Who We Are</span>
+          <span className="font-sans font-semibold text-[0.85rem] text-accent-deep mb-[0.7rem] block">
+            <EditableText id="home.services.eyebrow" as="span">Who We Are</EditableText>
+          </span>
           <p className="lede">
-            Diarsa Global has been Edo State's in-house engineering partner since 2015 — civil and structural
-            engineering, geomatics, town planning, and project management, delivered by one team rather than a chain
-            of subcontractors. Twenty-plus projects since 2018, for clients including the Edo State Ministry of Roads
-            &amp; Bridges and EDSOGPADEC, sit behind the seven disciplines below.
+            <EditableText id="home.services.body" as="span">
+              Diarsa Global has been Edo State's in-house engineering partner since 2015 — civil and structural
+              engineering, geomatics, town planning, and project management, delivered by one team rather than a chain
+              of subcontractors. Twenty-plus projects since 2018, for clients including the Edo State Ministry of Roads
+              &amp; Bridges and EDSOGPADEC, sit behind the seven disciplines below.
+            </EditableText>
           </p>
         </motion.div>
 
@@ -133,7 +138,9 @@ export default function Services() {
           viewport={viewportRepeat}
           variants={fadeUp}
         >
-          <h2 className="text-[clamp(1.7rem,3.4vw,2.3rem)]">Seven disciplines. One integrated team.</h2>
+          <h2 className="text-[clamp(1.7rem,3.4vw,2.3rem)]">
+            <EditableText id="home.services.headline" as="span">Seven disciplines. One integrated team.</EditableText>
+          </h2>
           <div className="flex items-center gap-3 shrink-0">
             <div className="flex gap-2">
               <Arrow direction="prev" onClick={() => slide('prev')} disabled={atStart} />
@@ -145,7 +152,7 @@ export default function Services() {
               whileHover={{ scale: 1.04, transition: { duration: 0.18, ease: 'easeOut' } }}
               whileTap={{ scale: 0.97 }}
             >
-              View All Services
+              <EditableText id="home.services.cta" as="span">View All Services</EditableText>
             </MotionLink>
           </div>
         </motion.div>
@@ -200,7 +207,9 @@ export default function Services() {
                     <span className="w-[38px] h-[38px] mb-[0.9rem] rounded-full bg-white text-accent-deep flex items-center justify-center text-[1rem] font-semibold transition-transform duration-300 ease-out group-hover:translate-x-1">
                       &rarr;
                     </span>
-                    <h3 className="font-display font-bold text-white text-[1.1rem] mb-[0.5rem] leading-[1.25]">Show More Services</h3>
+                    <h3 className="font-display font-bold text-white text-[1.1rem] mb-[0.5rem] leading-[1.25]">
+                      <EditableText id="home.services.showmore" as="span">Show More Services</EditableText>
+                    </h3>
                     <p className="text-white-soft text-[0.85rem] leading-[1.5]">
                       {HIDDEN.length} more disciplines, including {HIDDEN[HIDDEN.length - 1]?.title}
                     </p>

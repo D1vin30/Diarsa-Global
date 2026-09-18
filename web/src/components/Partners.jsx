@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { partners } from '../data/partners';
 import PartnerCard from './PartnerCard';
 import { fadeUp, stagger, viewportRepeat } from '../motion';
+import EditableText from '@media/EditableText';
 
 export default function Partners() {
   return (
@@ -14,12 +15,14 @@ export default function Partners() {
           viewport={viewportRepeat}
           variants={fadeUp}
         >
-          <span className="eyebrow text-accent-tint mb-3 block">Trusted Partners</span>
+          <span className="eyebrow text-accent-tint mb-3 block">
+            <EditableText id="home.partners.eyebrow" as="span">Trusted Partners</EditableText>
+          </span>
           <h2 className="text-white text-[clamp(1.7rem,3.4vw,2.3rem)] mb-3">
-            Working alongside Edo State&rsquo;s public and private sector
+            <EditableText id="home.partners.headline" as="span">Working alongside Edo State&rsquo;s public and private sector</EditableText>
           </h2>
           <p className="lede text-white-soft">
-            Hover a card to see the partner brief and jump to their related projects.
+            <EditableText id="home.partners.body" as="span">Hover a card to see the partner brief and jump to their related projects.</EditableText>
           </p>
         </motion.div>
 
@@ -30,7 +33,7 @@ export default function Partners() {
           viewport={viewportRepeat}
           variants={stagger}
         >
-          {partners.map((partner) => (
+          {partners.filter((partner) => !partner.placeholder).map((partner) => (
             <motion.div key={partner.id} variants={fadeUp}>
               <PartnerCard partner={partner} />
             </motion.div>

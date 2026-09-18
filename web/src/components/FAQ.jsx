@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { faqs } from '../data/faqs';
 import { fadeUp, stagger, viewportRepeat } from '../motion';
+import MediaRegion from '@media/MediaRegion';
+import EditableText from '@media/EditableText';
 
 export default function FAQ() {
   const [openId, setOpenId] = useState(null);
@@ -16,8 +18,12 @@ export default function FAQ() {
           viewport={viewportRepeat}
           variants={fadeUp}
         >
-          <h2 className="text-[clamp(1.7rem,3.4vw,2.3rem)] mb-[0.7rem]">Questions we hear most</h2>
-          <p className="lede">Straight answers on how we work, who we work with, and how to get started.</p>
+          <h2 className="text-[clamp(1.7rem,3.4vw,2.3rem)] mb-[0.7rem]">
+            <EditableText id="home.faq.headline" as="span">Questions we hear most</EditableText>
+          </h2>
+          <p className="lede">
+            <EditableText id="home.faq.subhead" as="span">Straight answers on how we work, who we work with, and how to get started.</EditableText>
+          </p>
         </motion.div>
 
         <motion.div
@@ -37,7 +43,7 @@ export default function FAQ() {
                   aria-expanded={open}
                   className="w-full flex items-center justify-between gap-4 text-left px-5 py-4 cursor-pointer bg-transparent border-0 font-sans font-semibold text-[0.98rem] text-ink"
                 >
-                  {item.q}
+                  <EditableText id={`home.faq.q${i}`} as="span">{item.q}</EditableText>
                   <span
                     aria-hidden="true"
                     className={`shrink-0 text-accent-deep text-xl leading-none transition-transform duration-300 ${open ? 'rotate-45' : ''}`}
@@ -54,7 +60,7 @@ export default function FAQ() {
                       transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden"
                     >
-                      <p className="px-5 pb-4 lede">{item.a}</p>
+                      <p className="px-5 pb-4 lede"><EditableText id={`home.faq.a${i}`} as="span">{item.a}</EditableText></p>
                     </motion.div>
                   )}
                 </AnimatePresence>
@@ -62,6 +68,8 @@ export default function FAQ() {
             );
           })}
         </motion.div>
+
+        <MediaRegion name="faq.extra" className="mt-8" />
       </div>
     </section>
   );

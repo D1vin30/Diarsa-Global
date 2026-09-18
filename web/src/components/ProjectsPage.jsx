@@ -5,6 +5,9 @@ import { gsap } from 'gsap';
 import { projects } from '../data/projects';
 import { partners } from '../data/partners';
 import CtaAccentBand from './CtaAccentBand';
+import Slot from '@media/Slot';
+import MediaRegion from '@media/MediaRegion';
+import EditableText from '@media/EditableText';
 
 const introStagger = { hidden: {}, show: { transition: { staggerChildren: 0.08 } } };
 const introItem = {
@@ -69,7 +72,8 @@ function TimelineEntry({ project, side }) {
             />
             <div className="relative aspect-[16/9] rounded-[10px] overflow-hidden border border-line-dark transition-colors duration-200 group-hover:border-accent/60">
               {project.image ? (
-                <img
+                <Slot
+                  id={`projects.${project.slug}.timeline`}
                   src={project.image}
                   alt=""
                   className="absolute inset-0 w-full h-full object-cover animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]"
@@ -77,23 +81,29 @@ function TimelineEntry({ project, side }) {
               ) : (
                 <div
                   className="absolute inset-0"
-                  style={{ background: 'linear-gradient(160deg, #221f22 0%, #1a1719 60%, #121013 100%)' }}
+                  style={{ background: 'linear-gradient(160deg, #202d40 0%, #16202f 60%, #0e1420 100%)' }}
                 />
               )}
               <div className="absolute inset-0 bg-slate/0 transition-colors duration-300 group-hover:bg-slate/20" />
             </div>
           </div>
           <div className="mt-[1.1rem] flex items-center gap-3 mb-[0.4rem]">
-            <span className="font-sans font-semibold text-[0.7rem] tracking-[0.1em] uppercase text-accent-tint">{project.cat}</span>
+            <span className="font-sans font-semibold text-[0.7rem] tracking-[0.1em] uppercase text-accent-tint">
+              <EditableText id={`projects.${project.slug}.cat`} as="span">{project.cat}</EditableText>
+            </span>
             <span className="text-white/30" aria-hidden="true">
               &middot;
             </span>
-            <span className="font-display font-bold text-[0.8rem] text-white-soft">{project.year}</span>
+            <span className="font-display font-bold text-[0.8rem] text-white-soft">
+              <EditableText id={`projects.${project.slug}.year`} as="span">{project.year}</EditableText>
+            </span>
           </div>
           <h3 className="text-white text-[1.15rem] leading-[1.3] mb-[0.4rem] transition-colors duration-150 group-hover:text-accent-tint">
-            {project.title}
+            <EditableText id={`projects.${project.slug}.title`} as="span">{project.title}</EditableText>
           </h3>
-          <p className="text-white-soft text-[0.88rem] leading-[1.5] max-w-[42ch]">{project.scope}</p>
+          <p className="text-white-soft text-[0.88rem] leading-[1.5] max-w-[42ch]">
+            <EditableText id={`projects.${project.slug}.scope`} as="span">{project.scope}</EditableText>
+          </p>
         </Link>
       </div>
     </div>
@@ -144,7 +154,7 @@ export default function ProjectsPage() {
               className="block text-white/[0.15] text-[clamp(2.5rem,5.8vw,6rem)] tracking-[0.01em] leading-none whitespace-nowrap"
               style={{ fontFamily: "'Swis721 BlkEx BT', 'Big Shoulders Display', sans-serif" }}
             >
-              PROJECTS
+              <EditableText id="projects.index.watermark" as="span">PROJECTS</EditableText>
             </span>
           </div>
         </div>
@@ -152,14 +162,16 @@ export default function ProjectsPage() {
         <div className="section-inner relative z-[1]">
           <motion.div className="section-head max-w-[62ch] mt-12" initial="hidden" animate="show" variants={introStagger}>
             <motion.span className="font-sans font-semibold text-[0.9rem] text-accent-tint mb-[0.8rem] block" variants={introItem}>
-              Our Work
+              <EditableText id="projects.index.eyebrow" as="span">Our Work</EditableText>
             </motion.span>
             <motion.h1 className="text-white text-[clamp(2rem,4.2vw,3rem)] mb-[1rem]" variants={introItem}>
-              Projects
+              <EditableText id="projects.index.headline" as="span">Projects</EditableText>
             </motion.h1>
             <motion.p className="lede text-white-soft" variants={introItem}>
-              Engineering, geomatics, and environmental work delivered across Edo State. Project photography and
-              further write-ups are in progress.
+              <EditableText id="projects.index.body" as="span">
+                Engineering, geomatics, and environmental work delivered across Edo State. Project photography and
+                further write-ups are in progress.
+              </EditableText>
             </motion.p>
           </motion.div>
 
@@ -206,15 +218,17 @@ export default function ProjectsPage() {
 
           <div className="relative z-[1] flex justify-center mt-[-2.5rem] pb-[0.5rem]">
             <button type="button" className="group btn btn-ghost-dark inline-flex items-center gap-2">
-              Show More
+              <EditableText id="projects.index.showmore" as="span">Show More</EditableText>
               <span className="transition-transform duration-200 ease-out group-hover:translate-y-[3px]" aria-hidden="true">
                 &darr;
               </span>
             </button>
           </div>
+
+          <MediaRegion name="projects.index.extra" className="mt-8" />
         </div>
       </section>
-      <CtaAccentBand heading="Have a project like these in mind?" />
+      <CtaAccentBand id="projects.index.ctaband" heading="Have a project like these in mind?" />
     </>
   );
 }

@@ -6,6 +6,9 @@ import { projects } from '../data/projects';
 import ProjectCard from './ProjectCard';
 import ServiceCard from './ServiceCard';
 import CtaAccentBand from './CtaAccentBand';
+import Slot from '@media/Slot';
+import MediaRegion from '@media/MediaRegion';
+import EditableText from '@media/EditableText';
 
 function SectionEyebrow({ label }) {
   return (
@@ -16,7 +19,7 @@ function SectionEyebrow({ label }) {
   );
 }
 
-function NarrativeBand({ id, rail, theme, heading, body, quote, lifecycle }) {
+function NarrativeBand({ id, textId, rail, theme, heading, body, quote, lifecycle }) {
   const dark = theme === 'dark';
   return (
     <section id={id} className={`section-shell ${dark ? 'bg-slate text-white' : 'bg-paper'}`} data-nav-theme={dark ? 'dark' : 'light'} data-nav-label={rail}>
@@ -26,11 +29,11 @@ function NarrativeBand({ id, rail, theme, heading, body, quote, lifecycle }) {
             <SectionEyebrow label={rail} />
           </motion.div>
           <motion.h2 className={`text-[1.6rem] mb-[1.2rem] ${dark ? 'text-white' : ''}`} variants={fadeUp}>
-            {heading}
+            <EditableText id={`${textId}.heading`} as="span">{heading}</EditableText>
           </motion.h2>
           {body.map((paragraph, i) => (
             <motion.p key={i} className={`lede mb-[1rem] last:mb-0 ${dark ? 'text-white-soft' : ''}`} variants={fadeUp}>
-              {paragraph}
+              <EditableText id={`${textId}.body${i + 1}`} as="span">{paragraph}</EditableText>
             </motion.p>
           ))}
           {lifecycle?.length > 0 && (
@@ -38,8 +41,12 @@ function NarrativeBand({ id, rail, theme, heading, body, quote, lifecycle }) {
               {lifecycle.map((step, i) => (
                 <div key={step.stage} className={`pt-[1rem] border-t-2 ${dark ? 'border-white/15' : 'border-line-light'}`}>
                   <span className="font-display font-bold text-accent-tint text-[0.9rem]">{String(i + 1).padStart(2, '0')}</span>
-                  <h4 className={`text-[0.95rem] font-semibold mt-[0.3rem] mb-[0.4rem] ${dark ? 'text-white' : 'text-ink'}`}>{step.stage}</h4>
-                  <p className={`text-[0.85rem] leading-[1.5] ${dark ? 'text-white-soft' : 'text-ink-soft'}`}>{step.text}</p>
+                  <h4 className={`text-[0.95rem] font-semibold mt-[0.3rem] mb-[0.4rem] ${dark ? 'text-white' : 'text-ink'}`}>
+                    <EditableText id={`${textId}.lifecycle${i + 1}.stage`} as="span">{step.stage}</EditableText>
+                  </h4>
+                  <p className={`text-[0.85rem] leading-[1.5] ${dark ? 'text-white-soft' : 'text-ink-soft'}`}>
+                    <EditableText id={`${textId}.lifecycle${i + 1}.text`} as="span">{step.text}</EditableText>
+                  </p>
                 </div>
               ))}
             </motion.div>
@@ -47,9 +54,11 @@ function NarrativeBand({ id, rail, theme, heading, body, quote, lifecycle }) {
           {quote && (
             <motion.div className="mt-[2.4rem] pl-[1.4rem] border-l-[3px] border-accent max-w-[52ch]" variants={fadeUp}>
               <p className={`font-display text-[1.15rem] leading-[1.45] mb-[0.7rem] ${dark ? 'text-white' : 'text-ink'}`}>
-                &ldquo;{quote.text}&rdquo;
+                &ldquo;<EditableText id={`${textId}.quote.text`} as="span">{quote.text}</EditableText>&rdquo;
               </p>
-              <p className={`text-[0.85rem] font-semibold ${dark ? 'text-white-soft' : 'text-ink-soft'}`}>{quote.role}</p>
+              <p className={`text-[0.85rem] font-semibold ${dark ? 'text-white-soft' : 'text-ink-soft'}`}>
+                <EditableText id={`${textId}.quote.role`} as="span">{quote.role}</EditableText>
+              </p>
             </motion.div>
           )}
         </motion.div>
@@ -74,30 +83,37 @@ export default function ServiceDetailPage() {
   return (
     <>
       <section className="relative h-[70vh] min-h-[440px] max-h-[640px] flex items-end overflow-hidden bg-slate" data-nav-theme="dark">
-        <div
-          className="absolute inset-0 flex items-center justify-center"
-          style={{ backgroundImage: `url(${service.image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-        />
+        <div className="absolute inset-0 flex items-center justify-center">
+          <Slot id={`services.${service.slug}.hero`} src={service.image} alt="" className="absolute inset-0 w-full h-full object-cover" hasOverlayText />
+        </div>
         <div className="absolute inset-0 bg-gradient-to-t from-slate via-slate/35 to-slate/10" />
 
         <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: [0.19, 1, 0.22, 1], delay: 0.15 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, ease: 'linear' }}
         >
           <Link
             to="/services"
-            className="absolute top-[6.5rem] right-6 z-[2] inline-flex items-center gap-2 pl-[1rem] pr-[1.2rem] py-[0.55rem] rounded-full bg-slate/70 backdrop-blur-sm border border-line-dark text-white text-[0.85rem] font-semibold no-underline transition-colors duration-200 hover:border-accent/60 hover:bg-slate/85"
+            className="absolute top-[6.5rem] right-6 z-[2] inline-flex items-center gap-2 pl-[1rem] pr-[1.2rem] py-[0.55rem] rounded-full bg-slate/70 backdrop-blur-sm border border-line-dark text-white text-[0.85rem] font-semibold no-underline transition-colors duration-200 hover:border-accent/60 hover:bg-slate/85 overflow-hidden"
           >
             <span aria-hidden="true">&larr;</span> All Services
+            <motion.span
+              aria-hidden="true"
+              className="absolute inset-y-0 left-0 w-1/2 pointer-events-none"
+              style={{ background: 'linear-gradient(115deg, transparent 20%, rgba(255,255,255,0.55) 50%, transparent 80%)' }}
+              initial={{ x: '-120%' }}
+              animate={{ x: '220%' }}
+              transition={{ duration: 1.1, ease: 'easeInOut', delay: 1 }}
+            />
           </Link>
         </motion.div>
 
         <motion.div
           className="relative z-[1] section-inner max-w-[900px] pb-[3rem] pt-[8rem] w-full"
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: [0.19, 1, 0.22, 1] }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, ease: 'linear' }}
         >
           <div className="flex items-center gap-3 mb-[0.8rem]">
             <span className="font-display font-bold text-[0.9rem] text-accent-tint">{service.num}</span>
@@ -150,16 +166,19 @@ export default function ServiceDetailPage() {
               )}
             </motion.div>
           </div>
+
+          <MediaRegion name={`services.${service.slug}.gallery`} className="mt-8" />
         </div>
       </section>
 
       {service.whyItMatters && (
-        <NarrativeBand id="why-it-matters" rail="Why It Matters" theme="light" heading={service.whyItMatters.heading} body={service.whyItMatters.body} />
+        <NarrativeBand id="why-it-matters" textId={`services.${service.slug}.whyItMatters`} rail="Why It Matters" theme="light" heading={service.whyItMatters.heading} body={service.whyItMatters.body} />
       )}
 
       {service.approach && (
         <NarrativeBand
           id="approach"
+          textId={`services.${service.slug}.approach`}
           rail="Our Approach"
           theme="dark"
           heading={service.approach.heading}
@@ -169,7 +188,7 @@ export default function ServiceDetailPage() {
         />
       )}
 
-      {service.outcome && <NarrativeBand id="outcome" rail="Outcome" theme="light" heading="Outcome" body={[service.outcome]} />}
+      {service.outcome && <NarrativeBand id="outcome" textId={`services.${service.slug}.outcome`} rail="Outcome" theme="light" heading="Outcome" body={[service.outcome]} />}
 
       {fineprint && (
         <motion.section
@@ -180,15 +199,12 @@ export default function ServiceDetailPage() {
           transition={{ duration: 1.1, ease: [0.19, 1, 0.22, 1] }}
           aria-hidden="true"
         >
-          <div
-            className="absolute inset-0"
-            style={{ backgroundImage: `url(${fineprint})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
-          />
+          <Slot id={`services.${service.slug}.fineprint`} src={fineprint} alt="" className="absolute inset-0 w-full h-full object-cover" />
           <div className="absolute inset-0 bg-slate/10" />
         </motion.section>
       )}
 
-      <CtaAccentBand heading={`Have a ${service.title} project in mind?`} />
+      <CtaAccentBand id={`services.${service.slug}.ctaband`} heading={`Have a ${service.title} project in mind?`} />
 
       {relatedProjects.length > 0 && (
         <section className="section-shell bg-paper" data-nav-theme="light">

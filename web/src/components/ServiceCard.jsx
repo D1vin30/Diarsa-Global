@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { projects } from '../data/projects';
 import { getClientLogo } from '../data/clientLogos';
+import Slot from '@media/Slot';
+import EditableText from '@media/EditableText';
 
 const cornerBase = 'absolute w-[16px] h-[16px] border-accent-tint opacity-0 z-[2] transition-[opacity,transform] duration-200 ease-out';
 
@@ -19,10 +21,12 @@ export default function ServiceCard({ service, variants }) {
           aria-hidden="true"
         />
         <div className="relative z-[1] aspect-[4/5] rounded-[10px] border border-line-dark overflow-hidden transition-[border-color,transform,box-shadow] duration-300 ease-out group-hover:border-accent/60 group-hover:-translate-y-[3px] group-hover:shadow-[0_16px_30px_-14px_rgba(0,0,0,0.5)]">
-          <img
+          <Slot
+            id={`services.${service.slug}.thumb`}
             src={service.image}
             alt=""
             className="absolute inset-0 w-full h-full object-cover animate-[ken-burns_9s_ease-in-out_infinite_alternate] [animation-play-state:paused] group-hover:[animation-play-state:running]"
+            hasOverlayText
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate from-15% via-slate/55 via-55% to-transparent" aria-hidden="true" />
 
@@ -50,14 +54,16 @@ export default function ServiceCard({ service, variants }) {
 
           <div className="absolute inset-x-0 bottom-0 z-[1] p-[1.5rem] flex flex-col">
             <span className="inline-block font-display font-bold text-[0.85rem] text-accent-tint mb-[0.5rem] transition-transform duration-300 ease-out group-hover:scale-110 origin-left">
-              {service.num}
+              <EditableText id={`services.${service.slug}.num`} as="span">{service.num}</EditableText>
             </span>
             <h3 className="text-white text-[1.1rem] mb-[0.6rem] leading-[1.25] transition-colors duration-150 group-hover:text-accent-tint">
-              {service.title}
+              <EditableText id={`services.${service.slug}.title`} as="span">{service.title}</EditableText>
             </h3>
-            <p className="text-white-soft text-[0.87rem] leading-[1.55] mb-[1rem]">{service.tagline}</p>
+            <p className="text-white-soft text-[0.87rem] leading-[1.55] mb-[1rem]">
+              <EditableText id={`services.${service.slug}.tagline`} as="span">{service.tagline}</EditableText>
+            </p>
             <span className="inline-flex items-center gap-2 text-accent-tint text-[0.85rem] font-semibold">
-              View Service
+              <EditableText id="home.servicecard.cta" as="span">View Service</EditableText>
               <span className="transition-transform duration-200 ease-out group-hover:translate-x-1" aria-hidden="true">
                 &rarr;
               </span>

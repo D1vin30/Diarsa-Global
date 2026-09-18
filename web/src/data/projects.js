@@ -1,49 +1,46 @@
 export const projects = [
   {
-    slug: 'ekpoma-iruekpen-road',
+    slug: 'oke-ohia-eme-road',
     cat: 'Civil Engineering',
-    title: 'Reconstruction of Ekpoma–Iruekpen Road',
-    client: 'Edo State Ministry of Roads & Bridges',
-    year: '2022',
-    scope: 'Supervising Consultant — review engineering design and working drawings alongside main contractor Setraco Nigeria Limited.',
+    title: 'Construction of Oke-Ohia-Eme Road',
+    client: 'Edo State Government',
+    year: 'Ongoing',
+    scope: 'Contractor and Design Consultant — construction of Oke-Ohia-Eme Road, including an integrated concrete drainage system along the corridor.',
     overview: [
-      'Diarsa Global served as Supervising Consultant on the reconstruction of the Ekpoma–Iruekpen Road, working alongside Setraco Nigeria Limited, one of the country\'s largest construction firms.',
-      'Our role covered review of engineering design and working drawings, ensuring the rebuilt corridor meets the durability and drainage standards required for one of Edo State\'s busier inter-town routes.',
+      'Diarsa Global was engaged as both design consultant and contractor for the construction of Oke-Ohia-Eme Road in Oke 1 Community, Owan West Local Government Area.',
+      'The scope pairs road formation with cast-in-place concrete drainage built alongside it, rather than added on afterward.',
     ],
-    specs: { location: 'Ekpoma–Iruekpen, Edo State', duration: '2022', discipline: 'Civil / Structural Engineering' },
+    specs: { location: 'Oke 1 Community, Owan West LGA, Edo State', duration: 'Ongoing', discipline: 'Civil Engineering' },
     stats: [
-      { value: '2022', label: 'Year Completed' },
-      { value: 'Supervising Consultant', label: "Diarsa's Role on Site" },
+      { value: '3.79km', label: 'Road Length' },
+      { value: 'Contractor & Design Consultant', label: "Diarsa's Role on Site" },
     ],
-    markets: ['Transport', 'Government & Public Sector'],
-    services: ['Engineering Design Review', 'Site Supervision'],
+    markets: ['Transport'],
+    services: ['Road Construction'],
     challenge: {
-      heading: 'A Vital Corridor in Need of Rebuilding',
+      heading: 'Low-Lying Ground, Rainy-Season Water',
       body: [
-        'The Ekpoma–Iruekpen corridor is one of Edo State\'s busier inter-town routes, carrying daily traffic between communities and commercial centres. Years of wear had left the carriageway degraded, with drainage that could no longer keep pace with the region\'s rainfall.',
-        'The brief called for a rebuilt road that would hold up under sustained traffic loads and Edo State\'s wet season, without compromising the safety of road users during construction.',
+        'The route runs through low-lying ground typical of the area\'s rainy season — cut sections held standing water during excavation, meaning drainage had to be engineered alongside the road itself, not bolted on after the fact.',
       ],
     },
     approach: {
-      heading: 'Supervising the Rebuild, Drawing to Drawing',
+      heading: 'Road and Drainage, Built Together',
       body: [
-        'Diarsa Global was appointed Supervising Consultant, working alongside main contractor Setraco Nigeria Limited. Our role centred on reviewing engineering designs and working drawings against the standards required for a durable, long-life carriageway.',
-        'Site oversight tracked construction quality at each stage, from earthworks and drainage through to the final pavement layers, keeping the works aligned with the approved design intent.',
+        'Excavation and trenching covered both the road bed and the adjoining drainage channels. Each completed concrete channel section is measured and checked against design dimensions before backfill.',
       ],
     },
-    quote: {
-      text: 'Every drawing we reviewed and every stage we supervised had one goal: a road that serves Edo State long after the construction crews have moved on.',
-      role: 'Site Supervision Team, Diarsa Global',
-    },
     outcome:
-      'The reconstructed corridor now carries daily traffic on rebuilt drainage designed for Edo State\'s rainy season, restoring a key link between Ekpoma and Iruekpen.',
-    image: '/projects/road-1.jpg',
+      '3.79km of road under construction, built with engineered drainage rather than a bare carriageway.',
+    image: '/projects/oke-ohia-eme-hero.jpg',
     gallery: [
-      { src: '/projects/road-2.jpg', caption: 'Earthworks and rebuilding along the corridor' },
-      { src: '/projects/road-3.jpg', caption: 'Reinforcement work ahead of the pour' },
-      { src: '/projects/road-4.jpg', caption: 'Site supervision during construction' },
+      { src: '/projects/oke-ohia-eme-1.jpg', caption: 'Excavation for road and drainage formation' },
+      { src: '/projects/oke-ohia-eme-2.jpg', caption: 'Aggregate base material staged along the corridor' },
+      { src: '/projects/oke-ohia-eme-3.jpg', caption: 'Dimension check on a completed drainage channel section' },
+      { src: '/projects/oke-ohia-eme-4.jpg', caption: 'Level check on the trench ahead of the pour' },
+      { src: '/projects/oke-ohia-eme-5.jpg', caption: 'A completed drainage channel section along the corridor' },
+      { src: '/projects/oke-ohia-eme-6.jpg', caption: 'Road bed with drainage channels formed on both sides' },
     ],
-    fineprint: '/projects/nigeria-scenic-3.jpg',
+    fineprint: '/projects/oke-ohia-eme-fineprint.jpg',
   },
   {
     slug: 'edsogpadec-short-roads',
@@ -136,6 +133,136 @@ export const projects = [
       { src: '/projects/gully-4.jpg', caption: 'Existing drainage channel under study' },
     ],
     fineprint: '/projects/nigeria-scenic-2.jpg',
+  },
+  {
+    slug: 'aruna-ohen-guobadia-road-survey',
+    cat: 'Geomatics & Design',
+    title: 'Survey of Aruna Mohamed Ohen-Guobadia Road',
+    client: 'Edo State Oil and Gas',
+    year: 'One Month',
+    scope: 'Road survey — Diarsa Global carried out topographic survey work along Aruna Mohamed Ohen-Guobadia Road as design consultant.',
+    overview: [
+      'Diarsa Global was engaged as design consultant for the topographic survey of Aruna Mohamed Ohen-Guobadia Road in Ekhae Community, Benin City.',
+      'The survey covered the road corridor end to end, including levels across a culvert crossing along the route.',
+    ],
+    specs: { location: 'Ekhae Community, Benin City, Edo State', duration: 'One Month', discipline: 'Civil Engineering' },
+    stats: [
+      { value: 'Design Consultant', label: "Diarsa's Role on Site" },
+    ],
+    markets: ['Transport'],
+    services: ['Road Survey'],
+    challenge: {
+      heading: 'Ground Data Before Any Design Decision',
+      body: [
+        'Before Aruna Mohamed Ohen-Guobadia Road could move toward design, the corridor needed accurate ground control — road edges, levels, and a culvert crossing — captured and referenced, not estimated.',
+      ],
+    },
+    approach: {
+      heading: 'RTK GNSS Survey, Point by Point',
+      body: [
+        'Our survey crew set up a GNSS base station and walked the corridor with an RTK rover, logging coordinates along the road and taking levels across the culvert crossing that sits along the route.',
+      ],
+    },
+    outcome:
+      'Ground survey data was captured across the corridor, giving Aruna Mohamed Ohen-Guobadia Road a referenced dataset to design from.',
+    image: '/projects/aruna-road-hero.jpg',
+    gallery: [
+      { src: '/projects/aruna-road-1.jpg', caption: 'Setting up the RTK GPS rover along the survey corridor' },
+      { src: '/projects/aruna-road-2.jpg', caption: 'Taking levels across a culvert crossing on the road' },
+      { src: '/projects/aruna-road-3.jpg', caption: 'Calibrating the rover before data capture' },
+      { src: '/projects/aruna-road-4.jpg', caption: 'Checking culvert depth along the corridor' },
+      { src: '/projects/aruna-road-5.jpg', caption: 'Survey crew along the corridor, Ekhae Community' },
+      { src: '/projects/aruna-road-6.jpg', caption: 'Confirming readings with the base station in view' },
+    ],
+    fineprint: '/projects/aruna-road-fineprint.jpg',
+  },
+  {
+    slug: 'edo-road-supervision-consultancy',
+    cat: 'Civil Engineering',
+    title: 'Road Supervision & Consultancy, Edo State Ministry of Works',
+    client: 'Edo State Ministry of Works',
+    year: 'Ongoing (2+ Years)',
+    scope: 'Contract supervision and technical consultancy — Diarsa Global providing design-consultant oversight across ongoing road works for the Edo State Ministry of Works.',
+    overview: [
+      'Diarsa Global has served as design consultant on an ongoing programme of road works for the Edo State Ministry of Works, running for more than two years.',
+      'The role covers site supervision through active construction — from sub-base stone-pitching and formation through to concrete pavement casting.',
+    ],
+    specs: { location: 'Ekehuan Road, Edo State', duration: 'Ongoing (2+ years)', discipline: 'Civil Engineering' },
+    stats: [
+      { value: '2+ Years', label: 'Ongoing Engagement' },
+      { value: 'Design Consultant', label: "Diarsa's Role on Site" },
+    ],
+    markets: ['Transport'],
+    services: ['Road Supervision & Consultancy'],
+    challenge: {
+      heading: 'Keeping an Active Site on Specification',
+      body: [
+        'Road works spanning stone sub-base, drainage, and rigid pavement casting need a consultant on site checking that what gets built matches what was designed — not just at handover, but at every stage in between.',
+      ],
+    },
+    approach: {
+      heading: 'On-Site Through Every Stage',
+      body: [
+        'Our team supervises the works in progress — from stone-pitched sub-base laid between concrete edge beams through to the rigid pavement casting itself — flagging issues as they come up rather than after the fact.',
+      ],
+    },
+    outcome:
+      "More than two years into the engagement, road works across the programme continue to be supervised stage by stage as they're built.",
+    image: '/projects/edo-road-supervision-hero.jpg',
+    gallery: [
+      { src: '/projects/edo-road-supervision-1.jpg', caption: 'Site visit at a road under construction, Edo State' },
+      { src: '/projects/edo-road-supervision-2.jpg', caption: 'Site review with excavation works underway in the background' },
+      { src: '/projects/edo-road-supervision-3.jpg', caption: 'Stone sub-base laid between concrete edge beams' },
+      { src: '/projects/edo-road-supervision-video-1.mp4', poster: '/projects/edo-road-supervision-video-1-poster.jpg', caption: 'Concrete pour underway on the pavement slab' },
+      { src: '/projects/edo-road-supervision-video-2.mp4', poster: '/projects/edo-road-supervision-video-2-poster.jpg', caption: 'Mixer truck discharging concrete for the road pour' },
+      { src: '/projects/edo-road-supervision-video-3.mp4', poster: '/projects/edo-road-supervision-video-3-poster.jpg', caption: 'Cured pavement stretch running through the corridor' },
+      { src: '/projects/edo-road-supervision-video-4.mp4', poster: '/projects/edo-road-supervision-video-4-poster.jpg', caption: 'Timber shuttering formed for the drainage channel' },
+      { src: '/projects/edo-road-supervision-video-5.mp4', poster: '/projects/edo-road-supervision-video-5-poster.jpg', caption: 'Excavation cutting through the road corridor' },
+    ],
+    fineprint: '/projects/edo-road-supervision-3.jpg',
+  },
+  {
+    slug: 'uromi-road-supervision-consultancy',
+    cat: 'Civil Engineering',
+    title: 'Supervision & Consultancy of Uromi Road',
+    client: 'Edo State Ministry of Works',
+    year: 'March 2026',
+    scope: 'Contract supervision and technical consultancy — Diarsa Global engaged as design consultant to assess and supervise works along Uromi Road.',
+    overview: [
+      'Diarsa Global was engaged as design consultant for supervision and consultancy work on Uromi Road, running a month-long site assessment in March 2026.',
+      'The corridor runs through a mix of built-up town streets and unpaved bush track, surveyed and documented end to end with GNSS equipment.',
+    ],
+    specs: { location: 'Uromi, Edo State', duration: 'One Month (March 2026)', discipline: 'Civil Engineering' },
+    stats: [
+      { value: 'March 2026', label: 'Site Assessment' },
+      { value: 'Design Consultant', label: "Diarsa's Role on Site" },
+    ],
+    markets: ['Transport'],
+    services: ['Road Supervision & Consultancy'],
+    challenge: {
+      heading: 'A Corridor of Mixed Ground Conditions',
+      body: [
+        'Uromi Road runs from paved town streets with existing drainage through to unmarked bush track — a corridor that needed to be walked and surveyed in full before any supervision or design decisions could be made on it.',
+      ],
+    },
+    approach: {
+      heading: 'Walking the Corridor with GNSS Equipment',
+      body: [
+        'Our team surveyed the route with a GNSS base station and rover, covering the built-up sections with existing drainage as well as the unpaved bush track further along the corridor.',
+      ],
+    },
+    outcome:
+      'A full site assessment of Uromi Road was completed in March 2026, giving the Ministry ground data across both the built-up and unpaved sections of the corridor.',
+    image: '/projects/uromi-road-hero.jpg',
+    gallery: [
+      { src: '/projects/uromi-road-1.jpg', caption: 'Walking the unpaved section of the corridor with survey equipment' },
+      { src: '/projects/uromi-road-2.jpg', caption: 'Survey crew with GNSS base station along the route' },
+      { src: '/projects/uromi-road-3.jpg', caption: 'Taking a reading on a built-up town street' },
+      { src: '/projects/uromi-road-4.jpg', caption: 'Covering the bush track further along the corridor' },
+      { src: '/projects/uromi-road-5.jpg', caption: 'Documenting site conditions along the route' },
+      { src: '/projects/uromi-road-6.jpg', caption: 'Survey team on a hilltop stretch overlooking the town' },
+    ],
+    fineprint: '/projects/uromi-road-fineprint.jpg',
   },
 ];
 

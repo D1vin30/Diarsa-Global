@@ -2,6 +2,7 @@ import { motion } from 'framer-motion';
 import { partners } from '../data/partners';
 import PartnerCard from './PartnerCard';
 import { fadeUp, stagger, viewportOnce } from '../motion';
+import EditableText from '@media/EditableText';
 
 export default function PartnersPreview() {
   return (
@@ -14,10 +15,14 @@ export default function PartnersPreview() {
           viewport={viewportOnce}
           variants={fadeUp}
         >
-          <span className="eyebrow text-accent-tint mb-3 block">Preview — not linked from nav</span>
-          <h1 className="text-white text-[clamp(1.8rem,3.6vw,2.6rem)] mb-3">Trusted Partners</h1>
+          <span className="eyebrow text-accent-tint mb-3 block">
+            <EditableText id="conceptPartners.eyebrow" as="span">Preview — not linked from nav</EditableText>
+          </span>
+          <h1 className="text-white text-[clamp(1.8rem,3.6vw,2.6rem)] mb-3">
+            <EditableText id="home.partners.headline" as="span">Trusted Partners</EditableText>
+          </h1>
           <p className="lede text-white-soft">
-            Hover a card to see the partner brief and jump to their related projects.
+            <EditableText id="home.partners.body" as="span">Hover a card to see the partner brief and jump to their related projects.</EditableText>
           </p>
         </motion.div>
 
@@ -28,7 +33,7 @@ export default function PartnersPreview() {
           viewport={viewportOnce}
           variants={stagger}
         >
-          {partners.map((partner) => (
+          {partners.filter((partner) => !partner.placeholder).map((partner) => (
             <motion.div key={partner.id} variants={fadeUp}>
               <PartnerCard partner={partner} />
             </motion.div>
